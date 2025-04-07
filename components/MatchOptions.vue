@@ -876,6 +876,8 @@ export default {
               return map.type === e_match_types_enum.Competitive;
             case e_match_types_enum.Wingman:
               return map.type === e_match_types_enum.Wingman;
+            case e_match_types_enum.Duel:
+              return map.type === e_match_types_enum.Duel;
           }
         })
         .sort((a, b) => {
