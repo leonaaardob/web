@@ -204,6 +204,69 @@
           "continue": "Continuer"
         }
       }
+    },
+    "map_pools": {
+      "title": "Pools de cartes",
+      "description": "Gérer les pools de cartes et les cartes disponibles pour le matchmaking.",
+      "table": {
+        "pool_name": "Nom de la pool",
+        "maps": "Cartes",
+        "active_duty": "Service actif",
+        "available_modes": "Modes disponibles",
+        "workshop_id": "ID Workshop"
+      },
+      "form": {
+        "name": "Nom",
+        "poster": "Affiche (optionnel)",
+        "poster_placeholder": "http://exemple.com/affiche.png",
+        "patch": "Patch (optionnel)",
+        "patch_placeholder": "http://exemple.com/patch.png",
+        "workshop_map_id": "ID de la carte Workshop (optionnel)",
+        "view_on_steam": "Voir sur Steam",
+        "create_map": "Créer une carte",
+        "update_map": "Mettre à jour la carte",
+        "delete_map": "Supprimer la carte",
+        "delete_confirm": {
+          "title": "Supprimer la carte",
+          "description": "Êtes-vous sûr de vouloir supprimer cette carte ? Cette action ne peut pas être annulée.",
+          "cancel": "Annuler",
+          "confirm": "Supprimer"
+        },
+        "success": {
+          "create": "Carte créée avec succès",
+          "update": "Carte mise à jour avec succès",
+          "delete": "Carte supprimée avec succès"
+        },
+        "error": {
+          "create": "Erreur lors de la création de la carte",
+          "update": "Erreur lors de la mise à jour de la carte"
+        }
+      },
+      "edit_map": "Modifier la carte",
+      "toggle_pool_type": "La carte {map} a été {type} pour {type}",
+      "toggle_active_pool": "La carte {map} a été {type} pour le service actif",
+      "add_new_map": "Ajouter une nouvelle carte",
+      "pool": {
+        "title": "Pool de cartes {type}",
+        "description": "Gérer les cartes dans la pool {type}",
+        "modify_maps": "Modifier les cartes dans la pool"
+      },
+      "save_success": "Pool de cartes enregistrée avec succès"
+    },
+    "map_pool": {
+      "toggle_pool_type": "La carte {map} a été {type} pour {type}",
+      "toggle_active_pool": "La carte {map} a été {type} pour le service actif",
+      "save_success": "Modifications enregistrées avec succès",
+      "components": {
+        "map_pools": {
+          "view_on_steam": "Voir sur Steam"
+        }
+      }
+    },
+    "components": {
+      "map_pools": {
+        "view_on_steam": "Voir sur Steam"
+      }
     }
   },
   "matchmaking": {
@@ -666,7 +729,8 @@
         "game_server_nodes": "Nœuds de Serveur de Jeu",
         "logs": "Journaux Système",
         "metrics": "Métriques Système",
-        "app_settings": "Paramètres de l'Application"
+        "app_settings": "Paramètres de l'Application",
+        "map_pools": "Groupes de Cartes"
       },
       "profile": {
         "my_account": "Mon Compte",
@@ -690,7 +754,8 @@
         "system_metrics": "Métriques Système",
         "app_settings": "Paramètres de l'Application",
         "report_issue": "Signaler un Problème",
-        "join_discord": "Rejoindre Discord"
+        "join_discord": "Rejoindre Discord",
+        "map_pools": "Groupes de Cartes"
       },
       "logout_dialog": {
         "title": "Déconnexion",
@@ -902,4 +967,4 @@
       "remove_description": "Voulez-vous vraiment retirer ce membre ?"
     }
   }
-} 
+}

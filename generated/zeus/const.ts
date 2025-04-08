@@ -2053,8 +2053,8 @@ export const AllTypesProps: Record<string,any> = {
 		_or:"maps_bool_exp",
 		active_pool:"Boolean_comparison_exp",
 		e_match_type:"e_match_types_bool_exp",
+		enabled:"Boolean_comparison_exp",
 		id:"uuid_comparison_exp",
-		label:"String_comparison_exp",
 		match_maps:"match_maps_bool_exp",
 		match_maps_aggregate:"match_maps_aggregate_bool_exp",
 		match_veto_picks:"match_map_veto_picks_bool_exp",
@@ -2075,7 +2075,6 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	maps_max_order_by:{
 		id:"order_by",
-		label:"order_by",
 		name:"order_by",
 		patch:"order_by",
 		poster:"order_by",
@@ -2083,7 +2082,6 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	maps_min_order_by:{
 		id:"order_by",
-		label:"order_by",
 		name:"order_by",
 		patch:"order_by",
 		poster:"order_by",
@@ -2101,8 +2099,8 @@ export const AllTypesProps: Record<string,any> = {
 	maps_order_by:{
 		active_pool:"order_by",
 		e_match_type:"e_match_types_order_by",
+		enabled:"order_by",
 		id:"order_by",
-		label:"order_by",
 		match_maps_aggregate:"match_maps_aggregate_order_by",
 		match_veto_picks_aggregate:"match_map_veto_picks_aggregate_order_by",
 		name:"order_by",
@@ -13203,8 +13201,8 @@ export const ReturnTypes: Record<string,any> = {
 	maps:{
 		active_pool:"Boolean",
 		e_match_type:"e_match_types",
+		enabled:"Boolean",
 		id:"uuid",
-		label:"String",
 		match_maps:"match_maps",
 		match_maps_aggregate:"match_maps_aggregate",
 		match_veto_picks:"match_map_veto_picks",
@@ -13226,7 +13224,6 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	maps_max_fields:{
 		id:"uuid",
-		label:"String",
 		name:"String",
 		patch:"String",
 		poster:"String",
@@ -13234,7 +13231,6 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	maps_min_fields:{
 		id:"uuid",
-		label:"String",
 		name:"String",
 		patch:"String",
 		poster:"String",
