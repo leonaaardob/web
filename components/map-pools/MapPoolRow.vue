@@ -20,7 +20,7 @@ import { Pencil } from "lucide-vue-next";
           :checked="map.active_pool"
           @update:checked="toggleActivePool(map)"
         />
-        <span>Active Duty</span>
+        <span>{{ $t("pages.map_pools.active_duty") }}</span>
       </div>
     </td>
     <td class="px-4 py-2 text-sm">

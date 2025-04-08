@@ -239,7 +239,13 @@
         "title": "{type} Map Pool",
         "description": "Manage maps in the {type} pool",
         "modify_maps": "Modify maps in the pool"
-      }
+      },
+      "add_new_map": "Add New Map",
+      "edit": "Edit",
+      "maps": "Maps",
+      "active_duty": "Active Duty",
+      "available_modes": "Available Modes",
+      "workshop_id": "Workshop ID"
     },
     "map_pool": {
       "toggle_pool_type": "Map {map} has been {type} for {type}",

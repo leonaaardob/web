@@ -24,7 +24,9 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
     </PageHeading>
 
     <div class="flex justify-end mb-4">
-      <Button @click="mapFormSheet = true">Add New Map</Button>
+      <Button @click="mapFormSheet = true">
+        {{ $t("pages.map_pools.add_new_map") }}
+      </Button>
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -39,23 +41,29 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
           :to="{ name: 'map-pools-id', params: { id: pool.id } }"
           class="absolute top-4 right-4 text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded shadow"
         >
-          Edit
+          {{ $t("pages.map_pools.edit") }}
         </NuxtLink>
       </div>
     </div>
 
     <Separator />
 
-    <h2 class="text-2xl font-bold">Maps</h2>
+      <h2 class="text-2xl font-bold">
+        {{ $t("pages.map_pools.maps") }}
+      </h2>
     <table class="min-w-full bg-background rounded-lg shadow-md">
       <thead>
         <tr>
           <th class="px-4 py-2 text-left text-sm font-medium"></th>
-          <th class="px-4 py-2 text-left text-sm font-medium">Active Duty</th>
           <th class="px-4 py-2 text-left text-sm font-medium">
-            Available Modes
+            {{ $t("pages.map_pools.active_duty") }}
           </th>
-          <th class="px-4 py-2 text-left text-sm font-medium">Workshop ID</th>
+          <th class="px-4 py-2 text-left text-sm font-medium">
+            {{ $t("pages.map_pools.available_modes") }}
+          </th>
+          <th class="px-4 py-2 text-left text-sm font-medium">
+            {{ $t("pages.map_pools.workshop_id") }}
+          </th>
           <th class="px-4 py-2 text-left text-sm font-medium"></th>
         </tr>
       </thead>
