@@ -966,5 +966,8 @@
         "map_pools": {
             "view_on_steam": "在Steam上查看"
         }
+    },
+    "map_pools": {
+        "edit_map": "编辑地图"
     }
 }

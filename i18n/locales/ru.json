@@ -260,7 +260,7 @@
         },
         "components": {
             "map_pools": {
-                "view_on_steam": "Смотреть в Steam"
+                "view_on_steam": "Просмотреть в Steam"
             }
         }
     },
@@ -964,7 +964,7 @@
     },
     "components": {
         "map_pools": {
-            "view_on_steam": "Смотреть в Steam"
+            "view_on_steam": "Просмотреть в Steam"
         }
     }
 }

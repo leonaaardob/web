@@ -260,7 +260,7 @@
         },
         "components": {
             "map_pools": {
-                "view_on_steam": "Auf Steam ansehen"
+                "view_on_steam": "Auf Steam anzeigen"
             }
         }
     },
@@ -964,7 +964,10 @@
     },
     "components": {
         "map_pools": {
-            "view_on_steam": "Auf Steam ansehen"
+            "view_on_steam": "Auf Steam anzeigen"
         }
+    },
+    "map_pools": {
+        "edit_map": "Karte bearbeiten"
     }
 }

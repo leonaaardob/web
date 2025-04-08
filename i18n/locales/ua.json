@@ -241,14 +241,14 @@
                 },
                 "name": "Назва"
             },
-            "edit_map": "Редагування карти",
+            "edit_map": "Редагувати карту",
             "toggle_pool_type": "Карта {map} {type} для {type}",
             "toggle_active_pool": "Карта {map} {type} для активних обов'язків",
             "add_new_map": "Додати нову карту",
             "pool": {
                 "title": "{type} Карта Басейн",
                 "description": "Керування картами в басейні {type}",
-                "modify_maps": "Модифікувати карти в басейні"
+                "modify_maps": "Модифікувати картини в басейні"
             },
             "save_success": "Карта басейну успішно збережено",
             "title": "Пул Карт"
@@ -260,7 +260,7 @@
         },
         "components": {
             "map_pools": {
-                "view_on_steam": "Переглянути на Steam"
+                "view_on_steam": "Переглянути в Steam"
             }
         }
     },
@@ -964,7 +964,7 @@
     },
     "components": {
         "map_pools": {
-            "view_on_steam": "Переглянути на Steam"
+            "view_on_steam": "Переглянути в Steam"
         }
     }
 }

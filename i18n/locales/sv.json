@@ -241,7 +241,7 @@
                 },
                 "name": "Namn"
             },
-            "edit_map": "Edit Map",
+            "edit_map": "Redigera karta",
             "toggle_pool_type": "Karta {map} har varit {typ} för {typ}",
             "toggle_active_pool": "Karta {map} har varit {typ} för aktiv plikt",
             "add_new_map": "Lägg till ny karta",
@@ -260,7 +260,7 @@
         },
         "components": {
             "map_pools": {
-                "view_on_steam": "Utsikt över Steam"
+                "view_on_steam": "Visa på Steam"
             }
         }
     },
@@ -964,7 +964,7 @@
     },
     "components": {
         "map_pools": {
-            "view_on_steam": "Utsikt över Steam"
+            "view_on_steam": "Visa på Steam"
         }
     }
 }

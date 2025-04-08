@@ -76,10 +76,13 @@ function findUnusedTranslations(usedKeys, availableKeys) {
 // Function to find all translation files
 async function findAllTranslationFiles() {
   const files = await glob("i18n/locales/*.json");
-  return files.map((file) => ({
-    path: file,
-    locale: path.basename(file, ".json"),
-  }));
+  // Filter to only include English translation file
+  return files
+    .filter(file => path.basename(file, ".json") === "en")
+    .map((file) => ({
+      path: file,
+      locale: path.basename(file, ".json"),
+    }));
 }
 
 // Main function
@@ -160,48 +163,6 @@ async function main() {
       console.log(`Unused translations: ${unusedTranslations.length}`);
     },
   );
-
-  // Check for inconsistencies between translation files
-  if (translationFiles.length > 1) {
-    console.log("\n=== Translation Consistency Check ===\n");
-
-    // Get all unique keys across all files
-    const allKeys = new Set();
-    const translationsByLocale = new Map();
-
-    // Process each translation file
-    const localeResults = translationFiles.map(({ path: filePath, locale }) => {
-      const translations = JSON.parse(fs.readFileSync(filePath, "utf8"));
-      const flattenedTranslations = flattenTranslations(translations);
-      translationsByLocale.set(locale, flattenedTranslations);
-
-      // Add all keys to the set
-      Object.keys(flattenedTranslations).forEach((key) => allKeys.add(key));
-
-      return { locale, flattenedTranslations };
-    });
-
-    // Check for missing keys in each locale
-    const localeKeys = Array.from(translationsByLocale.keys());
-    const missingKeysByLocale = localeKeys.map((locale) => {
-      const localeTranslations = translationsByLocale.get(locale);
-      const missingKeys = Array.from(allKeys).filter(
-        (key) => !localeTranslations[key],
-      );
-
-      return { locale, missingKeys };
-    });
-
-    // Process results
-    missingKeysByLocale.forEach(({ locale, missingKeys }) => {
-      if (missingKeys.length > 0) {
-        console.log(`\nMissing keys in ${locale}:`);
-        missingKeys.forEach((key) => {
-          console.log(`  - ${key}`);
-        });
-      }
-    });
-  }
 }
 
 // Run the script

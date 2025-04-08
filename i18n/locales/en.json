@@ -208,13 +208,7 @@
     "map_pools": {
       "title": "Map Pools",
       "description": "Manage map pools and available maps for matchmaking.",
-      "table": {
-        "pool_name": "Pool Name",
-        "maps": "Maps",
-        "active_duty": "Active Duty",
-        "available_modes": "Available Modes",
-        "workshop_id": "Workshop ID"
-      },
+      "table": {},
       "form": {
         "name": "Name",
         "poster": "Poster (optional)",
@@ -222,7 +216,6 @@
         "patch": "Patch (optional)",
         "patch_placeholder": "http://example.com/patch.png",
         "workshop_map_id": "Workshop Map ID (optional)",
-        "view_on_steam": "View on Steam",
         "create_map": "Create Map",
         "update_map": "Update Map",
         "delete_map": "Delete Map",
@@ -242,16 +235,11 @@
           "update": "Error updating map"
         }
       },
-      "edit_map": "Edit Map",
-      "toggle_pool_type": "Map {map} has been {type} for {type}",
-      "toggle_active_pool": "Map {map} has been {type} for active duty",
-      "add_new_map": "Add New Map",
       "pool": {
         "title": "{type} Map Pool",
         "description": "Manage maps in the {type} pool",
         "modify_maps": "Modify maps in the pool"
-      },
-      "save_success": "Map pool saved successfully"
+      }
     },
     "map_pool": {
       "toggle_pool_type": "Map {map} has been {type} for {type}",
@@ -259,9 +247,7 @@
       "save_success": "Map pool saved successfully"
     },
     "components": {
-      "map_pools": {
-        "view_on_steam": "View on Steam"
-      }
+      "map_pools": {}
     }
   },
   "layouts": {
@@ -966,5 +952,8 @@
     "map_pools": {
       "view_on_steam": "View on Steam"
     }
+  },
+  "map_pools": {
+    "edit_map": "Edit Map"
   }
 }

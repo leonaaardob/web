@@ -241,7 +241,7 @@
                 "maps": "マップ",
                 "active_duty": "アクティブデューティ"
             },
-            "edit_map": "編集マップ",
+            "edit_map": "マップを編集",
             "toggle_pool_type": "{type} の {type} は {type} の {type} です",
             "toggle_active_pool": "アクティブデューティの {map} が {type} になりました",
             "add_new_map": "新規マップの追加",
@@ -260,7 +260,7 @@
         },
         "components": {
             "map_pools": {
-                "view_on_steam": "Steamで見る"
+                "view_on_steam": "Steamで表示"
             }
         }
     },
@@ -964,7 +964,7 @@
     },
     "components": {
         "map_pools": {
-            "view_on_steam": "Steamで見る"
+            "view_on_steam": "Steamで表示"
         }
     }
 }
