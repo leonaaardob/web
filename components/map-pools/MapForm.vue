@@ -187,36 +187,35 @@ export default {
           });
 
           this.$emit("updated");
-        } else {
-          await this.$apollo.mutate({
-            mutation: generateMutation({
-              insert_maps: [
-                {
-                  objects: [
-                    {
-                      name: values.name,
-                      workshop_map_id: values.workshop_map_id,
-                      poster: values.poster,
-                      patch: values.patch,
-                      type: e_match_types_enum.Competitive,
-                      enabled: false,
-                      active_pool: false,
-                    },
-                  ],
-                },
-                {
-                  affected_rows: true,
-                },
-              ],
-            }),
-          });
-
-          toast({
-            title: this.$t("pages.map_pools.form.success.create"),
-          });
-
-          this.$emit("created");
+          return;
         }
+
+        await this.$apollo.mutate({
+          mutation: generateMutation({
+            insert_maps: [
+              {
+                objects: [
+                  {
+                    name: values.name,
+                    workshop_map_id: values.workshop_map_id,
+                    poster: values.poster,
+                    patch: values.patch,
+                    type: e_match_types_enum.Competitive,
+                    enabled: false,
+                    active_pool: false,
+                  },
+                ],
+              },
+              {
+                affected_rows: true,
+              },
+            ],
+          }),
+        });
+
+        toast({
+          title: this.$t("pages.map_pools.form.success.create"),
+        });
       } catch (error) {
         toast({
           title: this.map

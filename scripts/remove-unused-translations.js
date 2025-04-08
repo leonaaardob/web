@@ -63,60 +63,60 @@ async function findAllTranslationKeys() {
 
 // Function to remove a key from a nested object
 function removeKeyFromObject(obj, keyPath) {
-  const keys = keyPath.split('.');
+  const keys = keyPath.split(".");
   let current = obj;
-  
+
   // Navigate to the parent of the key to remove
   for (let i = 0; i < keys.length - 1; i++) {
     if (!current[keys[i]]) return obj;
     current = current[keys[i]];
   }
-  
+
   // Remove the key
   const lastKey = keys[keys.length - 1];
   if (current[lastKey] !== undefined) {
     delete current[lastKey];
   }
-  
+
   return obj;
 }
 
 // Main function
 async function main() {
   // Path to the English translation file
-  const enFilePath = path.resolve(__dirname, '../i18n/locales/en.json');
-  
+  const enFilePath = path.resolve(__dirname, "../i18n/locales/en.json");
+
   // Read the English translation file
-  const enTranslations = JSON.parse(fs.readFileSync(enFilePath, 'utf8'));
-  
+  const enTranslations = JSON.parse(fs.readFileSync(enFilePath, "utf8"));
+
   // Find all translation keys used in the project
   const { keys: usedKeys } = await findAllTranslationKeys();
-  
+
   // Flatten the English translations
   const flattenedEnTranslations = flattenTranslations(enTranslations);
-  
+
   // Find unused translations
   const unusedTranslations = Object.keys(flattenedEnTranslations).filter(
-    key => !usedKeys.includes(key)
+    (key) => !usedKeys.includes(key),
   );
-  
+
   console.log(`Found ${unusedTranslations.length} unused translations.`);
-  
+
   // Remove unused translations
   let updatedTranslations = { ...enTranslations };
-  unusedTranslations.forEach(key => {
+  unusedTranslations.forEach((key) => {
     updatedTranslations = removeKeyFromObject(updatedTranslations, key);
   });
-  
+
   // Write the updated translations back to the file
   fs.writeFileSync(
     enFilePath,
     JSON.stringify(updatedTranslations, null, 2),
-    'utf8'
+    "utf8",
   );
-  
-  console.log('Unused translations have been removed from en.json');
+
+  console.log("Unused translations have been removed from en.json");
 }
 
 // Run the script
-main().catch(console.error); 
+main().catch(console.error);
