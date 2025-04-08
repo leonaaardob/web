@@ -18,7 +18,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
               v-if="compact"
             />
           </TooltipTrigger>
-          <TooltipContent>Expand</TooltipContent>
+          <TooltipContent>{{ $t("ui.tooltips.expand") }}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
@@ -30,7 +30,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
               class="cursor-pointer h-5 w-5 text-muted-foreground hover:text-foreground transition-colors"
             />
           </TooltipTrigger>
-          <TooltipContent>Toggle Fullscreen</TooltipContent>
+          <TooltipContent>{{ $t("ui.tooltips.fullscreen") }}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
@@ -41,7 +41,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
           @click="_followLogs = !_followLogs"
         >
         </Switch>
-        Follow Logs
+        {{ $t("ui.logs.follow") }}
       </div>
 
       <div class="flex items-center gap-2" v-if="timestamps === undefined">
@@ -51,7 +51,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
           @click="_timestamps = !_timestamps"
         >
         </Switch>
-        Timestamps
+        {{ $t("ui.logs.timestamps") }}
       </div>
 
       <TooltipProvider>
@@ -62,7 +62,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
               class="cursor-pointer h-5 w-5 text-muted-foreground hover:text-foreground transition-colors"
             />
           </TooltipTrigger>
-          <TooltipContent>Download Logs</TooltipContent>
+          <TooltipContent>{{ $t("ui.tooltips.download") }}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </CardHeader>
@@ -82,9 +82,9 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
           <div class="text-xs font-mono text-foreground/80 py-1 flex gap-4">
             <div class="flex flex-col justify-end">
               <div class="flex gap-2" v-if="log && log.trim() !== ''">
-                <span class="text-muted-foreground" v-if="nodes.size > 1"
-                  >[{{ node }}|{{ container }}]</span
-                >
+                <span class="text-muted-foreground" v-if="nodes.size > 1">{{
+                  $t("ui.logs.container", { node, container })
+                }}</span>
                 <span
                   class="text-blue-100"
                   v-if="(timestamps === undefined && _timestamps) || timestamps"

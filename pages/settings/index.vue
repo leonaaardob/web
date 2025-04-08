@@ -8,15 +8,19 @@ definePageMeta({
 
 <template>
   <div>
-    <h3 class="text-lg font-medium">Profile</h3>
-    <p class="text-sm text-muted-foreground">Your Profile Details</p>
+    <h3 class="text-lg font-medium">
+      {{ $t("pages.settings.profile.title") }}
+    </h3>
+    <p class="text-sm text-muted-foreground">
+      {{ $t("pages.settings.profile.description") }}
+    </p>
   </div>
   <Separator />
 
   <form @submit.prevent="updateMe" class="grid gap-4">
     <FormField v-slot="{ componentField }" name="steam_id">
       <FormItem>
-        <FormLabel>Steam ID</FormLabel>
+        <FormLabel>{{ $t("pages.settings.profile.steam_id") }}</FormLabel>
         <FormControl>
           <Input v-bind="componentField" readonly disabled />
         </FormControl>
@@ -26,7 +30,7 @@ definePageMeta({
     <FormField v-slot="{ componentField }" name="name">
       <FormItem>
         <FormLabel class="flex items-center gap-2">
-          Name
+          {{ $t("pages.settings.profile.name") }}
           <PlayerChangeName :player="me" />
         </FormLabel>
         <FormControl>
@@ -38,7 +42,7 @@ definePageMeta({
 
     <FormField v-slot="{ componentField }" name="avatar_url">
       <FormItem>
-        <FormLabel>Avatar URL</FormLabel>
+        <FormLabel>{{ $t("pages.settings.profile.avatar_url") }}</FormLabel>
         <FormControl>
           <Input v-bind="componentField" />
           <FormMessage />
@@ -48,7 +52,7 @@ definePageMeta({
 
     <FormField v-slot="{ componentField }" name="country">
       <FormItem>
-        <FormLabel>Country </FormLabel>
+        <FormLabel>{{ $t("pages.settings.profile.country") }}</FormLabel>
 
         <Popover v-model:open="open">
           <PopoverTrigger as-child>
@@ -65,7 +69,7 @@ definePageMeta({
                 {{
                   form.values.country
                     ? countries[form.values.country]?.name
-                    : "Select country..."
+                    : $t("pages.settings.profile.select_country")
                 }}
               </div>
               <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -73,8 +77,12 @@ definePageMeta({
           </PopoverTrigger>
           <PopoverContent class="w-full p-0">
             <Command class="w-[300px]">
-              <CommandInput placeholder="Search country..." />
-              <CommandEmpty>No country found.</CommandEmpty>
+              <CommandInput
+                :placeholder="$t('pages.settings.profile.search_country')"
+              />
+              <CommandEmpty>{{
+                $t("pages.settings.profile.no_country_found")
+              }}</CommandEmpty>
               <CommandList>
                 <CommandGroup>
                   <CommandItem
@@ -112,7 +120,7 @@ definePageMeta({
 
     <div class="flex justify-start">
       <Button type="submit" :disabled="Object.keys(form.errors).length > 0">
-        Update
+        {{ $t("pages.settings.profile.update") }}
       </Button>
     </div>
   </form>

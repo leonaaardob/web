@@ -20,7 +20,7 @@ import PlayerDisplay from "~/components/PlayerDisplay.vue";
     <PopoverContent class="p-0">
       <Command @update:searchTerm="(term) => searchPlayers(term)">
         <div class="flex items-center justify-between px-3 py-2">
-          <CommandInput placeholder="Search players..." class="flex-1" />
+          <CommandInput :placeholder="$t('player.search.placeholder')" class="flex-1" />
           <div class="flex items-center gap-2 ml-4">
             <Switch
               class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
@@ -28,13 +28,13 @@ import PlayerDisplay from "~/components/PlayerDisplay.vue";
               @click="onlineOnly = !onlineOnly"
             >
             </Switch>
-            Online
+            {{ $t("player.search.online_only") }}
           </div>
         </div>
-        <CommandEmpty>No Players Found.</CommandEmpty>
+        <CommandEmpty>{{ $t("player.search.no_players_found") }}</CommandEmpty>
         <CommandList>
           <CommandGroup
-            :heading="`Found ${players?.length || 0} Player${players?.length === 1 ? '' : 's'}`"
+            :heading="$t('player.search.found_players', { count: players?.length || 0 })"
           >
             <CommandItem
               :value="me"

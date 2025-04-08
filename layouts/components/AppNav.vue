@@ -11,8 +11,11 @@ import {
   Server,
   Calendar,
   BookUser,
+  Languages,
+  Play,
+  ShieldHalf,
+  Globe,
 } from "lucide-vue-next";
-import { Play, ShieldHalf, Globe } from "lucide-vue-next";
 import TournamentBracket from "~/components/icons/tournament-bracket.vue";
 import SystemUpdate from "./SystemUpdate.vue";
 import BreadCrumbs from "~/components/BreadCrumbs.vue";
@@ -28,6 +31,20 @@ import InstallPWA from "~/components/InstallPWA.vue";
 import MatchmakingLobby from "~/components/matchmaking-lobby/MatchmakingLobby.vue";
 import FriendsList from "~/components/matchmaking-lobby/FriendsList.vue";
 import ChatLobby from "~/components/chat/ChatLobby.vue";
+
+const { locale, locales, setLocale } = useI18n();
+
+const availableLocales = computed(() => {
+  return locales.value.filter((i) => i.code !== locale.value);
+});
+
+const currentLocale = computed(() => {
+  return locales.value.find((i) => i.code === locale.value);
+});
+
+const handleLocaleChange = (newLocale: string) => {
+  setLocale(newLocale as "en" | "sv");
+};
 </script>
 
 <template>
@@ -39,7 +56,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
             <SidebarMenuButton size="lg" as-child>
               <nuxt-link to="/">
                 <NuxtImg class="rounded max-w-8" src="/favicon/64.png" />
-                <span> 5Stack </span>
+                <span> {{ $t("layouts.app_nav.brand") }} </span>
               </nuxt-link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -48,8 +65,8 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem tooltip="Play">
-              <SidebarMenuButton as-child tooltip="Play">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.play')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.play')">
                 <NuxtLink
                   :to="{ name: 'play' }"
                   :class="{
@@ -58,13 +75,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Play />
-                  Play
+                  {{ $t("layouts.app_nav.navigation.play") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            <SidebarMenuItem tooltip="Matches">
-              <SidebarMenuButton as-child tooltip="Matches">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.matches')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.matches')">
                 <NuxtLink
                   :to="{ name: 'matches' }"
                   :class="{
@@ -72,13 +89,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Calendar />
-                  Matches
+                  {{ $t("layouts.app_nav.navigation.matches") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <SidebarMenuButton as-child tooltip="Tournaments">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.tournaments')">
                 <NuxtLink
                   :to="{ name: 'tournaments' }"
                   :class="{
@@ -86,14 +103,14 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <TournamentBracket />
-                  Tournaments
+                  {{ $t("layouts.app_nav.navigation.tournaments") }}
                   <Badge variant="destructive" class="ml-2">alpha</Badge>
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <SidebarMenuButton as-child tooltip="Players">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.players')">
                 <NuxtLink
                   :to="{ name: 'players' }"
                   :class="{
@@ -101,14 +118,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Users />
-
-                  Players
+                  {{ $t("layouts.app_nav.navigation.players") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <SidebarMenuButton as-child tooltip="Teams">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.teams')">
                 <NuxtLink
                   :to="{ name: 'teams' }"
                   :class="{
@@ -116,7 +132,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <ShieldHalf />
-                  Teams
+                  {{ $t("layouts.app_nav.navigation.teams") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -124,11 +140,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
         </SidebarGroup>
 
         <SidebarGroup v-if="me?.role === e_player_roles_enum.administrator">
-          <SidebarGroupLabel>Administration</SidebarGroupLabel>
+          <SidebarGroupLabel>{{
+            $t("layouts.app_nav.administration.title")
+          }}</SidebarGroupLabel>
 
           <SidebarMenu>
-            <SidebarMenuItem tooltip="Regions">
-              <SidebarMenuButton as-child tooltip="Regions">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.regions')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.regions')">
                 <NuxtLink
                   :to="{ name: 'regions' }"
                   :class="{
@@ -136,7 +154,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Globe />
-                  Regions
+                  {{ $t("layouts.app_nav.administration.regions") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -149,9 +167,11 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger as-child>
-                  <SidebarMenuButton tooltip="Servers">
+                  <SidebarMenuButton :tooltip="$t('layouts.app_nav.tooltips.servers')">
                     <Server />
-                    <span>Servers</span>
+                    <span>{{
+                      $t("layouts.app_nav.administration.servers")
+                    }}</span>
                     <ChevronRight
                       class="ml-auto transition-transform duration-200"
                       :class="{
@@ -165,7 +185,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton
                         as-child
-                        tooltip="Dedicated Servers"
+                        :tooltip="$t('layouts.app_nav.tooltips.dedicated_servers')"
                       >
                         <NuxtLink
                           :to="{ name: 'dedicated-servers' }"
@@ -174,7 +194,11 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                               isRouteActive('dedicated-servers'),
                           }"
                         >
-                          Dedicated Servers
+                          {{
+                            $t(
+                              "layouts.app_nav.administration.dedicated_servers",
+                            )
+                          }}
                         </NuxtLink>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -182,7 +206,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton
                         as-child
-                        tooltip="Game Server Nodes"
+                        :tooltip="$t('layouts.app_nav.tooltips.game_server_nodes')"
                       >
                         <NuxtLink
                           :to="{ name: 'game-server-nodes' }"
@@ -191,7 +215,11 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                               isRouteActive('game-server-nodes'),
                           }"
                         >
-                          Game Server Nodes
+                          {{
+                            $t(
+                              "layouts.app_nav.administration.game_server_nodes",
+                            )
+                          }}
                         </NuxtLink>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -224,7 +252,9 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                       as-child
                     >
                       <NuxtLink :to="{ name: 'dedicated-servers' }">
-                        Dedicated Servers
+                        {{
+                          $t("layouts.app_nav.administration.dedicated_servers")
+                        }}
                       </NuxtLink>
                     </DropdownMenuItem>
 
@@ -233,7 +263,9 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                       as-child
                     >
                       <NuxtLink :to="{ name: 'game-server-nodes' }">
-                        Game Server Nodes
+                        {{
+                          $t("layouts.app_nav.administration.game_server_nodes")
+                        }}
                       </NuxtLink>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
@@ -241,8 +273,8 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
               </DropdownMenu>
             </SidebarMenuItem>
 
-            <SidebarMenuItem tooltip="System Logs">
-              <SidebarMenuButton as-child tooltip="System Logs">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.system_logs')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.system_logs')">
                 <NuxtLink
                   :to="{ name: 'system-logs' }"
                   :class="{
@@ -250,13 +282,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Logs />
-                  Logs
+                  {{ $t("layouts.app_nav.administration.logs") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            <SidebarMenuItem tooltip="System Metrics">
-              <SidebarMenuButton as-child tooltip="System Metrics">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.system_metrics')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.system_metrics')">
                 <NuxtLink
                   :to="{ name: 'system-metrics' }"
                   :class="{
@@ -264,13 +296,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <LineChart />
-                  Metrics
+                  {{ $t("layouts.app_nav.administration.metrics") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            <SidebarMenuItem tooltip="App Settings">
-              <SidebarMenuButton as-child tooltip="App Settings">
+            <SidebarMenuItem :tooltip="$t('layouts.app_nav.tooltips.app_settings')">
+              <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.app_settings')">
                 <NuxtLink
                   :to="{ name: 'settings-application' }"
                   :class="{
@@ -278,7 +310,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                   }"
                 >
                   <Cog />
-                  App Settings
+                  {{ $t("layouts.app_nav.administration.app_settings") }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -290,7 +322,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
           <SidebarMenuItem
             v-if="me?.role === e_player_roles_enum.administrator"
           >
-            <SidebarMenuButton as-child tooltip="Report an Issue">
+            <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.report_issue')">
               <a
                 href="https://github.com/5stackgg/5stack-panel/issues"
                 target="_blank"
@@ -298,13 +330,13 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 class="text-muted-foreground transition-colors hover:text-foreground"
               >
                 <GithubLogoIcon class="w-5 h-5" />
-                Report an Issue
+                {{ $t("layouts.app_nav.footer.report_issue") }}
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
-            <SidebarMenuButton as-child tooltip="Join our Discord">
+            <SidebarMenuButton as-child :tooltip="$t('layouts.app_nav.tooltips.join_discord')">
               <a
                 :href="inviteLink"
                 target="_blank"
@@ -312,7 +344,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 class="text-muted-foreground transition-colors hover:text-foreground"
               >
                 <DiscordLogoIcon class="w-5 h-5" />
-                Join our Discord
+                {{ $t("layouts.app_nav.footer.join_discord") }}
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -350,6 +382,38 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 :side-offset="4"
               >
                 <DropdownMenuGroup>
+                  <DropdownMenuItem class="flex gap-2 cursor-pointer" as-child>
+                    <Select
+                      v-model="locale"
+                      @update:modelValue="handleLocaleChange"
+                    >
+                      <SelectTrigger>
+                        <Languages class="size-4" />
+                        <SelectValue
+                          >{{ currentLocale?.flag }}
+                          {{ currentLocale?.name }} ({{
+                            currentLocale?.code
+                          }})</SelectValue
+                        >
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem
+                            v-for="loc in availableLocales"
+                            :key="loc.code"
+                            :value="loc.code"
+                          >
+                            {{ loc.flag }} {{ loc.name }} ({{ loc.code }})
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuGroup>
                   <DropdownMenuLabel class="font-normal">
                     <PlayerDisplay :player="me" :show-online="false" />
                   </DropdownMenuLabel>
@@ -366,18 +430,19 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                       }"
                     >
                       <BadgeCheck class="size-4" />
-                      My Account
+                      {{ $t("layouts.app_nav.profile.my_account") }}
                     </NuxtLink>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
+
                 <DropdownMenuItem
                   class="flex gap-2"
                   @click="showLogoutModal = true"
                 >
                   <LogOut class="size-4" />
-                  Log out
+                  {{ $t("layouts.app_nav.profile.logout") }}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -555,15 +620,20 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
   >
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogTitle>{{
+          $t("layouts.app_nav.logout_dialog.title")
+        }}</AlertDialogTitle>
         <AlertDialogDescription>
-          This will log you out of your account. You will need to log back in to
-          access your account again.
+          {{ $t("layouts.app_nav.logout_dialog.description") }}
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction @click="logout">Log out</AlertDialogAction>
+        <AlertDialogCancel>{{
+          $t("layouts.app_nav.logout_dialog.cancel")
+        }}</AlertDialogCancel>
+        <AlertDialogAction @click="logout">{{
+          $t("layouts.app_nav.logout_dialog.confirm")
+        }}</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>

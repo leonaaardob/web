@@ -96,7 +96,9 @@ export default {
       });
 
       toast({
-        title: `Lobby access set to ${access}`,
+        title: this.$t("matchmaking.lobby.access_updated", {
+          access,
+        }),
       });
 
       this.popoverOpen = false;

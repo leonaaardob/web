@@ -25,7 +25,7 @@ import { useForm } from "vee-validate";
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline">
-        Sanction Player
+        {{ $t("player.sanction.button") }}
         <ChevronDownIcon class="ml-2 h-4 w-4 text-muted-foreground" />
       </Button>
     </PopoverTrigger>
@@ -92,7 +92,7 @@ import { useForm } from "vee-validate";
               ></Input>
             </FormControl>
             <FormDescription>
-              Please provide a clear reason for this sanction
+              {{ $t("player.sanction.reason_description") }}
             </FormDescription>
             <FormMessage />
           </FormItem>

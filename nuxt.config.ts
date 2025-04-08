@@ -75,19 +75,33 @@ export default defineNuxtConfig({
 
   i18n: {
     strategy: "no_prefix",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+      fallbackLocale: "en",
+    },
     locales: [
+      { code: "en", name: "English", file: "en.json", flag: "🇬🇧" },
+      { code: "sv", name: "Svenska", file: "sv.json", flag: "🇸🇪" }, // Swedish
+      { code: "ua", name: "Українська", file: "ua.json", flag: "🇺🇦" }, // Ukrainian
+      { code: "ko", name: "한국어", file: "ko.json", flag: "🇰🇷" }, // Korean
+      { code: "ja", name: "日本語", file: "ja.json", flag: "🇯🇵" }, // Japanese
+      { code: "de", name: "Deutsch", file: "de.json", flag: "🇩🇪" }, // German
+      { code: "fr", name: "Français", file: "fr.json", flag: "🇫🇷" }, // French
+      { code: "it", name: "Italiano", file: "it.json", flag: "🇮🇹" }, // Italian
+      { code: "es", name: "Español", file: "es.json", flag: "🇪🇸" }, // Spanish
+      { code: "da", name: "Dansk", file: "da.json", flag: "🇩🇰" }, // Danish
+      { code: "pl", name: "Polski", file: "pl.json", flag: "🇵🇱" }, // Polish
+      { code: "ru", name: "Русский", file: "ru.json", flag: "🇷🇺" }, // Russian
+      { code: "lv", name: "Latviešu", file: "lv.json", flag: "🇱🇻" }, // Latvian
       {
-        code: "en",
-        file: "./i18n.ts",
+        code: "pt-BR",
+        name: "Português Brasileiro",
+        file: "pt-BR.json",
+        flag: "🇧🇷",
       },
-      {
-        code: "es",
-        file: "./i18n.ts",
-      },
-      {
-        code: "fr",
-        file: "./i18n.ts",
-      },
+      { code: "zh", name: "中文", file: "zh.json", flag: "🇨🇳" },
     ],
     lazy: true,
     defaultLocale: "en",
