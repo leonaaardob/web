@@ -961,5 +961,8 @@
   },
   "map_pools": {
     "edit_map": "Edit Map"
+  },
+  "validation": {
+    "map_pool_required": "Map pool is required"
   }
 }

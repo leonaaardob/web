@@ -2,7 +2,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { e_match_types_enum, e_timeout_settings_enum } from "~/generated/zeus";
 
-export default function matchOptionsValidator(additional: any) {
+export default function matchOptionsValidator(component: any, additional: any) {
   return toTypedSchema(
     z.object({
       mr: z.string().default("12"),
@@ -21,7 +21,22 @@ export default function matchOptionsValidator(additional: any) {
         .default(e_timeout_settings_enum.CoachAndPlayers),
       tech_timeout_setting: z.string().default(e_timeout_settings_enum.Admin),
       map_pool_id: z.string().nullable(),
-      map_pool: z.string().array().default([]),
+      map_pool: z
+        .string()
+        .array()
+        .default([])
+        .refine(
+          (data) => {
+            if (component.form.values.custom_map_pool) {
+              return data.length > 0;
+            }
+            return !!component.form.values.map_pool_id;
+          },
+          {
+            message: component.$t("validation.map_pool_required"),
+            path: ["map_pool"],
+          },
+        ),
       custom_map_pool: z.boolean().default(false),
       ...additional,
     }),

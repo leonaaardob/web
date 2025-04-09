@@ -48,9 +48,9 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
 
     <Separator />
 
-      <h2 class="text-2xl font-bold">
-        {{ $t("pages.map_pools.maps") }}
-      </h2>
+    <h2 class="text-2xl font-bold">
+      {{ $t("pages.map_pools.maps") }}
+    </h2>
     <table class="min-w-full bg-background rounded-lg shadow-md">
       <thead>
         <tr>
