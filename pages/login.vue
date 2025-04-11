@@ -43,7 +43,7 @@ definePageMeta({
 
 <script lang="ts">
 import { useAuthStore } from "~/stores/AuthStore";
-import { GithubLogoIcon } from "@radix-icons/vue";
+// import { GithubLogoIcon } from "@radix-icons/vue";
 
 export default {
   methods: {
