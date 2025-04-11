@@ -12,7 +12,7 @@ definePageMeta({
     />
     <Card class="w-full max-w-md">
       <CardHeader>
-        <CardTitle class="text-3xl font-bold text-center">5Stack</CardTitle>
+        <CardTitle class="text-3xl font-bold text-center">#5on5.fr</CardTitle>
         <CardDescription class="text-center">
           {{ $t("pages.login.sign_in") }}
         </CardDescription>
@@ -27,9 +27,9 @@ definePageMeta({
       </CardContent>
     </Card>
 
-    <div class="mt-8">
+    <!-- <div class="mt-8">
       <a
-        href="https://github.com/5stackgg/5stack-panel"
+        href="https://github.com/leonaaardob/5stack-panel"
         target="_blank"
         rel="noopener noreferrer"
         class="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -37,7 +37,7 @@ definePageMeta({
         {{ $t("pages.login.powered_by") }} 5stack.gg
         <GithubLogoIcon class="w-4 h-4" />
       </a>
-    </div>
+    </div> -->
   </div>
 </template>
 

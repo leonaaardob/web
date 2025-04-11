@@ -265,7 +265,7 @@
         "link": "Link Discord",
         "unlink_dialog": {
           "title": "Unlink Discord Account",
-          "description": "Are you sure you want to unlink your Discord account? This will remove the connection between your 5Stack and Discord accounts.",
+          "description": "Are you sure you want to unlink your Discord account? This will remove the connection between your #5on5.fr and Discord accounts.",
           "cancel": "Cancel",
           "confirm": "Unlink"
         },
@@ -295,7 +295,7 @@
       "no_notifications": "No notifications at the moment."
     },
     "app_nav": {
-      "brand": "5stack",
+      "brand": "#5on5.fr",
       "navigation": {
         "play": "Play",
         "matches": "Matches",

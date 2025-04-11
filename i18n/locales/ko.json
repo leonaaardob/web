@@ -696,7 +696,7 @@
             "no_notifications": "알림이 없습니다"
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "플레이",
                 "matches": "매치",
@@ -751,7 +751,7 @@
     "pwa": {
         "install": {
             "title": "앱 설치",
-            "description": "5Stack을 설치하여 더 나은 경험을",
+            "description": "#5on5.fr을 설치하여 더 나은 경험을",
             "step1": "1단계",
             "step2": "2단계",
             "tooltip": "설치 팁",

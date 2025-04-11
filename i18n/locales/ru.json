@@ -696,7 +696,7 @@
             "no_notifications": "Нет уведомлений"
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "Играть",
                 "matches": "Матчи",
@@ -751,7 +751,7 @@
     "pwa": {
         "install": {
             "title": "Установить приложение",
-            "description": "Установите 5Stack для лучшего опыта",
+            "description": "Установите #5on5.fr для лучшего опыта",
             "step1": "Шаг 1",
             "step2": "Шаг 2",
             "tooltip": "Подсказка по установке",

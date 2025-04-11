@@ -19,8 +19,8 @@ import { PlusCircle } from "lucide-vue-next";
 
       <template #description>
         {{ $t("pages.dedicated_servers.description") }}
-        <a href="https://github.com/5stackgg/game-server"
-          >https://github.com/5stackgg/game-server</a
+        <a href="https://github.com/leonaaardob/game-server"
+          >https://github.com/leonaaardob/game-server</a
         >.
       </template>
 

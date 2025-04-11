@@ -696,7 +696,7 @@
             "no_notifications": "Ingen notifikationer"
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "Spil",
                 "matches": "Kampe",
@@ -751,7 +751,7 @@
     "pwa": {
         "install": {
             "title": "Installer applikation",
-            "description": "Installer 5Stack for en bedre oplevelse",
+            "description": "Installer #5on5.fr for en bedre oplevelse",
             "step1": "Trin 1",
             "step2": "Trin 2",
             "tooltip": "Installationstip",

@@ -261,7 +261,7 @@
                 "link": "Koppla Discord",
                 "unlink_dialog": {
                     "title": "Koppla bort Discord-konto",
-                    "description": "Är du säker på att du vill koppla bort ditt Discord-konto? Detta kommer ta bort anslutningen mellan dina 5Stack- och Discord-konton.",
+                    "description": "Är du säker på att du vill koppla bort ditt Discord-konto? Detta kommer ta bort anslutningen mellan dina #5on5.fr- och Discord-konton.",
                     "cancel": "Avbryt",
                     "confirm": "Koppla bort"
                 },
@@ -291,7 +291,7 @@
             "no_notifications": "Inga aviseringar just nu."
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "Spela",
                 "matches": "Matcher",

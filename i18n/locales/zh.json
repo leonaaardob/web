@@ -696,7 +696,7 @@
             "no_notifications": "没有通知"
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "开始游戏",
                 "matches": "比赛",
@@ -751,7 +751,7 @@
     "pwa": {
         "install": {
             "title": "安装应用程序",
-            "description": "安装5Stack以获得更好的体验",
+            "description": "安装#5on5.fr以获得更好的体验",
             "step1": "步骤1",
             "step2": "步骤2",
             "tooltip": "安装提示",

@@ -378,7 +378,7 @@ const handleLocaleChange = (newLocale: string) => {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem
+          <!-- <SidebarMenuItem
             v-if="me?.role === e_player_roles_enum.administrator"
           >
             <SidebarMenuButton
@@ -386,7 +386,7 @@ const handleLocaleChange = (newLocale: string) => {
               :tooltip="$t('layouts.app_nav.tooltips.report_issue')"
             >
               <a
-                href="https://github.com/5stackgg/5stack-panel/issues"
+                href="https://github.com/leonaaardob/5stack-panel/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-muted-foreground transition-colors hover:text-foreground"
@@ -395,9 +395,9 @@ const handleLocaleChange = (newLocale: string) => {
                 {{ $t("layouts.app_nav.footer.report_issue") }}
               </a>
             </SidebarMenuButton>
-          </SidebarMenuItem>
+          </SidebarMenuItem> -->
 
-          <SidebarMenuItem>
+          <!-- <SidebarMenuItem>
             <SidebarMenuButton
               as-child
               :tooltip="$t('layouts.app_nav.tooltips.join_discord')"
@@ -412,7 +412,7 @@ const handleLocaleChange = (newLocale: string) => {
                 {{ $t("layouts.app_nav.footer.join_discord") }}
               </a>
             </SidebarMenuButton>
-          </SidebarMenuItem>
+          </SidebarMenuItem> -->
 
           <InstallPWA />
 

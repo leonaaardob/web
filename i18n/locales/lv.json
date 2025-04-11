@@ -696,7 +696,7 @@
             "no_notifications": "Nav paziņojumu"
         },
         "app_nav": {
-            "brand": "5stack",
+            "brand": "#5on5.fr",
             "navigation": {
                 "play": "Spēlēt",
                 "matches": "Spēles",
@@ -751,7 +751,7 @@
     "pwa": {
         "install": {
             "title": "Instalēt lietotni",
-            "description": "Instalējiet 5Stack labākai pieredzei",
+            "description": "Instalējiet #5on5.fr labākai pieredzei",
             "step1": "1. solis",
             "step2": "2. solis",
             "tooltip": "Instalācijas padoms",
