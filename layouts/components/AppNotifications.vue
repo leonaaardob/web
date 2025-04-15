@@ -287,6 +287,12 @@ export default {
         query: typedGql("subscription")({
           notifications: [
             {
+              order_by: [
+                {},
+                {
+                  created_at: order_by.desc,
+                },
+              ],
               where: {
                 _and: [
                   {
