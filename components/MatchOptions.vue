@@ -935,15 +935,17 @@ export default {
         return { official: [], workshop: [] };
       }
 
-      const maps = this.maps
-        .filter((map: Map) => {
-          if (
-            this.form.values.custom_map_pool === false &&
-            map.active_pool === false
-          ) {
-            return false;
-          }
+      const mapPoolId = this.form.values.map_pool_id;
+      const mapPool = this.map_pools?.find((pool: MapPool) => {
+        return pool.id === mapPoolId;
+      });
 
+      const availableMaps = this.form.values.custom_map_pool
+        ? this.maps
+        : mapPool.maps;
+
+      const maps = availableMaps
+        .filter((map: Map) => {
           switch (this.form.values.type) {
             case e_match_types_enum.Competitive:
               return map.type === e_match_types_enum.Competitive;
@@ -954,11 +956,6 @@ export default {
           }
         })
         .sort((a: Map, b: Map) => {
-          // First, sort active pool maps to the top
-          if (a.active_pool && !b.active_pool) return -1;
-          if (!a.active_pool && b.active_pool) return 1;
-
-          // Finally, sort by name
           return a.name.localeCompare(b.name);
         });
 
