@@ -24,7 +24,7 @@ import GameTypeConfigForm from "~/components/game-type-configs/GameTypeConfigFor
         <DropdownMenuContent class="w-56">
           <DropdownMenuItem @click="editGameConfigSheet = true">
             <Pencil class="mr-2 h-4 w-4" />
-            <span>{{ $t("map_pools.edit_map") }}</span>
+            <span>{{ $t("game_type_configs.form.edit") }}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -37,7 +37,7 @@ import GameTypeConfigForm from "~/components/game-type-configs/GameTypeConfigFor
   >
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>{{ $t("pages.dedicated_servers.detail.edit") }}</SheetTitle>
+        <SheetTitle>{{ $t("game_type_configs.form.update") }}</SheetTitle>
         <SheetDescription>
           <GameTypeConfigForm
             :game-type-config="gameConfig"

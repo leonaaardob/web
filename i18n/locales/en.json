@@ -982,6 +982,7 @@
       "cfg": "Config",
       "create": "Create Config",
       "update": "Update Config",
+      "edit": "Edit Config",
       "revert_to_defaults": "Revert to Defaults",
       "revert_confirm": {
         "title": "Revert to Defaults",
