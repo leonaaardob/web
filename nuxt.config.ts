@@ -75,6 +75,9 @@ export default defineNuxtConfig({
 
   i18n: {
     strategy: "no_prefix",
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
