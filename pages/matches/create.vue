@@ -6,8 +6,6 @@ import { Info } from "lucide-vue-next";
 </script>
 
 <template>
-  --{{ form.values.ready_setting }}--
-
   <div class="flex-grow flex flex-col gap-4">
     <PageHeading>
       <template #title>{{ $t("pages.matches.create_page.title") }}</template>

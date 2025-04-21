@@ -968,7 +968,7 @@ export default {
           display: this.$t(
             "match.options.advanced.ready_settings.options.admins",
           ),
-          value: e_ready_settings_enum.Admins,
+          value: e_ready_settings_enum.Admin,
         },
         {
           display: this.$t(
