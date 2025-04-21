@@ -26,16 +26,6 @@ import { FormControl, FormField, FormItem } from "~/components/ui/form";
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="is_lan">
-      <FormItem>
-        <FormLabel>{{ $t("region.form.use_lan") }}</FormLabel>
-        <FormControl>
-          <Switch v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <Button type="submit" :disabled="Object.keys(form.errors).length > 0">
       <template v-if="region">{{ $t("region.form.update") }}</template>
       <template v-else>{{ $t("region.form.create") }}</template>

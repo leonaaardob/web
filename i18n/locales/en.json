@@ -886,7 +886,6 @@
     "form": {
       "name": "Name",
       "description": "Description",
-      "use_lan": "Use LAN IP",
       "update": "Update Region",
       "create": "Create Region"
     }
