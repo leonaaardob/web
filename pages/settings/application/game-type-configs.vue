@@ -118,6 +118,7 @@ export default defineComponent<ComponentData>({
     async getBaseConfig() {
       this.baseConfig = await $fetch(`/api/get-default-config?type=base`);
       this.liveConfig = await $fetch(`/api/get-default-config?type=live`);
+      this.liveConfig = this.liveConfig.replace("exec 5stack.base.cfg", "");
     },
   },
 });
