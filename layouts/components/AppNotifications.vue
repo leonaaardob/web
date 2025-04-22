@@ -357,7 +357,7 @@ export default {
           ],
         }),
         result({ data }: { data: any }) {
-          this.notifications = [...data.notifications, ...data.notifications];
+          this.notifications = data.notifications;
         },
       },
     },
