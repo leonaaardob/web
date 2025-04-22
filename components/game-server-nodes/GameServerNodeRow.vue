@@ -17,7 +17,8 @@ import {
 import { Button } from "~/components/ui/button";
 import GameServerNodeDisplay from "~/components/game-server-nodes/GameServerNodeDisplay.vue";
 import { e_game_server_node_statuses_enum } from "~/generated/zeus";
-import { Trash2, RefreshCw } from "lucide-vue-next";
+import { Trash2, RefreshCw, Pencil } from "lucide-vue-next";
+import UpdateGameServerLabel from "~/components/game-server-nodes/UpdateGameServerLabel.vue";
 </script>
 
 <template>
@@ -53,7 +54,7 @@ import { Trash2, RefreshCw } from "lucide-vue-next";
     </TableCell>
     <TableCell>
       <Select
-        :model-value="form.region"
+        :model-value="regionForm.region"
         @update:model-value="(value) => updateRegion(value)"
       >
         <SelectTrigger>
@@ -121,6 +122,11 @@ import { Trash2, RefreshCw } from "lucide-vue-next";
             <DropdownMenuSeparator />
           </template>
 
+          <DropdownMenuItem @click="editLabelSheet = true">
+            <Pencil class="mr-2 h-4 w-4" />
+            <span>{{ $t("game_server.edit_label") }}</span>
+          </DropdownMenuItem>
+
           <DropdownMenuItem @click="removeGameNodeServer" class="text-red-500">
             <Trash2 class="mr-2 h-4 w-4" />
             <span>{{ $t("game_server.remove_node") }}</span>
@@ -129,6 +135,12 @@ import { Trash2, RefreshCw } from "lucide-vue-next";
       </DropdownMenu>
     </TableCell>
   </TableRow>
+
+  <UpdateGameServerLabel
+    :game-server-node="gameServerNode"
+    :open="editLabelSheet"
+    @close="editLabelSheet = false"
+  />
 </template>
 
 <script lang="ts">
@@ -137,11 +149,48 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { toast } from "@/components/ui/toast";
+import { defineComponent } from "vue";
 
-export default {
+interface ServerRegion {
+  value: string;
+  is_lan: boolean;
+  description: string;
+}
+
+interface GameServerNode {
+  id: string;
+  status: string;
+  region: string;
+  enabled: boolean;
+  build_id?: string;
+  lan_ip?: string;
+  public_ip?: string;
+  start_port_range: number;
+  end_port_range: number;
+  label?: string;
+  e_region?: {
+    description: string;
+  };
+  e_status?: {
+    description: string;
+  };
+  total_server_count: number;
+  available_server_count: number;
+}
+
+interface ComponentData {
+  regionForm: {
+    region: string | undefined;
+  };
+  editLabelSheet: boolean;
+  portForm: ReturnType<typeof useForm>;
+  server_regions: ServerRegion[];
+}
+
+export default defineComponent({
   props: {
     gameServerNode: {
-      type: Object,
+      type: Object as () => GameServerNode,
       required: true,
     },
   },
@@ -159,11 +208,12 @@ export default {
       }),
     },
   },
-  data() {
+  data(): ComponentData {
     return {
-      form: {
-        region: null,
+      regionForm: {
+        region: undefined,
       },
+      editLabelSheet: false,
       portForm: useForm({
         validationSchema: toTypedSchema(
           z.object({
@@ -171,11 +221,14 @@ export default {
               .number()
               .min(30000)
               .max(32767) // https://kubernetes.io/docs/reference/networking/ports-and-protocols/
+              .nullable()
               .refine(
                 () => {
                   return (
+                    !this.portForm.values.start_port_range ||
+                    !this.portForm.values.end_port_range ||
                     this.portForm.values.start_port_range <
-                    this.portForm.values.end_port_range
+                      this.portForm.values.end_port_range
                   );
                 },
                 {
@@ -188,11 +241,14 @@ export default {
               .number()
               .min(27000)
               .max(37000)
+              .nullable()
               .refine(
                 () => {
                   return (
+                    !this.portForm.values.start_port_range ||
+                    !this.portForm.values.end_port_range ||
                     this.portForm.values.end_port_range >=
-                    this.portForm.values.start_port_range + 2
+                      this.portForm.values.start_port_range + 2
                   );
                 },
                 {
@@ -206,22 +262,13 @@ export default {
       }),
     };
   },
-  mounted() {
-    this.$watch(
-      () => this.portForm.values,
-      async (newValues) => {
-        const { valid } = await this.portForm.validate();
-
-        if (!valid) {
-          return;
-        }
-
+  watch: {
+    ["portForm.values"]: {
+      immediate: true,
+      async handler() {
         this.updateServerPorts();
       },
-      { deep: true },
-    );
-  },
-  watch: {
+    },
     gameServerNode: {
       immediate: true,
       handler(gameServerNode) {
@@ -230,7 +277,7 @@ export default {
         }
 
         const { region, start_port_range, end_port_range } = gameServerNode;
-        this.form.region = region;
+        this.regionForm.region = region;
 
         this.portForm.setValues({
           start_port_range,
@@ -278,9 +325,24 @@ export default {
       });
     },
     async updateServerPorts() {
+      const { start_port_range, end_port_range } = this.portForm.values;
+
+      if (!start_port_range || !end_port_range) {
+        return;
+      }
+
       const { valid } = await this.portForm.validate();
 
       if (!valid) {
+        return;
+      }
+
+      if (
+        this.portForm.values.start_port_range ===
+          this.gameServerNode.start_port_range &&
+        this.portForm.values.end_port_range ===
+          this.gameServerNode.end_port_range
+      ) {
         return;
       }
 
@@ -346,5 +408,5 @@ export default {
       });
     },
   },
-};
+});
 </script>

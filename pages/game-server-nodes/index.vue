@@ -167,6 +167,7 @@ export default {
             },
             {
               id: true,
+              label: true,
               status: true,
               region: true,
               enabled: true,

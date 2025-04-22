@@ -31,7 +31,14 @@ import { e_game_server_node_statuses_enum } from "~/generated/zeus";
       ></span>
     </div>
     <span class="truncate">
-      {{ gameServerNode.id || gameServerNode?.e_region?.description }}
+      <div class="flex flex-col">
+        <div class="font-medium text-sm">
+          {{ gameServerNode.label || gameServerNode.id }}
+        </div>
+        <div class="text-muted-foreground text-xs" v-if="gameServerNode.label">
+          {{ gameServerNode.id }}
+        </div>
+      </div>
     </span>
   </div>
 </template>

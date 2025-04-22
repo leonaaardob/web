@@ -938,13 +938,17 @@
     "install_cs": "Install CS",
     "select_region": "Select Region",
     "remove_node": "Remove Node",
+    "edit_label": "Edit Label",
+    "label_placeholder": "Enter node label",
+    "update_label": "Update Label",
     "validation": {
       "start_port_less_than_end": "Start port range must be less than end port range",
       "end_port_greater_than_start": "End port range must be greater than start port range by at least 2"
     },
     "toast": {
       "cs_updating": "CS2 is being updated on the node",
-      "ports_updated": "Node Ports Updated"
+      "ports_updated": "Node Ports Updated",
+      "label_updated": "Node Label Updated"
     }
   },
   "chat": {
