@@ -9308,6 +9308,7 @@ export const AllTypesProps: Record<string,any> = {
 		matches_aggregate:"matches_aggregate_bool_exp",
 		port:"Int_comparison_exp",
 		rcon_password:"bytea_comparison_exp",
+		rcon_status:"Boolean_comparison_exp",
 		region:"String_comparison_exp",
 		reserved_by_match_id:"uuid_comparison_exp",
 		tv_port:"Int_comparison_exp"
@@ -9370,6 +9371,7 @@ export const AllTypesProps: Record<string,any> = {
 		matches_aggregate:"matches_aggregate_order_by",
 		port:"order_by",
 		rcon_password:"order_by",
+		rcon_status:"order_by",
 		region:"order_by",
 		reserved_by_match_id:"order_by",
 		tv_port:"order_by"
@@ -16859,6 +16861,7 @@ export const ReturnTypes: Record<string,any> = {
 		matches_aggregate:"matches_aggregate",
 		port:"Int",
 		rcon_password:"bytea",
+		rcon_status:"Boolean",
 		region:"String",
 		reserved_by_match_id:"uuid",
 		tv_port:"Int"

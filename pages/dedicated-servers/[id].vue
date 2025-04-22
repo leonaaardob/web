@@ -33,6 +33,7 @@ import RconCommander from "~/components/servers/RconCommander.vue";
 import { Eye, EyeOff } from "lucide-vue-next";
 import { Copy } from "lucide-vue-next";
 import Clipboard from "~/components/ClipBoard.vue";
+import ServerStatus from "~/components/servers/ServerStatus.vue";
 
 const serverMenu = ref(false);
 </script>
@@ -46,22 +47,14 @@ const serverMenu = ref(false);
           </div>
           <div class="flex gap-4">
             <div class="flex gap-2 items-center">
-              <div
-                class="h-2 w-2 rounded-full relative"
-                :class="{
-                  'bg-red-600': !server.connected,
-                  'bg-green-600': server.connected,
-                }"
-              >
-                <span
-                  class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-red-600"
-                  v-if="!server.connected"
-                ></span>
+              <ServerStatus :server="server" />
+
+              <div>
+                <span class="truncate">
+                  {{ server.label }}
+                  ({{ server.host }}:{{ server.port }})
+                </span>
               </div>
-              <span class="truncate">
-                {{ server.label }}
-                ({{ server.host }}:{{ server.port }})
-              </span>
             </div>
 
             <div class="flex items-center space-x-2">
@@ -212,6 +205,7 @@ export default {
               enabled: true,
               connected: true,
               api_password: true,
+              rcon_status: true,
             },
           ],
         }),

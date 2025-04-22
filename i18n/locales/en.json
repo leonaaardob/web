@@ -165,6 +165,12 @@
       "create": "Create Game Server Node",
       "installation_script": "Installation Script",
       "cs_version_info": "CS2 Version Information:",
+      "status": {
+        "offline": "Offline",
+        "online": "Online",
+        "setup": "Setup",
+        "not_accepting": "Not Accepting New Matches"
+      },
       "table": {
         "node": "Node",
         "lan_public_ip": "Lan/Public IP",
@@ -203,6 +209,11 @@
         "copy": "Copy",
         "edit": "Edit",
         "delete": "Delete",
+        "status": {
+          "disconnected": "Server is disconnected",
+          "no_rcon": "Server is connected but RCON is not available",
+          "connected": "Server is connected and RCON is available"
+        },
         "delete_confirm": {
           "title": "Are you absolutely sure?",
           "description": "This action cannot be undone. This will permanently delete your server and remove associated data from our servers.",

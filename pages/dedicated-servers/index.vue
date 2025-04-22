@@ -10,6 +10,7 @@ import {
 import Pagination from "@/components/Pagination.vue";
 import PageHeading from "~/components/PageHeading.vue";
 import { PlusCircle } from "lucide-vue-next";
+import ServerStatus from "~/components/servers/ServerStatus.vue";
 </script>
 
 <template>
@@ -66,18 +67,7 @@ import { PlusCircle } from "lucide-vue-next";
           >
             <TableCell>
               <div class="flex gap-2 items-center">
-                <div
-                  class="h-2 w-2 rounded-full relative"
-                  :class="{
-                    'bg-red-600': !server.connected,
-                    'bg-green-600': server.connected,
-                  }"
-                >
-                  <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-red-600"
-                    v-if="!server.connected"
-                  ></span>
-                </div>
+                <ServerStatus :server="server" />
                 <span class="truncate">
                   {{ server.host }}
                 </span>
