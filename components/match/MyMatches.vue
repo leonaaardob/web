@@ -54,6 +54,9 @@ export default {
               limit: $("limit", "Int!"),
               offset: $("offset", "Int!"),
               where: {
+                is_in_lineup: {
+                  _eq: true,
+                },
                 status: {
                   _in: $("statuses", "[e_match_status_enum]"),
                 },
@@ -86,6 +89,9 @@ export default {
               where: {
                 status: {
                   _in: $("statuses", "[e_match_status_enum]"),
+                },
+                is_in_lineup: {
+                  _eq: true,
                 },
               },
             },

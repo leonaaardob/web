@@ -69,20 +69,20 @@ import { PlusCircle } from "lucide-vue-next";
   <Separator class="my-4" />
 
   <Card class="p-4">
-    <Tabs default-value="open">
+    <Tabs default-value="my-matches">
       <TabsList>
-        <TabsTrigger value="open">{{
+        <TabsTrigger value="my-matches">{{
           $t("pages.matches.my_match_history")
         }}</TabsTrigger>
-        <TabsTrigger value="other">{{
+        <TabsTrigger value="other-matches">{{
           $t("pages.matches.other_matches")
         }}</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="open">
+      <TabsContent value="my-matches">
         <MyMatches> </MyMatches>
       </TabsContent>
-      <TabsContent value="other">
+      <TabsContent value="other-matches">
         <OtherMatches></OtherMatches>
       </TabsContent>
     </Tabs>
