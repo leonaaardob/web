@@ -1607,7 +1607,8 @@ export const AllTypesProps: Record<string,any> = {
 		start_port_range:"Int_comparison_exp",
 		status:"e_game_server_node_statuses_enum_comparison_exp",
 		token:"String_comparison_exp",
-		total_server_count:"Int_comparison_exp"
+		total_server_count:"Int_comparison_exp",
+		update_status:"String_comparison_exp"
 	},
 	game_server_nodes_constraint: "enum" as const,
 	game_server_nodes_inc_input:{
@@ -1629,7 +1630,8 @@ export const AllTypesProps: Record<string,any> = {
 		label:"order_by",
 		region:"order_by",
 		start_port_range:"order_by",
-		token:"order_by"
+		token:"order_by",
+		update_status:"order_by"
 	},
 	game_server_nodes_min_order_by:{
 		build_id:"order_by",
@@ -1638,7 +1640,8 @@ export const AllTypesProps: Record<string,any> = {
 		label:"order_by",
 		region:"order_by",
 		start_port_range:"order_by",
-		token:"order_by"
+		token:"order_by",
+		update_status:"order_by"
 	},
 	game_server_nodes_obj_rel_insert_input:{
 		data:"game_server_nodes_insert_input",
@@ -1666,7 +1669,8 @@ export const AllTypesProps: Record<string,any> = {
 		start_port_range:"order_by",
 		status:"order_by",
 		token:"order_by",
-		total_server_count:"order_by"
+		total_server_count:"order_by",
+		update_status:"order_by"
 	},
 	game_server_nodes_pk_columns_input:{
 
@@ -13612,7 +13616,8 @@ export const ReturnTypes: Record<string,any> = {
 		start_port_range:"Int",
 		status:"e_game_server_node_statuses_enum",
 		token:"String",
-		total_server_count:"Int"
+		total_server_count:"Int",
+		update_status:"String"
 	},
 	game_server_nodes_aggregate:{
 		aggregate:"game_server_nodes_aggregate_fields",
@@ -13647,7 +13652,8 @@ export const ReturnTypes: Record<string,any> = {
 		region:"String",
 		start_port_range:"Int",
 		token:"String",
-		total_server_count:"Int"
+		total_server_count:"Int",
+		update_status:"String"
 	},
 	game_server_nodes_min_fields:{
 		available_server_count:"Int",
@@ -13658,7 +13664,8 @@ export const ReturnTypes: Record<string,any> = {
 		region:"String",
 		start_port_range:"Int",
 		token:"String",
-		total_server_count:"Int"
+		total_server_count:"Int",
+		update_status:"String"
 	},
 	game_server_nodes_mutation_response:{
 		affected_rows:"Int",

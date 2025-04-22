@@ -176,6 +176,7 @@ export default {
               public_ip: true,
               start_port_range: true,
               end_port_range: true,
+              update_status: true,
               e_region: {
                 description: true,
               },

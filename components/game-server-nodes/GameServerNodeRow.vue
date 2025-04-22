@@ -34,7 +34,12 @@ import UpdateGameServerLabel from "~/components/game-server-nodes/UpdateGameServ
       {{ gameServerNode.public_ip }}
     </TableCell>
     <TableCell>
-      <template v-if="gameServerNode.build_id">
+      <template v-if="gameServerNode.update_status">
+        <span class="capitalize">
+          {{ gameServerNode.update_status }}
+        </span>
+      </template>
+      <template v-else-if="gameServerNode.build_id">
         {{ gameServerNode.build_id }}
         <template v-if="gameServerNode.build_id != csVersion">
           <Button variant="destructive" size="sm" @click="updateCs">{{
