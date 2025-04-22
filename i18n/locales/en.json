@@ -314,6 +314,7 @@
       "title": "Notifications",
       "delete": "Delete",
       "dismiss": "Dismiss",
+      "dismiss_all": "Dismiss All Notifications",
       "delete_all_read": "Delete All Read Notifications",
       "no_notifications": "No notifications at the moment."
     },

@@ -28,7 +28,10 @@ import TeamInviteNotification from "~/components/TeamInviteNotification.vue";
     <SheetContent>
       <SheetHeader>
         <SheetTitle>{{ $t("layouts.notifications.title") }}</SheetTitle>
-        <SheetDescription>
+      </SheetHeader>
+
+      <div class="flex flex-col h-full">
+        <div class="flex-1 overflow-y-auto">
           <template
             v-if="
               team_invites.length > 0 ||
@@ -150,23 +153,35 @@ import TeamInviteNotification from "~/components/TeamInviteNotification.vue";
                 </div>
               </div>
             </template>
-            <Button
-              size="sm"
-              variant="outline"
-              @click="deleteAllReadNotifications"
-              class="mt-4 w-full"
-              v-if="notifications.length > 0"
-            >
-              {{ $t("layouts.notifications.delete_all_read") }}
-            </Button>
           </template>
           <template v-else>
             <p class="mt-8 text-center text-muted-foreground">
               {{ $t("layouts.notifications.no_notifications") }}
             </p>
           </template>
-        </SheetDescription>
-      </SheetHeader>
+        </div>
+
+        <div class="flex gap-2 my-4 py-2 border-t">
+          <Button
+            size="sm"
+            variant="outline"
+            @click="dismissAllNotifications"
+            class="w-full"
+            v-if="notifications.length > 0"
+          >
+            {{ $t("layouts.notifications.dismiss_all") }}
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            @click="deleteAllReadNotifications"
+            class="w-full bg-destructive text-white"
+            v-if="notifications.length > 0"
+          >
+            {{ $t("layouts.notifications.delete_all_read") }}
+          </Button>
+        </div>
+      </div>
     </SheetContent>
   </Sheet>
 </template>
@@ -342,7 +357,7 @@ export default {
           ],
         }),
         result({ data }: { data: any }) {
-          this.notifications = data.notifications;
+          this.notifications = [...data.notifications, ...data.notifications];
         },
       },
     },
@@ -421,6 +436,27 @@ export default {
               },
               _set: {
                 deleted_at: new Date(),
+              },
+            },
+            {
+              __typename: true,
+            },
+          ],
+        }),
+      });
+    },
+    async dismissAllNotifications() {
+      await this.$apollo.mutate({
+        mutation: generateMutation({
+          update_notifications: [
+            {
+              where: {
+                is_read: {
+                  _eq: false,
+                },
+              },
+              _set: {
+                is_read: true,
               },
             },
             {
