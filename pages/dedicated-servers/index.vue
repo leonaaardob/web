@@ -130,6 +130,7 @@ export default {
               tv_port: true,
               enabled: true,
               connected: true,
+              rcon_status: true,
               current_match: {
                 id: true,
               },
