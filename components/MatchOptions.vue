@@ -807,7 +807,13 @@ export default {
     },
     maps: {
       query: generateQuery({
-        maps: [{}, mapFields],
+        maps: [{
+          where: {
+            enabled: {
+              _eq: true
+            }
+          }
+        }, mapFields],
       }),
     },
     map_pools: {
