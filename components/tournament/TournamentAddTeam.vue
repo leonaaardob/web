@@ -25,7 +25,7 @@ import TeamSearch from "~/components/teams/TeamSearch.vue";
           <Switch
             class="pointer-events-none"
             :model-value="value"
-            @update:checked="handleChange"
+            @update:model-value="handleChange"
           />
         </FormControl>
       </FormItem>

@@ -18,7 +18,7 @@ import { Pencil } from "lucide-vue-next";
       <div class="flex items-center gap-2">
         <Switch
           :model-value="map.active_pool"
-          @update:checked="toggleActivePool(map)"
+          @update:model-value="toggleActivePool(map)"
         />
         <span>{{ $t("pages.map_pools.active_duty") }}</span>
       </div>
@@ -32,7 +32,7 @@ import { Pencil } from "lucide-vue-next";
         >
           <Switch
             :model-value="map.poolTypes.includes(type)"
-            @update:checked="togglePoolType(map, type)"
+            @update:model-value="togglePoolType(map, type)"
           />
           <span>{{ type }}</span>
         </div>
@@ -109,6 +109,7 @@ export default {
   },
   methods: {
     async togglePoolType(map: Map, type: e_match_types_enum) {
+      console.log(map.poolTypes);
       if (map.poolTypes.includes(type)) {
         await this.$apollo.mutate({
           mutation: generateMutation({

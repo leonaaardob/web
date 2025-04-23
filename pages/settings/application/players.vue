@@ -24,7 +24,7 @@ definePageMeta({
       </div>
       <Switch
         :model-value="playerNameRegistration"
-        @update:checked="togglePlayerNameRegistration"
+        @update:model-value="togglePlayerNameRegistration"
       />
     </div>
   </form>

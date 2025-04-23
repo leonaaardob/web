@@ -107,7 +107,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                 <Switch
                   class="pointer-events-none"
                   :model-value="value"
-                  @update:checked="handleChange"
+                  @update:model-value="handleChange"
                 />
               </FormControl>
             </div>
@@ -142,16 +142,18 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                     name="custom_map_pool"
                   >
                     <FormControl>
-                      <div class="flex items-center gap-2">
-                        <span class="text-muted-foreground">
+                      <div class="flex items-center justify-end w-full gap-2">
+                        <span class="text-muted-foreground flex items-center">
                           <FiveStackToolTip>
                             <template #trigger>
-                              <Info :size="14"> </Info>
-                              {{
-                                $t(
-                                  "match.options.map_veto_settings.custom_pool",
-                                )
-                              }}
+                              <div class="flex items-center gap-1">
+                                <Info :size="14" />
+                                {{
+                                  $t(
+                                    "match.options.map_veto_settings.custom_pool",
+                                  )
+                                }}
+                              </div>
                             </template>
                             {{
                               $t(
@@ -162,7 +164,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                         </span>
                         <Switch
                           :model-value="value"
-                          @update:checked="handleChange"
+                          @update:model-value="handleChange"
                         />
                       </div>
                     </FormControl>
@@ -237,7 +239,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
               <Switch
                 class="pointer-events-none"
                 :model-value="value"
-                @update:checked="handleChange"
+                @update:model-value="handleChange"
               />
             </FormControl>
           </div>
@@ -298,7 +300,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                     <Switch
                       class="pointer-events-none"
                       :model-value="value"
-                      @update:checked="handleChange"
+                      @update:model-value="handleChange"
                     />
                   </FormControl>
                 </div>
@@ -321,7 +323,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                     <Switch
                       class="pointer-events-none"
                       :model-value="value"
-                      @update:checked="handleChange"
+                      @update:model-value="handleChange"
                     />
                   </FormControl>
                 </div>
@@ -379,7 +381,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                     }}</span>
                     <Switch
                       :model-value="form.values.lan"
-                      @update:checked="
+                      @update:model-value="
                         (checked) => form.setFieldValue('lan', checked)
                       "
                       aria-label="Toggle LAN Match"
@@ -405,7 +407,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                         <Switch
                           class="pointer-events-none"
                           :model-value="value"
-                          @update:checked="
+                          @update:model-value="
                             form.values.lan === false && handleChange
                           "
                           :disabled="form.values.lan"

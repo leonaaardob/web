@@ -18,9 +18,7 @@ import PlayerDisplay from "~/components/PlayerDisplay.vue";
       </Button>
     </PopoverTrigger>
     <PopoverContent class="p-0">
-      <Command
-        v-model="query"
-      >
+      <Command v-model="query">
         <div class="flex items-center justify-between px-3 py-2">
           <CommandInput
             v-model="query"
@@ -98,7 +96,7 @@ export default {
   },
   watch: {
     query() {
-      this.searchPlayers(this.query); 
+      this.searchPlayers(this.query);
     },
     onlineOnly() {
       this.searchPlayers(this.query);

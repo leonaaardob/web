@@ -43,7 +43,7 @@ import { MessageCircleWarning } from "lucide-vue-next";
           <Switch
             class="pointer-events-none"
             :model-value="value"
-            @update:checked="handleChange"
+            @update:model-value="handleChange"
           />
         </FormControl>
       </FormItem>

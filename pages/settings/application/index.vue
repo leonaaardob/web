@@ -22,7 +22,7 @@ definePageMeta({
       </div>
       <Switch
         :model-value="matchMakingAllowed"
-        @update:checked="toggleMatchmaking"
+        @update:model-value="toggleMatchmaking"
       />
     </div>
 
