@@ -18,24 +18,19 @@ import ClipBoard from "~/components/ClipBoard.vue";
   />
 
   <Popover v-model:open="popoverOpen" v-else>
-    <div class="flex gap-2">
-      <div
-        v-if="match.invite_code"
-        class="flex py-1 pr-2 items-center bg-secondary rounded-md"
-      >
-        <ClipBoard :data="matchInviteLink" />
-        <span class="text-sm font-medium">{{ match.invite_code }}</span>
-      </div>
-
-      <PopoverTrigger>
-        <Button variant="outline" size="icon">
-          <component
-            :is="getIcon(match.options.lobby_access)"
-            class="h-4 w-4"
-          />
-        </Button>
-      </PopoverTrigger>
+    <div
+      v-if="match.invite_code"
+      class="flex py-1 pr-2 items-center bg-secondary rounded-md"
+    >
+      <ClipBoard :data="matchInviteLink" />
+      <span class="text-sm font-medium">{{ match.invite_code }}</span>
     </div>
+
+    <PopoverTrigger>
+      <Button variant="outline" size="icon">
+        <component :is="getIcon(match.options.lobby_access)" class="h-4 w-4" />
+      </Button>
+    </PopoverTrigger>
 
     <PopoverContent>
       <div class="flex justify-center">
@@ -61,7 +56,7 @@ import ClipBoard from "~/components/ClipBoard.vue";
           }"
         >
           <component :is="getIcon(access)" class="h-4 w-4 mr-2" />
-          {{ $t(`match.lobby.access.${access.toLowerCase()}`) }}
+          {{ access }}
         </Button>
       </div>
     </PopoverContent>
