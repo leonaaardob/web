@@ -244,8 +244,8 @@ export default defineComponent({
               ),
             end_port_range: z
               .number()
-              .min(27000)
-              .max(37000)
+              .min(30000)
+              .max(32767)
               .nullable()
               .refine(
                 () => {
