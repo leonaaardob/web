@@ -271,8 +271,8 @@
       "workshop_id": "Workshop Link"
     },
     "map_pool": {
-      "toggle_pool_type": "Map {map} has been {type} for {type}",
-      "toggle_active_pool": "Map {map} has been {type} for active duty",
+      "toggle_pool_type": "Updated Map Pools",
+      "toggle_active_pool": "Maps Activity Status Updated",
       "save_success": "Map pool saved successfully"
     },
     "components": {
