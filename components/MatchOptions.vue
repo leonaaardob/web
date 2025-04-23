@@ -1016,7 +1016,7 @@ export default {
 
       const availableMaps = this.form.values.custom_map_pool
         ? this.maps
-        : mapPool.maps;
+        : mapPool?.maps || this.maps;
 
       const maps = availableMaps
         .filter((map: Map) => {
