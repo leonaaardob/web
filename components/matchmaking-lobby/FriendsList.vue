@@ -42,6 +42,7 @@ import PlayerSearch from "~/components/PlayerSearch.vue";
       :label="$t('matchmaking.friends.search')"
       :self="false"
       @selected="(player) => addAsFriend(player.steam_id)"
+      :exclude="friends?.map((friend) => friend.steam_id)"
     ></player-search>
 
     <div class="overflow-auto mt-4">
