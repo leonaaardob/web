@@ -24,7 +24,7 @@ import { Separator } from "~/components/ui/separator";
           v-if="match.is_organizer && isUser"
         >
           <Label>{{ $t("match.region_veto.organizer_override") }}</Label>
-          <Switch :checked="override" />
+          <Switch :model-value="override" />
         </div>
       </div>
 

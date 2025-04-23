@@ -17,7 +17,7 @@ import { Pencil } from "lucide-vue-next";
     <TableCell class="px-4 py-2 text-sm">
       <div class="flex items-center gap-2">
         <Switch
-          :checked="map.active_pool"
+          :model-value="map.active_pool"
           @update:checked="toggleActivePool(map)"
         />
         <span>{{ $t("pages.map_pools.active_duty") }}</span>
@@ -31,7 +31,7 @@ import { Pencil } from "lucide-vue-next";
           class="flex items-center gap-2"
         >
           <Switch
-            :checked="map.poolTypes.includes(type)"
+            :model-value="map.poolTypes.includes(type)"
             @update:checked="togglePoolType(map, type)"
           />
           <span>{{ type }}</span>

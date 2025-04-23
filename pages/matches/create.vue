@@ -26,7 +26,7 @@ import { Info } from "lucide-vue-next";
                 <FormControl>
                   <Switch
                     class="pointer-events-none"
-                    :checked="value"
+                    :model-value="value"
                     @update:checked="handleChange"
                   />
                 </FormControl>

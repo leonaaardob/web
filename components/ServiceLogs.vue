@@ -37,7 +37,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
       <div class="flex items-center gap-2" v-if="followLogs === undefined">
         <Switch
           class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-          :checked="_followLogs"
+          :model-value="_followLogs"
           @click="_followLogs = !_followLogs"
         >
         </Switch>
@@ -47,7 +47,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
       <div class="flex items-center gap-2" v-if="timestamps === undefined">
         <Switch
           class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-          :checked="_timestamps"
+          :model-value="_timestamps"
           @click="_timestamps = !_timestamps"
         >
         </Switch>
@@ -88,7 +88,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
                 <span
                   class="text-blue-100"
                   v-if="(timestamps === undefined && _timestamps) || timestamps"
-                  >{{ timestamp }}</span
+                  >{{ timestamps }}</span
                 >
               </div>
             </div>

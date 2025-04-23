@@ -22,7 +22,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
           <div class="flex items-center gap-2">
             <Switch
               class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-              :checked="followLogs"
+              :model-value="followLogs"
               @click="followLogs = !followLogs"
             >
             </Switch>
@@ -32,7 +32,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
           <div class="flex items-center gap-2">
             <Switch
               class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-              :checked="timestamps"
+              :model-value="timestamps"
               @click="timestamps = !timestamps"
             >
             </Switch>

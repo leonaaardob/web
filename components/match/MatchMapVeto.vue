@@ -42,7 +42,7 @@ import MatchPicksDisplay from "~/components/match/MatchPicksDisplay.vue";
         v-if="match.is_organizer && !isUser"
       >
         <Label>{{ $t("match.map_veto.organizer_override") }}</Label>
-        <Switch :checked="override" />
+        <Switch :model-value="override" />
       </div>
     </div>
 

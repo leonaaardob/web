@@ -58,7 +58,10 @@ import RegionForm from "~/components/regions/RegionForm.vue";
               <span>{{ region.description }}</span>
             </TableCell>
             <TableCell>
-              <Switch :checked="region.is_lan" @click="toggleIsLan(region)" />
+              <Switch
+                :model-value="region.is_lan"
+                @click="toggleIsLan(region)"
+              />
             </TableCell>
             <TableCell>
               <div class="flex gap-2">

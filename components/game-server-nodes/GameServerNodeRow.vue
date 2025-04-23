@@ -101,7 +101,7 @@ import UpdateGameServerLabel from "~/components/game-server-nodes/UpdateGameServ
     <TableCell class="flex items-center space-x-2">
       <Switch
         class="cursor-pointer"
-        :checked="gameServerNode.enabled"
+        :model-value="gameServerNode.enabled"
         @click="toggleEnabled"
       />
 

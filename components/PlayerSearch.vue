@@ -27,7 +27,7 @@ import PlayerDisplay from "~/components/PlayerDisplay.vue";
           <div class="flex items-center gap-2 ml-4">
             <Switch
               class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-              :checked="onlineOnly"
+              :model-value="onlineOnly"
               @click="onlineOnly = !onlineOnly"
             >
             </Switch>

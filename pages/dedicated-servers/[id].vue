@@ -58,7 +58,10 @@ const serverMenu = ref(false);
             </div>
 
             <div class="flex items-center space-x-2">
-              <Switch @click="toggleServerEnabled" :checked="server.enabled" />
+              <Switch
+                @click="toggleServerEnabled"
+                :model-value="server.enabled"
+              />
               <Label>{{ $t("pages.dedicated_servers.detail.enabled") }}</Label>
             </div>
           </div>

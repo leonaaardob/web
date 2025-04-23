@@ -106,7 +106,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
               <FormControl>
                 <Switch
                   class="pointer-events-none"
-                  :checked="value"
+                  :model-value="value"
                   @update:checked="handleChange"
                 />
               </FormControl>
@@ -161,7 +161,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                           </FiveStackToolTip>
                         </span>
                         <Switch
-                          :checked="value"
+                          :model-value="value"
                           @update:checked="handleChange"
                         />
                       </div>
@@ -236,7 +236,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
             <FormControl>
               <Switch
                 class="pointer-events-none"
-                :checked="value"
+                :model-value="value"
                 @update:checked="handleChange"
               />
             </FormControl>
@@ -297,7 +297,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                   <FormControl>
                     <Switch
                       class="pointer-events-none"
-                      :checked="value"
+                      :model-value="value"
                       @update:checked="handleChange"
                     />
                   </FormControl>
@@ -320,7 +320,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                   <FormControl>
                     <Switch
                       class="pointer-events-none"
-                      :checked="value"
+                      :model-value="value"
                       @update:checked="handleChange"
                     />
                   </FormControl>
@@ -378,7 +378,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                       $t("match.options.advanced.region.lan_match")
                     }}</span>
                     <Switch
-                      :checked="form.values.lan"
+                      :model-value="form.values.lan"
                       @update:checked="
                         (checked) => form.setFieldValue('lan', checked)
                       "
@@ -404,7 +404,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                       <FormControl>
                         <Switch
                           class="pointer-events-none"
-                          :checked="value"
+                          :model-value="value"
                           @update:checked="
                             form.values.lan === false && handleChange
                           "
