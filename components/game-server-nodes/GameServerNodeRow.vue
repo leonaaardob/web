@@ -267,13 +267,16 @@ export default defineComponent({
       }),
     };
   },
-  watch: {
-    ["portForm.values"]: {
-      immediate: true,
-      async handler() {
+  mounted() {
+    this.$watch(
+      () => this.portForm.values,
+      async () => {
         this.updateServerPorts();
       },
-    },
+      { deep: true },
+    );
+  },
+  watch: {
     gameServerNode: {
       immediate: true,
       handler(gameServerNode) {
