@@ -2,7 +2,7 @@
 
 <template>
   <div
-    class="text-blue-500 text-sm hover:underline cursor-pointer"
+    class="text-blue-500 text-sm hover:underline cursor-pointer w-fit"
     @click.prevent="showRequestNameChangeDialog = true"
     v-if="canChangeName"
   >
