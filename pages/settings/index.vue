@@ -180,7 +180,6 @@ export default {
                 steam_id: this.me.steam_id,
               },
               _set: {
-                name: this.form.values.name,
                 ...(useAuthStore().isAdmin
                   ? { avatar_url: this.form.values.avatar_url }
                   : {}),
