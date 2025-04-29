@@ -10,9 +10,11 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "codegen": ". ./.env && zeus https://$NUXT_PUBLIC_API_DOMAIN/v1/graphql ./generated --ts --td --header=x-hasura-admin-secret:$HASURA_GRAPHQL_ADMIN_SECRET",
-    "check-translations": "node scripts/check-translations.js"
+    "check-translations": "node scripts/check-translations.js",
+    "wrangler": "wrangler"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250429.0",
     "@nuxt/devtools": "^2.3.2",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
@@ -32,7 +34,8 @@
     "vue-router": "^4.4.0",
     "workbox-core": "^7.1.0",
     "workbox-precaching": "^7.1.0",
-    "workbox-routing": "^7.1.0"
+    "workbox-routing": "^7.1.0",
+    "wrangler": "^4.13.2"
   },
   "dependencies": {
     "@iconify-json/radix-icons": "^1.1.14",
@@ -45,6 +48,7 @@
     "@vee-validate/zod": "^4.15.0",
     "@vueuse/core": "^13.1.0",
     "ansi-to-html": "^0.7.2",
+    "aws4fetch": "^1.0.20",
     "chart.js": "^4.4.4",
     "class-variance-authority": "^0.7.0",
     "clipboard": "^2.0.11",
