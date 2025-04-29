@@ -54,7 +54,7 @@ export default {
       }).sign(`https://${env.BUCKET_NAME}.${env.S3_ENDPOINT}/${file}`, {
         method: request.method,
         headers: filterHeaders(request.headers, env),
-      })
+      }),
     );
 
     return new Response(response.body, {
@@ -63,6 +63,6 @@ export default {
         "Content-Type": "application/octet-stream",
         "Content-Disposition": `attachment; filename="${file}"`,
       },
-    }); 
-  }
+    });
+  },
 };

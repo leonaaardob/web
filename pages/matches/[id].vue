@@ -197,6 +197,10 @@ export default {
                     type: true,
                     match_lineup_id: true,
                   },
+                  demos: {
+                    size: true,
+                    download_url: true,
+                  },
                   rounds: [
                     {
                       order_by: {

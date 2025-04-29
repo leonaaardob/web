@@ -828,6 +828,7 @@
     "coach": {
       "assign": "Assign Coach"
     },
+    "download_demo": "Download Demo",
     "download_demos": "Download Demos",
     "coaches": "Coaches",
     "best_of": "Best of {count}",

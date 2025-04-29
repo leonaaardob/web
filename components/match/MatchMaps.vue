@@ -29,14 +29,32 @@ import formatBits from "~/utilities/formatBits";
       </div>
 
       <div class="absolute top-3 right-3">
-        <a target="_blank" :href="matchMap.demos_download_url">
-          <Button size="sm" variant="outline" v-if="matchMap.demos_total_size">
-            {{ $t("match.download_demos") }} (<small>{{
-              formatBits(matchMap.demos_total_size)
-            }}</small
-            >)
-          </Button>
-        </a>
+        <template v-if="matchMap.demos_download_url">
+          <a target="_blank" :href="matchMap.demos_download_url">
+            <Button
+              size="sm"
+              variant="outline"
+              v-if="matchMap.demos_total_size"
+            >
+              {{
+                matchMap.demos.length > 1
+                  ? $t("match.download_demos")
+                  : $t("match.download_demo")
+              }}
+              <small>{{ formatBits(matchMap.demos_total_size) }}~)</small>
+            </Button>
+          </a>
+        </template>
+        <template v-else>
+          <template v-for="demo in matchMap.demos" :key="demo.id">
+            <a :href="demo.download_url">
+              <Button size="sm" variant="outline">
+                {{ $t("match.download_demo") }}
+                <small>({{ formatBits(demo.size) }}~)</small>
+              </Button>
+            </a>
+          </template>
+        </template>
       </div>
     </template>
     <template v-slot:default>
