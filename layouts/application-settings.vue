@@ -63,6 +63,11 @@ export default {
           key: "game_type_configs",
           to: "/settings/application/game-type-configs",
         },
+        {
+          title: this.$t("pages.settings.application.s3.title"),
+          key: "s3",
+          to: "/settings/application/s3",
+        },
       ],
     };
   },
