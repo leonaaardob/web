@@ -85,7 +85,7 @@ export default {
         validationSchema: toTypedSchema(
           z.object({
             s3_min_retention: z.number().int().min(1).optional().default(1),
-            s3_max_storage: z.number().int().min(1).default(5),
+            s3_max_storage: z.number().int().min(1).default(10),
             cloudflare_worker_url: z.string().url().optional(),
           }),
         ),
