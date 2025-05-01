@@ -85,7 +85,7 @@ export const useApplicationSettingsStore = defineStore(
 
       return (
         settings.value.find(
-          (setting) => setting.name === "public.supports_game_server_nodes",
+          (setting) => setting.name === "supports_game_server_nodes",
         )?.value === "true"
       );
     });

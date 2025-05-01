@@ -57,6 +57,12 @@
         "dark": "Dark"
       },
       "application": {
+        "telemetry": {
+          "title": "Telemetry",
+          "telemetry": "Telemetry",
+          "telemetry_description": "Help improve 5stack by sharing anonymous usage data.",
+          "update": "Telemetry settings updated"
+        },
         "matchmaking": {
           "title": "Matchmaking",
           "description": "Matchmaking allows players to join a queue and be matched with other players."
