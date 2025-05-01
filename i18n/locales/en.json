@@ -950,7 +950,8 @@
       "invite_to_lobby": "Invite to Lobby",
       "remove": "Remove Friend",
       "join_lobby": "Join Lobby",
-      "offline": "Offline"
+      "offline": "Offline",
+      "view_profile": "View Profile"
     },
     "leave": "Leave",
     "position": "Current Position",

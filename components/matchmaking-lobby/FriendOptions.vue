@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Plus, Trash2 } from "lucide-vue-next";
+import { Plus, Trash2, User } from "lucide-vue-next";
 </script>
 
 <template>
@@ -8,6 +8,11 @@ import { Plus, Trash2 } from "lucide-vue-next";
       <slot></slot>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
+      <DropdownMenuItem @click="viewProfile">
+        <User class="mr-2 h-4 w-4" />
+        <span>{{ $t("matchmaking.friends.view_profile") }}</span>
+      </DropdownMenuItem>
+
       <DropdownMenuItem @click="inviteToLobby">
         <Plus class="mr-2 h-4 w-4" />
         <span>{{ $t("matchmaking.friends.invite_to_lobby") }}</span>
@@ -38,6 +43,9 @@ export default {
     },
   },
   methods: {
+    async viewProfile() {
+      this.$router.push(`/players/${this.player.steam_id}`);
+    },
     async inviteToLobby() {
       await useMatchmakingStore().inviteToLobby(this.player.steam_id);
     },
