@@ -2581,9 +2581,12 @@ export const AllTypesProps: Record<string,any> = {
 		_and:"match_map_demos_bool_exp",
 		_not:"match_map_demos_bool_exp",
 		_or:"match_map_demos_bool_exp",
+		download_url:"String_comparison_exp",
 		file:"String_comparison_exp",
 		id:"uuid_comparison_exp",
+		match:"matches_bool_exp",
 		match_id:"uuid_comparison_exp",
+		match_map:"match_maps_bool_exp",
 		match_map_id:"uuid_comparison_exp",
 		size:"Int_comparison_exp"
 	},
@@ -2593,7 +2596,9 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	match_map_demos_insert_input:{
 		id:"uuid",
+		match:"matches_obj_rel_insert_input",
 		match_id:"uuid",
+		match_map:"match_maps_obj_rel_insert_input",
 		match_map_id:"uuid"
 	},
 	match_map_demos_max_order_by:{
@@ -2616,9 +2621,12 @@ export const AllTypesProps: Record<string,any> = {
 		where:"match_map_demos_bool_exp"
 	},
 	match_map_demos_order_by:{
+		download_url:"order_by",
 		file:"order_by",
 		id:"order_by",
+		match:"matches_order_by",
 		match_id:"order_by",
+		match_map:"match_maps_order_by",
 		match_map_id:"order_by",
 		size:"order_by"
 	},
@@ -12917,6 +12925,9 @@ export const ReturnTypes: Record<string,any> = {
 	SuccessOutput:{
 		success:"Boolean"
 	},
+	TelemetryStats:{
+		online:"Int"
+	},
 	_map_pool:{
 		map_id:"uuid",
 		map_pool_id:"uuid"
@@ -14046,9 +14057,12 @@ export const ReturnTypes: Record<string,any> = {
 		coach_steam_id:"Float"
 	},
 	match_map_demos:{
+		download_url:"String",
 		file:"String",
 		id:"uuid",
+		match:"matches",
 		match_id:"uuid",
+		match_map:"match_maps",
 		match_map_id:"uuid",
 		size:"Int"
 	},
@@ -14073,6 +14087,7 @@ export const ReturnTypes: Record<string,any> = {
 		size:"Float"
 	},
 	match_map_demos_max_fields:{
+		download_url:"String",
 		file:"String",
 		id:"uuid",
 		match_id:"uuid",
@@ -14080,6 +14095,7 @@ export const ReturnTypes: Record<string,any> = {
 		size:"Int"
 	},
 	match_map_demos_min_fields:{
+		download_url:"String",
 		file:"String",
 		id:"uuid",
 		match_id:"uuid",
@@ -16736,6 +16752,7 @@ export const ReturnTypes: Record<string,any> = {
 		teams:"teams",
 		teams_aggregate:"teams_aggregate",
 		teams_by_pk:"teams",
+		telemetryStats:"TelemetryStats",
 		tournament_brackets:"tournament_brackets",
 		tournament_brackets_aggregate:"tournament_brackets_aggregate",
 		tournament_brackets_by_pk:"tournament_brackets",

@@ -380,6 +380,16 @@ const handleLocaleChange = (newLocale: string) => {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarGroup v-if="telemetryStats?.online > 0 && open">
+          <Badge variant="outline" class="p-2 flex items-center gap-2">
+            <Server class="w-3 h-3" />
+            {{ telemetryStats.online }} System{{
+              telemetryStats.online > 1 ? "s" : ""
+            }}
+            Online
+          </Badge>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -714,6 +724,7 @@ import { generateMutation } from "~/graphql/graphqlGen";
 import { getCountryForTimezone } from "countries-and-timezones";
 import { useApplicationSettingsStore } from "~/stores/ApplicationSettings";
 import { useMediaQuery } from "@vueuse/core";
+import { generateQuery } from "~/graphql/graphqlGen";
 
 export default {
   data() {
@@ -724,6 +735,20 @@ export default {
       showPlayersOnline: false,
       rightSidebarOpen: false,
     };
+  },
+  apollo: {
+    telemetryStats: {
+      query: generateQuery({
+        telemetryStats: {
+          online: true,
+          __typename: true,
+        },
+      }),
+      pollInterval: 60 * 1000,
+      skip() {
+        return useRuntimeConfig().public.webDomain !== "5stack.gg";
+      },
+    },
   },
   watch: {
     isMedium: {
