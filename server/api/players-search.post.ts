@@ -77,6 +77,8 @@ export default defineEventHandler(async (event) => {
           steamid: string;
           avatar: string;
           personaname: string;
+          profileurl: string;
+          loccountrycode: string;
         }[];
 
         await apolloClient.mutate({
@@ -87,6 +89,8 @@ export default defineEventHandler(async (event) => {
                   name: player.personaname,
                   steam_id: player.steamid,
                   avatar_url: player.avatar,
+                  profile_url: player.profileurl,
+                  country: player.loccountrycode,
                 })),
                 on_conflict: {
                   update_columns: [players_update_column.name],
@@ -107,6 +111,8 @@ export default defineEventHandler(async (event) => {
               name: player.personaname,
               steam_id: player.steamid,
               avatar_url: player.avatar,
+              profile_url: player.profileurl,
+              country: player.loccountrycode,
             },
           })),
         };
