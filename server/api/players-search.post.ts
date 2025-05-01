@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
       ...(body.per_page ? { per_page: body.per_page } : {}),
     });
 
-  if (process.env.STEAM_API_KEY && results.found === 0) {
+  if (process.env.STEAM_API_KEY && !body.teamId && results.found === 0) {
     try {
       const steamData = query.match(/^[0-9]+$/)
         ? await searchBySteamId(query)

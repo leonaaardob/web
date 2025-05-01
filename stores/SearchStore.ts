@@ -58,7 +58,7 @@ export const useSearchStore = defineStore("searchStore", () => {
 
   return {
     onlineOnly,
-    search: (query: string, exclude: [string]) => {
+    search: (query: string, exclude: string[]) => {
       if (!query) {
         return matchMakingStore.playersOnline
           .slice(0, 10)
