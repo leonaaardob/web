@@ -80,7 +80,6 @@ import { toast } from "@/components/ui/toast";
 export default {
   data() {
     return {
-      settings: [],
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
@@ -92,31 +91,21 @@ export default {
       }),
     };
   },
-  apollo: {
-    $subscribe: {
-      servers: {
-        query: typedGql("subscription")({
-          settings: [
-            {},
-            {
-              name: true,
-              value: true,
-            },
-          ],
-        }),
-        result({ data }) {
-          this.settings = data.settings;
-          for (const setting of data.settings) {
-            if (
-              setting.name === "s3_min_retention" ||
-              setting.name === "s3_max_storage"
-            ) {
-              this.form.setFieldValue(setting.name, parseInt(setting.value));
-            } else {
-              this.form.setFieldValue(setting.name, setting.value);
-            }
+  watch: {
+    settings: {
+      immediate: true,
+      handler(newVal) {
+        for (const setting of newVal) {
+          if (
+            setting.name === "s3_min_retention" ||
+            setting.name === "s3_max_storage"
+          ) {
+            this.form.setFieldValue(setting.name, parseInt(setting.value));
+            continue;
           }
-        },
+
+          this.form.setFieldValue(setting.name, setting.value);
+        }
       },
     },
   },
@@ -155,6 +144,11 @@ export default {
       toast({
         title: "Updated S3 Settings",
       });
+    },
+  },
+  computed: {
+    settings() {
+      return useApplicationSettingsStore().settings;
     },
   },
 };

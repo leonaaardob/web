@@ -58,7 +58,6 @@ definePageMeta({
 
 <script lang="ts">
 import { settings_constraint, settings_update_column } from "~/generated/zeus";
-import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { generateMutation } from "~/graphql/graphqlGen";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -68,7 +67,6 @@ import { toast } from "@/components/ui/toast";
 export default {
   data() {
     return {
-      settings: [],
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
@@ -80,24 +78,13 @@ export default {
       }),
     };
   },
-  apollo: {
-    $subscribe: {
-      servers: {
-        query: typedGql("subscription")({
-          settings: [
-            {},
-            {
-              name: true,
-              value: true,
-            },
-          ],
-        }),
-        result({ data }) {
-          this.settings = data.settings;
-          for (const setting of data.settings) {
-            this.form.setFieldValue(setting.name, setting.value || "");
-          }
-        },
+  watch: {
+    settings: {
+      immediate: true,
+      handler(newVal) {
+        for (const setting of newVal) {
+          this.form.setFieldValue(setting.name, setting.value || "");
+        }
       },
     },
   },
@@ -136,6 +123,11 @@ export default {
       toast({
         title: "Updated Discord Settings",
       });
+    },
+  },
+  computed: {
+    settings() {
+      return useApplicationSettingsStore().settings;
     },
   },
 };

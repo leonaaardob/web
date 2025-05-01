@@ -83,6 +83,14 @@
           "force_name_registration": "Force Player Name Registration",
           "force_name_registration_description": "If forced to have player registration, the player will be required to submit a name that will be used on the platform."
         },
+        "servers": {
+          "title": "Server Settings",
+          "enable_cpu_pinning": "Enable CPU Pinning",
+          "enable_cpu_pinning_description": "Enable CPU pinning for better performance",
+          "number_of_cpus_per_server": "Number of CPUs per Server",
+          "number_of_cpus_per_server_description": "Number of CPUs to allocate per server",
+          "update": "Update"
+        },
         "s3": {
           "update": "Update",
           "title": "Demo Settings",
