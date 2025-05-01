@@ -66,13 +66,11 @@ export default defineEventHandler(async (event) => {
       ...(body.per_page ? { per_page: body.per_page } : {}),
     });
 
-  if (process.env.STEAM_API_KEY && results.found === 0 && query.match(/^[0-9]+$/)) {
-    console.info("No results found, trying to find by steam id");
+  if (process.env.STEAM_API_KEY && results.found === 0) {
     try {
-      const steamResponse = await fetch(
-        `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${process.env.STEAM_API_KEY}&steamids=${query}`,
-      );
-      const steamData = await steamResponse.json();
+      const steamData = query.match(/^[0-9]+$/)
+        ? await searchBySteamId(query)
+        : await searchByAcountName(query);
 
       if (steamData.response?.players?.length > 0) {
         const players = steamData.response.players as {
@@ -120,3 +118,30 @@ export default defineEventHandler(async (event) => {
 
   return results;
 });
+
+async function searchBySteamId(steamId: string) {
+  const steamResponse = await fetch(
+    `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${process.env.STEAM_API_KEY}&steamids=${steamId}`,
+  );
+  return await steamResponse.json();
+}
+
+async function searchByAcountName(accountName: string) {
+  const steamResponse = await fetch(
+    `https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=${process.env.STEAM_API_KEY}&vanityurl=${accountName}`,
+  );
+
+  if (steamResponse.status !== 200) {
+    return {
+      response: {
+        players: [],
+      },
+    };
+  }
+
+  const {
+    response: { steamid: steamId },
+  } = await steamResponse.json();
+
+  return searchBySteamId(steamId);
+}
