@@ -155,6 +155,8 @@ const handleLocaleChange = (newLocale: string) => {
           </SidebarMenu>
         </SidebarGroup>
 
+        <Separator class="mx-4 w-auto" v-if="me?.role === e_player_roles_enum.administrator" />
+
         <SidebarGroup v-if="me?.role === e_player_roles_enum.administrator">
           <SidebarGroupLabel>{{
             $t("layouts.app_nav.administration.title")
