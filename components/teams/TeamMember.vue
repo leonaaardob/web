@@ -111,7 +111,7 @@ import PlayerElo from "~/components/PlayerElo.vue";
     </AlertDialog>
   </template>
 
-  <AlertDialog v-else :open="removeMemberDialog">
+  <AlertDialog :open="removeMemberDialog">
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>{{
