@@ -746,6 +746,10 @@ export default {
       }),
       pollInterval: 60 * 1000,
       skip() {
+        if(!this.me || this.me.role !== e_player_roles_enum.administrator) {
+          return true;
+        }
+
         return useRuntimeConfig().public.webDomain !== "5stack.gg";
       },
     },
