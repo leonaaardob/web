@@ -44,9 +44,9 @@ export default {
 
     const url = new URL(request.url);
 
-    const { matchId, mapId, file } = Object.fromEntries(url.searchParams);
+    const { file } = Object.fromEntries(url.searchParams);
 
-    const response = await fetch(
+    return await fetch(
       await new AwsClient({
         accessKeyId: env.S3_ACCESS_KEY,
         secretAccessKey: env.S3_SECRET,
@@ -56,13 +56,5 @@ export default {
         headers: filterHeaders(request.headers, env),
       }),
     );
-
-    return new Response(response.body, {
-      headers: {
-        "Cache-Control": "no-cache",
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": `attachment; filename="${file}"`,
-      },
-    });
   },
 };
