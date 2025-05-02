@@ -68,9 +68,9 @@ export default {
     headers.set("Content-Disposition", `attachment; filename="${file}"`);
 
     return new Response(response.body, {
+      headers,
       status: response.status,
       statusText: response.statusText,
-      headers: headers,
     });
   },
 };
