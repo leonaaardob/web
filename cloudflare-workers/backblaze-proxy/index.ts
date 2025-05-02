@@ -46,15 +46,31 @@ export default {
 
     const { file } = Object.fromEntries(url.searchParams);
 
-    return await fetch(
-      await new AwsClient({
-        accessKeyId: env.S3_ACCESS_KEY,
-        secretAccessKey: env.S3_SECRET,
-        service: "s3",
-      }).sign(`https://${env.BUCKET_NAME}.${env.S3_ENDPOINT}/${file}`, {
-        method: request.method,
-        headers: filterHeaders(request.headers, env),
-      }),
-    );
+    if (!file) {
+      return new Response("No file provided", { status: 400 });
+    }
+
+    const signedRequest = await new AwsClient({
+      accessKeyId: env.S3_ACCESS_KEY,
+      secretAccessKey: env.S3_SECRET,
+      service: "s3",
+    }).sign(`https://${env.BUCKET_NAME}.${env.S3_ENDPOINT}/${file}`, {
+      method: request.method,
+      headers: filterHeaders(request.headers, env),
+    });
+
+    const response = await fetch(signedRequest.url, {
+      method: signedRequest.method,
+      headers: signedRequest.headers,
+    });
+
+    const headers = new Headers(response.headers);
+    headers.set("Content-Disposition", `attachment; filename="${file}"`);
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers,
+    });
   },
 };

@@ -74,7 +74,7 @@ definePageMeta({
                   v-for="role in roles"
                   :key="role.value"
                 >
-                  <span >{{ role.display }}</span>
+                  <span>{{ role.display }}</span>
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -83,8 +83,6 @@ definePageMeta({
         <FormMessage />
       </FormItem>
     </FormField>
-
-   
 
     <FormField
       v-slot="{ componentField }"
@@ -144,9 +142,15 @@ export default {
       roles: [
         { value: e_player_roles_enum.user, display: "User" },
         { value: e_player_roles_enum.verified_user, display: "Verified User" },
-        { value: e_player_roles_enum.match_organizer, display: "Match Organizer" },
-        { value: e_player_roles_enum.tournament_organizer, display: "Tournament Organizer" },
-        { value: e_player_roles_enum.administrator, display: "Administrator" },  
+        {
+          value: e_player_roles_enum.match_organizer,
+          display: "Match Organizer",
+        },
+        {
+          value: e_player_roles_enum.tournament_organizer,
+          display: "Tournament Organizer",
+        },
+        { value: e_player_roles_enum.administrator, display: "Administrator" },
       ],
       form: useForm({
         validationSchema: toTypedSchema(
@@ -156,7 +160,9 @@ export default {
               create_tournaments_role: z
                 .string()
                 .default(e_player_roles_enum.user),
-              matchmaking_min_role: z.string().default(e_player_roles_enum.user),
+              matchmaking_min_role: z
+                .string()
+                .default(e_player_roles_enum.user),
             }),
           }),
         ),

@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", () => {
   ];
 
   function isRoleAbove(role: e_player_roles_enum) {
-    if(!me.value) {
+    if (!me.value) {
       return false;
     }
 

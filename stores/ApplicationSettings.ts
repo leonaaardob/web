@@ -64,9 +64,11 @@ export const useApplicationSettingsStore = defineStore(
         (setting) => setting.name === "public.matchmaking",
       );
 
-      const matchmakingEnabled = matchMakingSetting ? matchMakingSetting.value === "true" : true;
+      const matchmakingEnabled = matchMakingSetting
+        ? matchMakingSetting.value === "true"
+        : true;
 
-      if(!matchmakingEnabled) {
+      if (!matchmakingEnabled) {
         return false;
       }
 
@@ -74,7 +76,7 @@ export const useApplicationSettingsStore = defineStore(
         (setting) => setting.name === "public.matchmaking_min_role",
       );
 
-      if(!matchmakingMinRole) {
+      if (!matchmakingMinRole) {
         return true;
       }
 
@@ -159,7 +161,7 @@ export const useApplicationSettingsStore = defineStore(
 
     const canCreateMatch = computed(() => {
       const me = useAuthStore().me;
-      if(!me) {
+      if (!me) {
         return false;
       }
 
