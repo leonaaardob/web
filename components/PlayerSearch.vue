@@ -60,7 +60,7 @@ import debounce from "~/utilities/debounce";
                 class="px-3 py-2 hover:bg-accent cursor-pointer"
                 @click="select(player)"
               >
-                <PlayerDisplay :player="player" :show-steam-id="true" />
+                <PlayerDisplay :player="player" />
               </div>
             </div>
           </div>

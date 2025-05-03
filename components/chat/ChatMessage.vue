@@ -10,8 +10,8 @@ import PlayerDisplay from "~/components/PlayerDisplay.vue";
         <PlayerDisplay
           :player="message.from"
           :show-name="false"
-          :show-steam-id="false"
           :show-flag="false"
+          :show-role="false"
           v-if="!isSameSender || !isCloseTogether"
         />
       </div>

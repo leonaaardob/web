@@ -79,7 +79,7 @@ import Badge from "../ui/badge/Badge.vue";
               <div class="flex space-x-3">
                 <PlayerDisplay
                   :show-flag="false"
-                  :show-steam-id="false"
+                  :show-role="false"
                   :player="{
                     name: $t('tournament.team.slot', {
                       number: slot + team.roster.length,

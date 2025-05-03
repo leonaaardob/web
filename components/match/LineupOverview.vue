@@ -119,7 +119,7 @@ import { UserPlusIcon } from "lucide-vue-next";
           <div class="flex gap-4">
             <PlayerDisplay
               :show-flag="false"
-              :show-steam-id="false"
+              :show-role="false"
               :player="{
                 name: `${$t('match.overview.slot', { number: slot + lineup.lineup_players.length })} ${slot + lineup.lineup_players.length > match.min_players_per_lineup ? $t('match.overview.substitute') : ''}`,
               }"
