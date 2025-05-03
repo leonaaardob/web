@@ -34,7 +34,7 @@ import debounce from "~/utilities/debounce";
             <Switch
               class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
               :model-value="onlineOnly"
-              @click="onlineOnly = !onlineOnly"
+              @click="toggleOnlineOnly"
             />
             {{ $t("player.search.online_only") }}
           </div>
@@ -136,6 +136,10 @@ export default {
     },
   },
   methods: {
+    toggleOnlineOnly() {
+      this.onlineOnly = !this.onlineOnly;
+      this.searchPlayers();
+    },
     select(player: Player) {
       if (!player) {
         return;

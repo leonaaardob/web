@@ -88,7 +88,7 @@ import { FullscreenIcon, ExpandIcon } from "lucide-vue-next";
                 <span
                   class="text-blue-100"
                   v-if="(timestamps === undefined && _timestamps) || timestamps"
-                  >{{ timestamps }}</span
+                  >{{ timestamp }}</span
                 >
               </div>
             </div>
