@@ -35,7 +35,6 @@ import PlayerElo from "~/components/PlayerElo.vue";
         <badge v-if="memberRole">{{ memberRole }}</badge>
       </template>
     </PlayerDisplay>
-    <PlayerElo :elo="member.player.elo" />
   </div>
   <Popover
     v-if="
