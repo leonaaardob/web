@@ -9,9 +9,9 @@ import { e_match_status_enum } from "~/generated/zeus";
     :player="member.player"
     :show-online="showStatus"
     :show-flag="showDetails"
-    :show-steam-id="showDetails"
     :show-name="showDetails"
     :ping-status="showDetails"
+    :show-role="showDetails"
   >
     <template v-slot:avatar-sub v-if="showDetails">
       <Badge variant="outline" v-if="member.captain">

@@ -49,7 +49,7 @@ const teamMenu = ref(false);
       </template>
 
       <template #description>
-        <PlayerDisplay :player="team.owner" :showSteamId="false">
+        <PlayerDisplay :player="team.owner">
           <template #name-postfix>
             <Badge variant="secondary">{{ $t("team.roles.captain") }}</Badge>
           </template>

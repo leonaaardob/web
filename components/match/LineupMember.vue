@@ -33,8 +33,6 @@ import PlayerStatusDisplay from "./PlayerStatusDisplay.vue";
 </template>
 
 <script lang="ts">
-import { e_match_status_enum } from "~/generated/zeus";
-
 export default {
   props: {
     member: {

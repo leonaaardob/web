@@ -43,7 +43,6 @@ import MatchmakingLobbyAccess from "~/components/matchmaking-lobby/MatchmakingLo
           <PlayerDisplay
             :player="player.player"
             :showOnline="false"
-            :showSteamId="!mini"
             :showName="!mini"
             :showFlag="!mini"
           />

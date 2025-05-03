@@ -2,6 +2,8 @@
 import TimezoneFlag from "~/components/TimezoneFlag.vue";
 import { Ban, MicOff, MessageSquareOff, UserPlus } from "lucide-vue-next";
 import PlayerElo from "~/components/PlayerElo.vue";
+import { Crown, Shield, BadgeCheck, BadgeIcon } from "lucide-vue-next";
+import FiveStackToolTip from "./FiveStackToolTip.vue";
 </script>
 <template>
   <div
@@ -9,7 +11,7 @@ import PlayerElo from "~/components/PlayerElo.vue";
     @click="viewPlayer"
     :class="{
       'cursor-pointer': linkable,
-      'grid-cols-[52px_1fr]': showName || showSteamId || showFlag,
+      'grid-cols-[52px_1fr]': showName || showSteamId || showRole || showFlag,
     }"
   >
     <div class="flex flex-col items-center justify-center relative">
@@ -43,8 +45,8 @@ import PlayerElo from "~/components/PlayerElo.vue";
       </div>
     </div>
     <div
-      :class="{ 'flex items-center': !showSteamId }"
-      v-if="showFlag || showName || showSteamId"
+      :class="{ 'flex items-center': !player.steam_id || (!showSteamId && !showRole) }"
+      v-if="showFlag || showName || showSteamId || showRole"
     >
       <slot>
         <div
@@ -125,9 +127,34 @@ import PlayerElo from "~/components/PlayerElo.vue";
               </Tooltip>
             </TooltipProvider>
           </div>
-          <p class="text-muted-foreground" v-if="showSteamId">
-            {{ player.steam_id }}
-          </p>
+          <div class="flex items-center gap-2" v-if="player.steam_id">
+            <FiveStackToolTip v-if="showRole">
+              <template #trigger>
+                <template v-if="isUser">
+                  <BadgeIcon class="w-3 h-3 mr-1" />
+                </template>
+                <template v-if="isVerified">
+                  <BadgeCheck class="w-3 h-3 mr-1 text-green-500" />
+                </template>
+                <template v-if="isOrganizer">
+                  <Shield class="w-3 h-3 mr-1 text-yellow-500" />
+                </template>
+                <template v-if="isTournamentOrganizer">
+                  <Shield class="w-3 h-3 mr-1 text-orange-500" />
+                </template>
+                <template v-if="isAdmin">
+                  <Crown class="w-3 h-3 mr-1 text-red-500" />
+                </template>
+              </template>
+              <span class="capitalize">
+                {{ player?.role?.replace("_", " ") }}
+              </span>
+            </FiveStackToolTip>
+            <PlayerElo :elo="player.elo" />
+            <p class="text-muted-foreground text-sm" v-if="showSteamId">
+              {{ player.steam_id }}
+            </p>
+          </div>
         </div>
       </slot>
     </div>
@@ -136,6 +163,7 @@ import PlayerElo from "~/components/PlayerElo.vue";
 </template>
 
 <script lang="ts">
+import { e_player_roles_enum } from "~/generated/zeus";
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
 
 export default {
@@ -156,9 +184,13 @@ export default {
       type: Boolean,
       default: true,
     },
-    showSteamId: {
+    showRole: {
       type: Boolean,
       default: true,
+    },
+    showSteamId: {
+      type: Boolean,
+      default: false,
     },
     linkable: {
       type: Boolean,
@@ -228,6 +260,21 @@ export default {
       return useMatchmakingStore().friends.find((friend) => {
         return friend.steam_id == this.player.steam_id;
       });
+    },
+    isUser() {
+      return this.player?.role === e_player_roles_enum.user;
+    },
+    isVerified() {
+      return this.player?.role === e_player_roles_enum.verified_user;
+    },
+    isOrganizer() {
+      return this.player?.role === e_player_roles_enum.match_organizer;
+    },
+    isTournamentOrganizer() {
+      return this.player?.role === e_player_roles_enum.tournament_organizer;
+    },
+    isAdmin() {
+      return this.player?.role === e_player_roles_enum.administrator;
     },
   },
 };

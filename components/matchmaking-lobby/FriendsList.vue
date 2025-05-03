@@ -132,7 +132,6 @@ import PlayerSearch from "~/components/PlayerSearch.vue";
                       :showAddFriend="false"
                       :showName="false"
                       :showFlag="false"
-                      :showSteamId="false"
                     />
                   </template>
                 </div>

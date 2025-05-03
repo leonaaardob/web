@@ -20,7 +20,7 @@ import PlayerChangeName from "~/components/PlayerChangeName.vue";
     <PageHeading>
       <template #title>
         <PlayerChangeName :player="player" />
-        <PlayerDisplay :player="player" size="xl" v-if="player"></PlayerDisplay>
+        <PlayerDisplay :player="player" size="xl" :show-steam-id="true" v-if="player"></PlayerDisplay>
         <a
           :href="player.profile_url"
           target="_blank"

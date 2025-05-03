@@ -68,6 +68,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
           {},
           {
             name: true,
+            role: true,
             country: true,
             steam_id: true,
             avatar_url: true,

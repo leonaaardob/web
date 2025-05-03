@@ -60,7 +60,7 @@ import debounce from "~/utilities/debounce";
                 class="px-3 py-2 hover:bg-accent cursor-pointer"
                 @click="select(player)"
               >
-                <PlayerDisplay :player="player" />
+                <PlayerDisplay :player="player" :show-steam-id="true" />
               </div>
             </div>
           </div>
@@ -73,6 +73,7 @@ import debounce from "~/utilities/debounce";
 <script lang="ts">
 interface Player {
   steam_id: string;
+  role?: string;
   name: string;
   avatar_url?: string;
   country?: string;
@@ -170,6 +171,7 @@ export default {
 
       this.players = (response as SearchResponse).hits.map(({ document }) => {
         return {
+          role: document.role,
           steam_id: document.steam_id,
           name: document.name,
           avatar_url: document.avatar_url,

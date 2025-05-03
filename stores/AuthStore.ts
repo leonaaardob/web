@@ -115,10 +115,10 @@ export const useAuthStore = defineStore("auth", () => {
     getMe,
     isUser,
     isVerifiedUser,
-    isAdmin,
-    hasDiscordLinked,
     isMatchOrganizer,
     isTournamentOrganizer,
+    isAdmin,
+    hasDiscordLinked,
     isRoleAbove,
   };
 });
