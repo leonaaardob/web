@@ -11,28 +11,37 @@ import formatStatValue from "~/utilities/formatStatValue";
 import SanctionPlayer from "~/components/SanctionPlayer.vue";
 import PlayerSanctions from "~/components/PlayerSanctions.vue";
 import PlayerChangeName from "~/components/PlayerChangeName.vue";
+import SteamIcon from "~/components/icons/SteamIcon.vue";
 </script>
 
 <template>
-  <PlayerSanctions class="my-4" :playerId="$route.params.id" />
+  <PlayerSanctions class="my-4" :playerId="$route.params.id as string" />
 
   <div class="flex-grow flex flex-col gap-4" v-if="player">
     <PageHeading>
       <template #title>
-        <PlayerChangeName :player="player" />
-        <PlayerDisplay
-          :player="player"
-          size="xl"
-          :show-steam-id="true"
-          v-if="player"
-        ></PlayerDisplay>
-        <a
-          :href="player.profile_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ml-2 text-md"
-          >{{ player.profile_url }}</a
-        >
+        <div class="flex items-center justify-center gap-4">
+          <div class="flex flex-col gap-2">
+            <PlayerChangeName :player="player" />
+            <div class="flex items-center gap-4">
+              <PlayerDisplay
+                :player="player"
+                size="xl"
+                :show-steam-id="true"
+                v-if="player"
+              />
+              <a
+                v-if="player?.profile_url"
+                :href="player.profile_url"
+                target="_blank"
+                class="flex items-center justify-center p-2 rounded-md border border-border bg-background hover:bg-accent/50 transition-colors"
+                title="View Steam Profile"
+              >
+                <SteamIcon class="size-5 fill-foreground" />
+              </a>
+            </div>
+          </div>
+        </div>
       </template>
 
       <template #actions>
@@ -56,13 +65,11 @@ import PlayerChangeName from "~/components/PlayerChangeName.vue";
                   <CommandList>
                     <CommandGroup>
                       <CommandItem
-                        :value="role"
+                        :value="role.value"
                         class="flex flex-col items-start px-4 py-2 cursor-pointer"
-                        v-for="role of e_player_roles_enum"
+                        v-for="role of roles"
                       >
-                        <span class="capitalize">{{
-                          role.replace("_", " ")
-                        }}</span>
+                        <span class="capitalize">{{ role.display }}</span>
                       </CommandItem>
                     </CommandGroup>
                   </CommandList>
@@ -133,7 +140,7 @@ import PlayerChangeName from "~/components/PlayerChangeName.vue";
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <LastTenWins :steam_id="$route.params.id" />
+            <LastTenWins :steam_id="$route.params.id as string" />
           </CardContent>
         </div>
       </Card>
@@ -146,7 +153,7 @@ import PlayerChangeName from "~/components/PlayerChangeName.vue";
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <LastTenLosses :steam_id="$route.params.id" />
+            <LastTenLosses :steam_id="$route.params.id as string" />
           </CardContent>
         </div>
       </Card>
@@ -326,6 +333,19 @@ export default {
       page: 1,
       perPage: 10,
       memberRole: undefined,
+      roles: [
+        { value: e_player_roles_enum.user, display: "User" },
+        { value: e_player_roles_enum.verified_user, display: "Verified User" },
+        {
+          value: e_player_roles_enum.match_organizer,
+          display: "Match Organizer",
+        },
+        {
+          value: e_player_roles_enum.tournament_organizer,
+          display: "Tournament Organizer",
+        },
+        { value: e_player_roles_enum.administrator, display: "Administrator" },
+      ],
     };
   },
   watch: {

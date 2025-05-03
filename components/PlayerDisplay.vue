@@ -11,12 +11,15 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
     @click="viewPlayer"
     :class="{
       'cursor-pointer': linkable,
-      'grid-cols-[52px_1fr]': showName || showSteamId || showRole || showFlag,
+      'grid-cols-[52px_1fr]':
+        size !== 'xs' && (showName || showSteamId || showRole || showFlag),
+      'grid-cols-[32px_1fr]':
+        size === 'xs' && (showName || showSteamId || showRole || showFlag),
     }"
   >
     <div class="flex flex-col items-center justify-center relative">
       <slot name="avatar">
-        <Avatar shape="square">
+        <Avatar shape="square" :class="{ 'h-8 w-8': size === 'xs' }">
           <AvatarImage
             :src="player.avatar_url"
             :alt="player.name"
@@ -46,7 +49,10 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
     </div>
     <div
       :class="{
-        'flex items-center': !player.steam_id || (!showSteamId && !showRole),
+        'flex items-center':
+          !player.steam_id ||
+          (!showSteamId && !showRole) ||
+          (!showName && !showFlag),
       }"
       v-if="showFlag || showName || showSteamId || showRole"
     >
@@ -54,6 +60,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
         <div
           class="text-left"
           :class="{
+            'text-xs': size === 'xs',
             'text-sm': size === 'sm',
             'text-lg': size === 'lg',
             'text-xl': size === 'xl',
@@ -153,7 +160,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
               </span>
             </FiveStackToolTip>
             <PlayerElo :elo="player.elo" />
-            <p class="text-muted-foreground text-sm" v-if="showSteamId">
+            <p class="text-muted-foreground text-xs" v-if="showSteamId">
               {{ player.steam_id }}
             </p>
           </div>

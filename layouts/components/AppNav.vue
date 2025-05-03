@@ -441,16 +441,14 @@ const handleLocaleChange = (newLocale: string) => {
                       profileOpened,
                   }"
                 >
-                  <Avatar class="h-8 w-8" shape="square">
-                    <AvatarImage :src="me.avatar_url" :alt="me.name" />
-                    <AvatarFallback>
-                      {{ me.name.slice(0, 2) }}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div class="grid flex-1 text-left text-sm leading-tight">
-                    <span class="truncate font-semibold">{{ me.name }}</span>
-                    <span class="truncate text-xs">{{ me.steam_id }}</span>
-                  </div>
+                  <PlayerDisplay
+                    :player="me"
+                    :show-online="false"
+                    :show-role="isMobile || open"
+                    :show-flag="false"
+                    :show-name="false"
+                    size="xs"
+                  />
 
                   <ChevronsUpDownIcon class="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -489,9 +487,9 @@ const handleLocaleChange = (newLocale: string) => {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
 
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator v-if="!isMobile && !open" />
 
-                <DropdownMenuGroup>
+                <DropdownMenuGroup v-if="!isMobile && !open">
                   <DropdownMenuLabel class="font-normal">
                     <PlayerDisplay :player="me" :show-online="false" />
                   </DropdownMenuLabel>
