@@ -471,9 +471,7 @@ const handleLocaleChange = (newLocale: string) => {
                         <Languages class="size-4" />
                         <SelectValue
                           >{{ currentLocale?.flag }}
-                          {{ currentLocale?.name }} ({{
-                            currentLocale?.code
-                          }})</SelectValue
+                          {{ currentLocale?.name }}</SelectValue
                         >
                       </SelectTrigger>
                       <SelectContent>
@@ -483,7 +481,7 @@ const handleLocaleChange = (newLocale: string) => {
                             :key="loc.code"
                             :value="loc.code"
                           >
-                            {{ loc.flag }} {{ loc.name }} ({{ loc.code }})
+                            {{ loc.flag }} {{ loc.name }}
                           </SelectItem>
                         </SelectGroup>
                       </SelectContent>
