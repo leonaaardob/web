@@ -287,7 +287,9 @@ export default {
       return useAuthStore().me;
     },
     friends() {
-      return useMatchmakingStore().friends;
+      return useMatchmakingStore().friends.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
     },
     onlineFriends() {
       return this.friends?.filter((friend) => {
