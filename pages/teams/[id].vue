@@ -57,7 +57,7 @@ const teamMenu = ref(false);
       </template>
 
       <template #actions>
-        <DropdownMenu v-model:open="teamMenu">
+        <DropdownMenu v-model:open="teamMenu" v-if="isOnTeam">
           <DropdownMenuTrigger as-child>
             <Button variant="outline" size="icon">
               <MoreHorizontal />
@@ -65,7 +65,7 @@ const teamMenu = ref(false);
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" class="w-[200px]">
             <DropdownMenuGroup>
-              <template v-if="team.owner.steam_id === me.steam_id && isOnTeam">
+              <template v-if="team.owner.steam_id === me.steam_id">
                 <DropdownMenuItem @click="editTeamSheet = true">
                   {{ $t("common.actions.edit") }}
                 </DropdownMenuItem>
