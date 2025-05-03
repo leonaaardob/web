@@ -20,6 +20,9 @@ import MatchOptionsDisplay from "~/components/match//MatchOptionsDisplay.vue";
 import { Cross2Icon } from "@radix-icons/vue";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import ServiceLogs from "~/components/ServiceLogs.vue";
+import {
+  e_match_types_enum,
+} from "~/generated/zeus";
 
 const commander = new EventEmitter();
 provide("commander", commander);
@@ -37,7 +40,7 @@ provide("commander", commander);
       <TabsTrigger :disabled="disableStats" value="opening-duels">
         {{ $t("match.tabs.opening_duels") }}
       </TabsTrigger>
-      <TabsTrigger :disabled="disableStats" value="clutches">
+      <TabsTrigger :disabled="disableStats" value="clutches" v-if="match.options.type !== e_match_types_enum.Duel">
         {{ $t("match.tabs.clutches") }}
       </TabsTrigger>
       <TabsTrigger
