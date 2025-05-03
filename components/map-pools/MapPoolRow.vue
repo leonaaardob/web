@@ -109,7 +109,6 @@ export default {
   },
   methods: {
     async togglePoolType(map: Map, type: e_match_types_enum) {
-      console.log(map.poolTypes);
       if (map.poolTypes.includes(type)) {
         await this.$apollo.mutate({
           mutation: generateMutation({

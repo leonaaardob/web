@@ -213,7 +213,6 @@ export default {
       this.regionDialogOpen = true;
     },
     async deleteRegion() {
-      console.info("deleting region ", this.regionToDelete.value);
       await this.$apollo.mutate({
         mutation: generateMutation({
           delete_server_regions_by_pk: [

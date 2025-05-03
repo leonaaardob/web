@@ -116,7 +116,6 @@ export default {
         return;
       }
 
-      console.info("I AM LABEL", this.form.values.label);
       await this.$apollo.mutate({
         mutation: generateMutation({
           update_game_server_nodes_by_pk: [

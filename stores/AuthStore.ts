@@ -32,7 +32,6 @@ export const useAuthStore = defineStore("auth", () => {
       return false;
     }
 
-    console.info(`checking if ${me.value.role} is above ${role}`);
     const meRoleIndex = roleOrder.indexOf(me.value.role);
     const roleIndex = roleOrder.indexOf(role);
 

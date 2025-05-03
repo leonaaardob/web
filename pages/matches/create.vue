@@ -146,7 +146,6 @@ export default {
 
       const form = this.form.values;
 
-      console.info("wtf", form.ready_setting);
       const { data } = await this.$apollo.mutate({
         variables: {
           mr: form.mr,
