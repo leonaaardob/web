@@ -128,7 +128,9 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
     matchId: string,
     users: Array<{ steam_id: string; name: string; avatar_url: string }>,
   ) => {
-    lobbyChat.value[matchId] = new Map();
+    if (!lobbyChat.value[matchId]) {
+      lobbyChat.value[matchId] = new Map();
+    }
 
     for (const user of users) {
       lobbyChat.value[matchId].set(user.steam_id, user);

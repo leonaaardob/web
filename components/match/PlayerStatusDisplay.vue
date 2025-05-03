@@ -104,7 +104,7 @@ export default {
       return e_match_status_enum;
     },
     lobby() {
-      return useMatchLobbyStore().lobbyChat[this.match.id];
+      return useMatchLobbyStore().lobbyChat[`match:${this.match?.id}`];
     },
     isOnline() {
       return useMatchmakingStore().onlinePlayerSteamIds.includes(
