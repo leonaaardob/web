@@ -67,6 +67,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
         my_friends: [
           {},
           {
+            elo: true,
             name: true,
             role: true,
             country: true,

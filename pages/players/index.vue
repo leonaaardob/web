@@ -53,7 +53,10 @@ import PlayerElo from "~/components/PlayerElo.vue";
             class="cursor-pointer"
           >
             <TableCell class="font-medium">
-              <PlayerDisplay :player="player" :show-steam-id="true"></PlayerDisplay>
+              <PlayerDisplay
+                :player="player"
+                :show-steam-id="true"
+              ></PlayerDisplay>
             </TableCell>
           </TableRow>
         </TableBody>
