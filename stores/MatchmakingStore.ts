@@ -1,10 +1,15 @@
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { e_match_types_enum, $, e_lobby_access_enum } from "~/generated/zeus";
 import getGraphqlClient from "~/graphql/getGraphqlClient";
 import { generateQuery, generateSubscription } from "~/graphql/graphqlGen";
 import { playerFields } from "~/graphql/playerFields";
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
+import { webrtc } from "~/web-sockets/Webrtc";
+
+const REGION_LATENCIES_KEY = "5stack_region_latencies";
+const MAX_PING_KEY = "5stack_max_acceptable_ping";
+const PREFERRED_REGIONS_KEY = "5stack_preferred_regions";
 
 export const useMatchmakingStore = defineStore("matchmaking", () => {
   const playersOnline = ref([]);
@@ -188,12 +193,132 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     });
   };
 
+  const savedRegions = localStorage.getItem(PREFERRED_REGIONS_KEY);
+  const preferredRegions = ref<string[]>(
+    savedRegions ? JSON.parse(savedRegions) : [],
+  );
+
+  const savedLatencies = localStorage.getItem(REGION_LATENCIES_KEY);
+  const latencies = savedLatencies
+    ? new Map(JSON.parse(savedLatencies))
+    : new Map();
+
+  const savedMaxPing = localStorage.getItem(MAX_PING_KEY);
+  const maxAcceptablePing = ref(savedMaxPing ? parseInt(savedMaxPing) : 75);
+
+  async function refreshLatencies() {
+    await Promise.all(
+      useApplicationSettingsStore().availableRegions.map((region) =>
+        getLatency(region.value),
+      ),
+    );
+  }
+
+  function checkLatenies() {
+    if (!latencies.size) {
+      refreshLatencies();
+    }
+  }
+
+  async function getLatency(region: string) {
+    try {
+      const latencyArray: number[] = [];
+      let pingCount = 0;
+      const totalPings = 4;
+      let startTime: number;
+
+      const datachannel = await webrtc.connect(region, () => {
+        const endTime = performance.now();
+        const latency = endTime - startTime;
+        latencyArray.push(latency);
+
+        if (latencyArray.length === totalPings) {
+          latencies.set(region, latencyArray);
+
+          localStorage.setItem(
+            REGION_LATENCIES_KEY,
+            JSON.stringify(Array.from(latencies.entries())),
+          );
+
+          console.info("lets go", region, latencyArray);
+          datachannel.close();
+          return;
+        }
+
+        startTime = performance.now();
+        datachannel.send("");
+        pingCount++;
+      });
+
+      startTime = performance.now();
+      datachannel.send("");
+      pingCount++;
+    } catch (error) {
+      console.error(`Failed to get latency for ${region}`, error);
+    }
+  }
+
+  function togglePreferredRegion(region: string) {
+    const index = preferredRegions.value.indexOf(region);
+    if (index !== -1) {
+      preferredRegions.value.splice(index, 1);
+    } else {
+      preferredRegions.value.push(region);
+    }
+    localStorage.setItem(
+      PREFERRED_REGIONS_KEY,
+      JSON.stringify(preferredRegions.value.filter(Boolean)),
+    );
+  }
+
+  function updateMaxAcceptablePing(ping: number) {
+    maxAcceptablePing.value = ping;
+    localStorage.setItem(MAX_PING_KEY, ping.toString());
+  }
+
+  function getAverageLatency(region: string): string {
+    const regionLatencies = latencies.get(region);
+    if (!regionLatencies || regionLatencies.length === 0) {
+      return "Measuring...";
+    }
+    const avg =
+      regionLatencies.reduce((a: number, b: number) => a + b, 0) /
+      regionLatencies.length;
+    return avg.toFixed(0);
+  }
+
+  const preferredRegionsComputed = computed(() => {
+    const availableRegions = useApplicationSettingsStore().availableRegions;
+
+    if (preferredRegions.value.length > 0) {
+      return availableRegions.filter((region) =>
+        preferredRegions.value.includes(region.value),
+      );
+    }
+
+    return availableRegions.filter((region) => {
+      const avgLatency = Number(getAverageLatency(region.value));
+      return !isNaN(avgLatency) && avgLatency <= maxAcceptablePing.value;
+    });
+  });
+
   return {
     friends,
     regionStats,
     playersOnline,
     onlinePlayerSteamIds,
     joinedMatchmakingQueues,
+
+    checkLatenies,
+    refreshLatencies,
+    getAverageLatency,
+    togglePreferredRegion,
+    updateMaxAcceptablePing,
+
+    latencies,
+    preferredRegions: preferredRegionsComputed,
+    maxAcceptablePing,
+
     inviteToLobby,
   };
 });
@@ -201,73 +326,3 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useMatchmakingStore, import.meta.hot));
 }
-
-const temp = {
-  _or: [
-    {
-      _and: [
-        {
-          lobby: {
-            _or: [
-              {
-                players: {
-                  steam_id: {
-                    _eq: "X-Hasura-User-Id",
-                  },
-                },
-              },
-              {
-                access: {
-                  _eq: "Open",
-                },
-              },
-            ],
-          },
-        },
-        {
-          _and: [
-            {
-              status: {
-                _neq: "Invited",
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      _and: [
-        {
-          lobby: {
-            _or: [
-              {
-                players: {
-                  steam_id: {
-                    _eq: "X-Hasura-User-Id",
-                  },
-                },
-              },
-              {
-                access: {
-                  _eq: "Open",
-                },
-              },
-            ],
-          },
-        },
-        {
-          _and: [
-            {
-              status: {
-                _eq: "Invited",
-              },
-              steam_id: {
-                _eq: "X-Hasura-User-Id",
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};

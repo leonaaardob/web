@@ -3,6 +3,14 @@ import { ref, computed } from "vue";
 import { e_player_roles_enum } from "~/generated/zeus";
 import getGraphqlClient from "~/graphql/getGraphqlClient";
 import { generateSubscription } from "~/graphql/graphqlGen";
+import { useMatchmakingStore } from "./MatchmakingStore";
+
+interface Region {
+  value: string;
+  description: string;
+  is_lan: boolean;
+  status: string;
+}
 
 export const useApplicationSettingsStore = defineStore(
   "applicationSettings",
@@ -115,7 +123,7 @@ export const useApplicationSettingsStore = defineStore(
       );
     });
 
-    const availableRegions = ref([]);
+    const availableRegions = ref<Region[]>([]);
 
     const subscribeToAvailableRegions = async () => {
       const subscription = getGraphqlClient().subscribe({
@@ -141,6 +149,7 @@ export const useApplicationSettingsStore = defineStore(
       subscription.subscribe({
         next: ({ data }) => {
           availableRegions.value = data.server_regions;
+          useMatchmakingStore().checkLatenies();
         },
       });
     };

@@ -3,7 +3,7 @@ import SimpleMatchDisplay from "./SimpleMatchDisplay.vue";
 </script>
 
 <template>
-  <div class="flex gap-4 overflow-x-auto" v-if="matches.length > 0 || !hide">
+  <div class="flex gap-4 overflow-x-auto" v-if="matches.length > 0">
     <template v-if="matches?.length > 0">
       <SimpleMatchDisplay
         :key="match.id"
@@ -19,15 +19,11 @@ import SimpleMatchDisplay from "./SimpleMatchDisplay.vue";
       </div>
     </template>
   </div>
+  <slot v-if="matches.length > 0"></slot>
 </template>
 
 <script lang="ts">
 export default {
-  props: {
-    hide: {
-      default: false,
-    },
-  },
   computed: {
     matches() {
       return useMatchLobbyStore().upcomingMatches;

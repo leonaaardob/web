@@ -4,7 +4,7 @@ import { CalendarIcon } from "lucide-vue-next";
 
 <template>
   <span class="flex items-center gap-2">
-    <CalendarIcon class="h-4 w-4" />
+    <CalendarIcon class="h-4 w-4" v-if="!seconds" />
     {{ text }}
   </span>
 </template>
@@ -21,11 +21,16 @@ export default {
       required: true,
       type: String,
     },
+    seconds: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       text: "",
-      interval: undefined,
+      interval: undefined as NodeJS.Timeout | undefined,
     };
   },
   watch: {
@@ -37,9 +42,12 @@ export default {
     },
   },
   mounted() {
-    this.interval = setInterval(() => {
-      this.updateText();
-    }, 1000 * 10);
+    this.interval = setInterval(
+      () => {
+        this.updateText();
+      },
+      this.seconds ? 1000 : 1000 * 10,
+    );
   },
   beforeUnmount() {
     clearInterval(this.interval);
@@ -47,12 +55,34 @@ export default {
   methods: {
     updateText() {
       const timeAgo = new TimeAgo("en-US");
-
       const time = new Date(this.date);
-
       time.setSeconds(time.getSeconds() - 1);
 
-      this.text = timeAgo.format(time);
+      if (this.seconds) {
+        const now = new Date();
+        const diffInSeconds = Math.floor(
+          (now.getTime() - time.getTime()) / 1000,
+        );
+
+        const hours = Math.floor(diffInSeconds / 3600);
+        const minutes = Math.floor((diffInSeconds % 3600) / 60);
+        const seconds = diffInSeconds % 60;
+
+        let timeText = "";
+        if (hours > 0) {
+          timeText += `${hours}:`;
+        }
+        if (minutes > 0) {
+          timeText += `${minutes}:`;
+        }
+        if (seconds > 0 || timeText === "") {
+          timeText += `${seconds.toString().padStart(2, "0")}`;
+        }
+
+        this.text = timeText.trim();
+      } else {
+        this.text = timeAgo.format(time);
+      }
     },
   },
 };

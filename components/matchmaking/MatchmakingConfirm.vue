@@ -2,25 +2,13 @@
 import {
   AlertDialog,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 </script>
 
 <template>
   <AlertDialog :open="shouldShow && confirmation">
     <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>{{
-          $t("matchmaking.confirm.title")
-        }}</AlertDialogTitle>
-        <AlertDialogDescription>
-          <div>{{ confirmation?.type }} @ {{ confirmation?.region }}</div>
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-
       <div class="text-4xl font-bold text-center my-4">
         {{ remainingSeconds }}
       </div>
@@ -28,12 +16,8 @@ import {
       <template v-if="confirmation?.isReady">
         <div class="flex justify-center items-center">
           <span class="text-4xl font-bold">
-            {{
-              $t("matchmaking.confirm.players", {
-                confirmed: confirmation?.confirmed,
-                total: confirmation?.players,
-              })
-            }}
+            {{ $t("matchmaking.confirm.players") }}
+            ({{ confirmation?.confirmed }} / {{ confirmation?.players }})
           </span>
         </div>
       </template>

@@ -1,7 +1,10 @@
-<script lang="ts" setup>
-import { AlertTriangle } from "lucide-vue-next";
-import MatchmakingRegion from "./MatchmakingRegion.vue";
+<script setup lang="ts">
+import { AlertTriangle, Settings2 } from "lucide-vue-next";
 import QuickServerConnect from "~/components/match/QuickServerConnect.vue";
+import MatchmakingSettings from "~/components/matchmaking/MatchmakingSettings.vue";
+import { Collapsible, CollapsibleContent } from "~/components/ui/collapsible";
+import { Button } from "~/components/ui/button";
+import TimeAgo from "../TimeAgo.vue";
 </script>
 
 <template>
@@ -26,12 +29,89 @@ import QuickServerConnect from "~/components/match/QuickServerConnect.vue";
         </AlertDescription>
       </Alert>
     </template>
-    <div v-else-if="!confirmationDetails" class="flex flex-col gap-4">
-      <MatchmakingRegion
-        :region="region"
-        v-for="region in regions"
-      ></MatchmakingRegion>
-    </div>
+
+    <template v-else-if="!confirmationDetails">
+      <div
+        v-if="isInQueue && matchMakingQueueDetails"
+        class="mb-4 flex flex-col gap-6 p-12 rounded-xl border border-border shadow-lg relative overflow-hidden min-h-[300px] justify-center items-center animate-fade-in backdrop-blur-sm"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10 animate-pulse"
+        ></div>
+        <div class="absolute inset-0">
+          <div
+            class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,var(--primary)_/_0.1,transparent)]"
+          ></div>
+        </div>
+
+        <div class="absolute top-0 left-0 w-full h-1">
+          <div
+            class="h-full bg-gradient-to-r from-primary/80 to-primary animate-loading-bar"
+          ></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="flex items-center gap-4 mb-4 text-2xl font-medium">
+            Searching for a {{ matchMakingQueueDetails.type }} Match
+          </div>
+          <div class="text-xl text-gray-400/90 flex items-center gap-2">
+            <TimeAgo
+              v-if="matchMakingQueueDetails.joinedAt"
+              :date="matchMakingQueueDetails.joinedAt"
+              :seconds="true"
+            />
+          </div>
+        </div>
+
+        <Button
+          class="relative group overflow-hidden bg-red-900/90 hover:bg-red-800 text-white transition-all duration-300 w-full max-w-md text-lg py-6 transform hover:scale-[1.02]"
+          @click="leaveMatchmaking"
+        >
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <span>Cancel Matchmaking</span>
+          </span>
+          <div
+            class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-800 to-red-900 transition-transform duration-300"
+          ></div>
+        </Button>
+      </div>
+
+      <div class="flex flex-col gap-4 bg-card p-8 rounded-lg" v-else>
+        <div>
+          <div class="flex justify-end mb-2">
+            <Button
+              variant="outline"
+              size="sm"
+              @click="showSettings = !showSettings"
+              class="flex items-center gap-2"
+            >
+              <Settings2 class="h-4 w-4" />
+              {{ $t("matchmaking.settings_section.toggle") }}
+            </Button>
+          </div>
+
+          <Collapsible :open="showSettings">
+            <CollapsibleContent class="flex flex-col gap-4">
+              <MatchmakingSettings />
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+
+        <div class="flex flex-row gap-4">
+          <div
+            v-for="type in matchTypes"
+            :key="type.type"
+            :class="[
+              'flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors',
+            ]"
+            @click="joinMatchmaking(type)"
+          >
+            <h3 class="text-lg font-medium">{{ type.title }}</h3>
+            <p class="text-sm text-muted-foreground">{{ type.description }}</p>
+          </div>
+        </div>
+      </div>
+    </template>
     <template v-else-if="match">
       <div class="flex justify-between items-center">
         <div>
@@ -57,20 +137,82 @@ import QuickServerConnect from "~/components/match/QuickServerConnect.vue";
 
 <script lang="ts">
 import { $ } from "~/generated/zeus";
+import socket from "~/web-sockets/Socket";
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
-import { useApplicationSettingsStore } from "~/stores/ApplicationSettings";
+import { generateQuery } from "~/graphql/graphqlGen";
+import { e_match_types_enum, e_match_status_enum } from "~/generated/zeus";
+
+interface MatchType {
+  type: e_match_types_enum;
+  title: string;
+  description: string;
+}
+
+interface Region {
+  value: string;
+  description: string;
+  status: string;
+  is_lan: boolean;
+}
+
+interface QueueDetails {
+  totalInQueue: number;
+  type: e_match_types_enum;
+  regions: string[];
+  joinedAt?: string;
+}
+
+interface ConfirmationDetails {
+  matchId: string;
+  isReady: boolean;
+  expiresAt: string;
+  confirmed: number;
+  confirmationId: string;
+  type: e_match_types_enum;
+  region: string;
+}
+
+interface Match {
+  id: string;
+  status: e_match_status_enum;
+  region?: string;
+  server_type?: string;
+  is_server_online?: boolean;
+  connection_string?: string;
+}
 
 export default {
   apollo: {
+    e_match_types: {
+      query: generateQuery({
+        e_match_types: [
+          {
+            where: {
+              value: {
+                _in: [
+                  e_match_types_enum.Competitive,
+                  e_match_types_enum.Wingman,
+                  e_match_types_enum.Duel,
+                ],
+              },
+            },
+          },
+          {
+            value: true,
+            description: true,
+          },
+        ],
+      }),
+    },
     $subscribe: {
       matches_by_pk: {
-        variables: function () {
+        variables(): { matchId: string | undefined } {
           return {
-            matchId: this.confirmationDetails?.matchId,
+            matchId: (this as any).confirmationDetails?.matchId,
           };
         },
-        skip() {
-          return !this.confirmationDetails?.matchId;
+        skip(): boolean {
+          return !(this as any).confirmationDetails?.matchId;
         },
         query: typedGql("subscription")({
           matches_by_pk: [
@@ -87,31 +229,120 @@ export default {
             },
           ],
         }),
-        result: function ({ data }) {
-          this.match = data.matches_by_pk;
+        result({ data }: { data: { matches_by_pk: Match } }): void {
+          (this as any).match = data.matches_by_pk;
         },
       },
     },
   },
   data() {
     return {
-      match: undefined,
-      playerSanctions: [],
+      match: undefined as Match | undefined,
+      playerSanctions: [] as any[],
+      showSettings: false,
+      matchTypes: [
+        {
+          type: e_match_types_enum.Duel,
+          title: "1v1 Match",
+          description:
+            "A competitive duel experience, perfect for practicing individual skill",
+        },
+        {
+          type: e_match_types_enum.Wingman,
+          title: "2v2 Match",
+          description:
+            "Team up with a friend and compete in fast-paced 2v2 matches",
+        },
+        {
+          type: e_match_types_enum.Competitive,
+          title: "5v5 Match",
+          description:
+            "The classic competitive experience with full team coordination",
+        },
+      ],
     };
   },
+  methods: {
+    joinMatchmaking(matchType: MatchType): void {
+      socket.event("matchmaking:join-queue", {
+        type: matchType.type,
+        regions: useMatchmakingStore().preferredRegions.map(
+          (region: Region) => {
+            return region.value;
+          },
+        ),
+      });
+    },
+    leaveMatchmaking(): void {
+      socket.leave("matchmaking");
+    },
+  },
   computed: {
-    regions() {
+    isInQueue(): boolean {
+      return !!this.matchMakingQueueDetails;
+    },
+    regions(): Region[] {
       return useApplicationSettingsStore().availableRegions;
     },
-    confirmationDetails() {
+    matchMakingQueueDetails(): QueueDetails | undefined {
+      return useMatchmakingStore().joinedMatchmakingQueues.details;
+    },
+    confirmationDetails(): ConfirmationDetails | undefined {
       return useMatchmakingStore().joinedMatchmakingQueues.confirmation;
     },
-    matchmakingAllowed() {
+    matchmakingAllowed(): boolean {
       return useApplicationSettingsStore().matchmakingAllowed;
     },
     me() {
       return useAuthStore().me;
     },
+    queueWaitTime(): string {
+      if (!this.matchMakingQueueDetails?.joinedAt) return "0 seconds";
+
+      const joinedAt = new Date(this.matchMakingQueueDetails.joinedAt);
+      const now = new Date();
+      const diffInSeconds = Math.floor(
+        (now.getTime() - joinedAt.getTime()) / 1000,
+      );
+
+      if (diffInSeconds < 60) {
+        return `${diffInSeconds} seconds`;
+      }
+
+      const minutes = Math.floor(diffInSeconds / 60);
+      const seconds = diffInSeconds % 60;
+      return `${minutes}m ${seconds}s`;
+    },
   },
 };
 </script>
+
+<style scoped>
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar 2s infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
