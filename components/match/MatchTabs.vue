@@ -405,7 +405,6 @@ export default {
       ].includes(this.match.status);
     },
     canViewServerConsole() {
-
       if (
         ![
           e_match_status_enum.Live,
@@ -418,10 +417,10 @@ export default {
       ) {
         return false;
       }
-      
+
       const { isAdmin, isMatchOrganizer, isTournamentOrganizer } =
         useAuthStore();
-        
+
       return isAdmin || isMatchOrganizer || isTournamentOrganizer;
     },
     canRandomize() {

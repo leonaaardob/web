@@ -41,6 +41,8 @@
         "steam_id": "Steam ID",
         "name": "Name",
         "avatar_url": "Avatar URL",
+        "language": "Language",
+        "search_language": "Search language...",
         "country": "Country",
         "select_country": "Select country...",
         "search_country": "Search country...",
@@ -361,7 +363,7 @@
         "map_pools": "Map Pools"
       },
       "profile": {
-        "my_account": "My Account",
+        "my_account": "My Settings",
         "logout": "Logout"
       },
       "footer": {
