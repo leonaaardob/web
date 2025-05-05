@@ -240,7 +240,6 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
             JSON.stringify(Array.from(latencies.entries())),
           );
 
-          console.info("lets go", region, latencyArray);
           datachannel.close();
           return;
         }

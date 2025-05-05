@@ -79,7 +79,6 @@ class WebRTCClient {
       const peer = new Peer({
         trickle: true,
         initiator: true,
-        channelName: "data-channel",
         config: {
           iceServers: [
             { urls: "stun:stun.l.google.com:19302" },
@@ -92,7 +91,6 @@ class WebRTCClient {
       }) as ExtendedPeer;
 
       peer.id = uuidv4();
-      peer.channelCounter = 0;
       this.peers.set(peer.id, peer);
 
       peer

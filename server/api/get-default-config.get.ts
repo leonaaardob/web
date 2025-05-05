@@ -1,6 +1,5 @@
 export default defineCachedEventHandler(
   async (event) => {
-    console.info("get default config");
     try {
       let type = getQuery(event).type?.trim().toLowerCase();
 
