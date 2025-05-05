@@ -102,12 +102,17 @@ export default {
       showRequestNameChangeDialog: false,
       sidebarNavItems: [
         {
-          title: "Profile",
+          title: this.$t("pages.settings.profile.my_account"),
           key: "profile",
           to: "/settings",
         },
         {
-          title: "Appearance",
+          title: this.$t("pages.settings.profile.language"),
+          key: "language",
+          to: "/settings/language",
+        },
+        {
+          title: this.$t("pages.settings.profile.appearance"),
           key: "appearance",
           to: "/settings/appearance",
         },

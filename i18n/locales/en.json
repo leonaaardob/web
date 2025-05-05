@@ -38,6 +38,8 @@
       "profile": {
         "title": "Profile",
         "description": "Your Profile Details",
+        "my_account": "My Account",
+        "appearance": "Appearance",
         "steam_id": "Steam ID",
         "name": "Name",
         "avatar_url": "Avatar URL",
@@ -109,6 +111,12 @@
           "cloudflare_worker_url_description": "The URL of the Cloudflare worker that will be used to store and retrieve the demo files.",
           "min_retention_description": "The minimum retention days for the demo files."
         }
+      },
+      "language": {
+        "title": "Language",
+        "description": "Choose your preferred language for the application interface.",
+        "select": "Select Language",
+        "search": "Search language..."
       }
     },
     "regions": {
