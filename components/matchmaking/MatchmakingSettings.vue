@@ -86,18 +86,27 @@ import { Loader2 } from "lucide-vue-next";
                 :class="{
                   'px-3 py-1 rounded-full text-xs font-medium': true,
                   'bg-green-500/20 text-green-400':
-                    getLatencyStatus(region.value) === 'Excellent',
+                    Number(getAverageLatency(region.value)) < 50,
                   'bg-blue-500/20 text-blue-400':
-                    getLatencyStatus(region.value) === 'Good',
+                    Number(getAverageLatency(region.value)) < 100 &&
+                    Number(getAverageLatency(region.value)) >= 50,
                   'bg-yellow-500/20 text-yellow-400':
-                    getLatencyStatus(region.value) === 'Fair',
+                    Number(getAverageLatency(region.value)) <
+                      maxAcceptablePing &&
+                    Number(getAverageLatency(region.value)) >= 100,
                   'bg-red-500/20 text-red-400':
-                    getLatencyStatus(region.value) === 'Poor',
-                  'bg-gray-500/20 text-gray-400':
-                    getLatencyStatus(region.value) === 'Measuring',
+                    Number(getAverageLatency(region.value)) >=
+                    maxAcceptablePing,
+                  'bg-gray-500/20 text-gray-400': isNaN(
+                    Number(getAverageLatency(region.value)),
+                  ),
                 }"
               >
-                {{ getAverageLatency(region.value) }} ms
+                {{
+                  isNaN(Number(getAverageLatency(region.value)))
+                    ? "Measuring..."
+                    : `${getAverageLatency(region.value)} ms`
+                }}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">

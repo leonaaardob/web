@@ -7,7 +7,7 @@ import { playerFields } from "~/graphql/playerFields";
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { webrtc } from "~/web-sockets/Webrtc";
 
-const REGION_LATENCIES_KEY = "5stack_region_latencies";
+const REGION_LATENCY_PREFIX = "5stack_region_latency_";
 const MAX_PING_KEY = "5stack_max_acceptable_ping";
 const PREFERRED_REGIONS_KEY = "5stack_preferred_regions";
 
@@ -198,24 +198,35 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     savedRegions ? JSON.parse(savedRegions) : [],
   );
 
-  const savedLatencies = localStorage.getItem(REGION_LATENCIES_KEY);
-  const latencies = savedLatencies
-    ? new Map(JSON.parse(savedLatencies))
-    : new Map();
+  const latencies = ref(new Map<string, number[]>());
+
+  // Load existing latencies from localStorage for each region
+  useApplicationSettingsStore().availableRegions.forEach((region) => {
+    const savedLatency = localStorage.getItem(
+      REGION_LATENCY_PREFIX + region.value,
+    );
+    if (savedLatency) {
+      latencies.value.set(region.value, JSON.parse(savedLatency));
+    }
+  });
 
   const savedMaxPing = localStorage.getItem(MAX_PING_KEY);
   const maxAcceptablePing = ref(savedMaxPing ? parseInt(savedMaxPing) : 75);
 
+  const isRefreshing = ref(false);
   async function refreshLatencies() {
+    isRefreshing.value = true;
+    resetLatencies();
     await Promise.all(
       useApplicationSettingsStore().availableRegions.map((region) =>
         getLatency(region.value),
       ),
     );
+    isRefreshing.value = false;
   }
 
   function checkLatenies() {
-    if (!latencies.size) {
+    if (latencies.value.size === 0) {
       refreshLatencies();
     }
   }
@@ -233,13 +244,11 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
         latencyArray.push(latency);
 
         if (latencyArray.length === totalPings) {
-          latencies.set(region, latencyArray);
-
+          latencies.value.set(region, latencyArray);
           localStorage.setItem(
-            REGION_LATENCIES_KEY,
-            JSON.stringify(Array.from(latencies.entries())),
+            REGION_LATENCY_PREFIX + region,
+            JSON.stringify(latencyArray),
           );
-
           datachannel.close();
           return;
         }
@@ -275,8 +284,15 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     localStorage.setItem(MAX_PING_KEY, ping.toString());
   }
 
+  function resetLatencies() {
+    latencies.value.clear();
+    useApplicationSettingsStore().availableRegions.forEach((region) => {
+      localStorage.removeItem(REGION_LATENCY_PREFIX + region.value);
+    });
+  }
+
   function getAverageLatency(region: string): string {
-    const regionLatencies = latencies.get(region);
+    const regionLatencies = latencies.value.get(region);
     if (!regionLatencies || regionLatencies.length === 0) {
       return "Measuring...";
     }
@@ -288,6 +304,10 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
   const preferredRegionsComputed = computed(() => {
     const availableRegions = useApplicationSettingsStore().availableRegions;
+
+    if (isRefreshing.value) {
+      return availableRegions;
+    }
 
     if (preferredRegions.value.length > 0) {
       return availableRegions.filter((region) =>

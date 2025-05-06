@@ -121,7 +121,7 @@
         "title": "Matchmaking Settings",
         "description": "Configure your matchmaking preferences and view region latencies.",
         "region": "Region",
-        "average_latency": "Average Latency",
+        "average_latency": "Latency",
         "preferred": "Preferred",
         "max_acceptable_ping": "Maximum Acceptable Ping",
         "max_ping_description": "If no regions are preferred, matchmaking will only use regions with ping below this value."

@@ -67,11 +67,7 @@ import Default from "~/layouts/default.vue";
 </template>
 
 <script lang="ts">
-export default {
-  data() {
-    return {};
-  },
-};
+export default {};
 </script>
 
 <style lang="postcss">
