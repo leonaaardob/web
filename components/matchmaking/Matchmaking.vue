@@ -240,26 +240,6 @@ export default {
       match: undefined as Match | undefined,
       playerSanctions: [] as any[],
       showSettings: false,
-      matchTypes: [
-        {
-          type: e_match_types_enum.Duel,
-          title: "1v1 Match",
-          description:
-            "A competitive duel experience, perfect for practicing individual skill",
-        },
-        {
-          type: e_match_types_enum.Wingman,
-          title: "2v2 Match",
-          description:
-            "Team up with a friend and compete in fast-paced 2v2 matches",
-        },
-        {
-          type: e_match_types_enum.Competitive,
-          title: "5v5 Match",
-          description:
-            "The classic competitive experience with full team coordination",
-        },
-      ],
     };
   },
   methods: {
