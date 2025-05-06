@@ -857,7 +857,8 @@
     },
     "join": {
       "live": "Match is Live",
-      "call_organizer": "Call For Organizer"
+      "call_organizer": "Call For Organizer",
+      "connect": "Join Server"
     },
     "check_in": {
       "title": "Check In",

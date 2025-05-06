@@ -21,7 +21,7 @@ import { Separator } from "~/components/ui/separator";
         <div
           class="flex items-center space-x-2 cursor-pointer"
           @click="override = !override"
-          v-if="match.is_organizer && isUser"
+          v-if="match.is_organizer"
         >
           <Label>{{ $t("match.region_veto.organizer_override") }}</Label>
           <Switch :model-value="override" />

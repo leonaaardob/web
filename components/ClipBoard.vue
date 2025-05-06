@@ -2,7 +2,7 @@
 import { Copy } from "lucide-vue-next";
 </script>
 <template>
-  <div class="copy">
+  <div class="copy bg-background hover:bg-background/50 transition-colors">
     <div
       v-if="!target"
       ref="copy"

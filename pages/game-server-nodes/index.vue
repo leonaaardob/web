@@ -97,18 +97,15 @@ import { Info, ExternalLink } from "lucide-vue-next";
             <TableHead>{{
               $t("pages.game_server_nodes.table.lan_public_ip")
             }}</TableHead>
-             <TableHead>
+            <TableHead>
               <a
                 href="https://docs.5stack.gg/servers/low-latency-kernel"
                 target="_blank"
                 class="flex items-center gap-1 hover:text-white transition-colors"
               >
-                {{
-                  $t("pages.game_server_nodes.table.supports_low_latency")
-                }}
+                {{ $t("pages.game_server_nodes.table.supports_low_latency") }}
                 <ExternalLink class="w-4 h-4" />
               </a>
-
             </TableHead>
             <TableHead>
               <a
@@ -116,12 +113,9 @@ import { Info, ExternalLink } from "lucide-vue-next";
                 target="_blank"
                 class="flex items-center gap-1 hover:text-white transition-colors"
               >
-                {{
-                  $t("pages.game_server_nodes.table.supports_cpu_pinning")
-                }}
+                {{ $t("pages.game_server_nodes.table.supports_cpu_pinning") }}
                 <ExternalLink class="w-4 h-4" />
               </a>
-
             </TableHead>
             <TableHead>{{
               $t("pages.game_server_nodes.table.cs_build_id")

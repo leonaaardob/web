@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Loader } from "lucide-vue-next";
+import { Loader, ExternalLink } from "lucide-vue-next";
 import ClipBoard from "~/components/ClipBoard.vue";
 </script>
 
@@ -17,12 +17,30 @@ import ClipBoard from "~/components/ClipBoard.vue";
       </template>
     </template>
     <template v-else>
-      <div class="underline flex" v-if="match.connection_string">
-        <ClipBoard :data="match.connection_string"></ClipBoard>
+      <div
+        class="flex items-center gap-2 p-4 rounded-lg border bg-foreground/10"
+        v-if="match.connection_string"
+      >
+        <ClipBoard
+          :data="match.connection_string"
+          class="shrink-0 p-3 rounded-md"
+        ></ClipBoard>
         <a
           :href="`https://${useRuntimeConfig().public.webDomain}${match.connection_link}`"
+          class="flex items-center justify-center gap-2 rounded-md p-3 w-full transition-colors bg-background hover:bg-background/50"
         >
-          {{ match.connection_string }}
+          <div class="relative flex items-center" v-if="isInLineup">
+            <span
+              class="absolute w-2 h-2 rounded-full animate-ping"
+              :class="inGame ? 'bg-green-500' : 'bg-red-500'"
+            ></span>
+            <span
+              class="relative w-2 h-2 rounded-full"
+              :class="inGame ? 'bg-green-500' : 'bg-red-500'"
+            ></span>
+          </div>
+          <span>Join Server</span>
+          <ExternalLink class="w-4 h-4" />
         </a>
       </div>
     </template>
@@ -35,6 +53,20 @@ export default {
     match: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    me() {
+      return useAuthStore().me;
+    },
+    lobby() {
+      return useMatchLobbyStore().lobbyChat[`match:${this.match?.id}`];
+    },
+    isInLineup() {
+      return this.match.is_in_lineup;
+    },
+    inGame() {
+      return this.lobby?.get(this.me?.steam_id)?.inGame || false;
     },
   },
 };
