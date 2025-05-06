@@ -34,13 +34,27 @@ import Default from "~/layouts/default.vue";
         <nav
           class="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 overflow-y-auto max-h-[300px] lg:max-h-none"
         >
-          <nuxt-link
-            :to="item.to"
-            v-for="item in sidebarNavItems"
-            :key="item.title"
-          >
+          <nuxt-link to="/settings">
             <Button variant="ghost" class="w-full text-left justify-start">
-              {{ item.title }}
+              {{ $t("pages.settings.profile.my_account") }}
+            </Button>
+          </nuxt-link>
+
+          <nuxt-link to="/settings/language">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.profile.language") }}
+            </Button>
+          </nuxt-link>
+
+          <nuxt-link to="/settings/appearance">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.profile.appearance") }}
+            </Button>
+          </nuxt-link>
+
+          <nuxt-link to="/settings/matchmaking">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.profile.matchmaking") }}
             </Button>
           </nuxt-link>
 
@@ -102,28 +116,6 @@ export default {
     return {
       showUnlinkDiscordDialog: false,
       showRequestNameChangeDialog: false,
-      sidebarNavItems: [
-        {
-          title: this.$t("pages.settings.profile.my_account"),
-          key: "profile",
-          to: "/settings",
-        },
-        {
-          title: this.$t("pages.settings.profile.language"),
-          key: "language",
-          to: "/settings/language",
-        },
-        {
-          title: this.$t("pages.settings.profile.appearance"),
-          key: "appearance",
-          to: "/settings/appearance",
-        },
-        {
-          title: this.$t("pages.settings.profile.matchmaking"),
-          key: "matchmaking",
-          to: "/settings/matchmaking",
-        },
-      ],
     };
   },
   methods: {

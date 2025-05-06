@@ -99,14 +99,14 @@ import TimeAgo from "../TimeAgo.vue";
 
         <div class="flex flex-row gap-4">
           <div
-            v-for="type in matchTypes"
-            :key="type.type"
+            v-for="type in e_match_types"
+            :key="type.value"
             :class="[
               'flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors',
             ]"
             @click="joinMatchmaking(type)"
           >
-            <h3 class="text-lg font-medium">{{ type.title }}</h3>
+            <h3 class="text-lg font-medium">{{ type.value }}</h3>
             <p class="text-sm text-muted-foreground">{{ type.description }}</p>
           </div>
         </div>

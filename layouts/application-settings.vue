@@ -20,13 +20,39 @@ import Default from "~/layouts/default.vue";
         <nav
           class="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 overflow-y-auto max-h-[300px] lg:max-h-none"
         >
-          <nuxt-link
-            :to="item.to"
-            v-for="item in sidebarNavItems"
-            :key="item.key"
-          >
+          <nuxt-link to="/settings/application">
             <Button variant="ghost" class="w-full text-left justify-start">
-              {{ item.title }}
+              {{ $t("pages.settings.application.matchmaking.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/players">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.players.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/discord">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.application.discord.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/game-type-configs">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.application.game_type_configs.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/s3">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.application.s3.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/servers">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.application.servers.title") }}
+            </Button>
+          </nuxt-link>
+          <nuxt-link to="/settings/application/telemetry">
+            <Button variant="ghost" class="w-full text-left justify-start">
+              {{ $t("pages.settings.application.telemetry.title") }}
             </Button>
           </nuxt-link>
         </nav>
@@ -43,45 +69,7 @@ import Default from "~/layouts/default.vue";
 <script lang="ts">
 export default {
   data() {
-    return {
-      sidebarNavItems: [
-        {
-          title: this.$t("pages.settings.application.matchmaking.title"),
-          key: "matchmaking",
-          to: "/settings/application",
-        },
-        {
-          title: this.$t("pages.players.title"),
-          key: "players",
-          to: "/settings/application/players",
-        },
-        {
-          title: this.$t("pages.settings.application.discord.title"),
-          key: "discord",
-          to: "/settings/application/discord",
-        },
-        {
-          title: this.$t("pages.settings.application.game_type_configs.title"),
-          key: "game_type_configs",
-          to: "/settings/application/game-type-configs",
-        },
-        {
-          title: this.$t("pages.settings.application.s3.title"),
-          key: "s3",
-          to: "/settings/application/s3",
-        },
-        {
-          title: this.$t("pages.settings.application.servers.title"),
-          key: "servers",
-          to: "/settings/application/servers",
-        },
-        {
-          title: this.$t("pages.settings.application.telemetry.title"),
-          key: "telemetry",
-          to: "/settings/application/telemetry",
-        },
-      ],
-    };
+    return {};
   },
 };
 </script>
