@@ -295,10 +295,16 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
       );
     }
 
-    return availableRegions.filter((region) => {
+    const filteredRegions = availableRegions.filter((region) => {
       const avgLatency = Number(getAverageLatency(region.value));
       return !isNaN(avgLatency) && avgLatency <= maxAcceptablePing.value;
     });
+
+    if (filteredRegions.length === 0) {
+      return availableRegions;
+    }
+
+    return filteredRegions;
   });
 
   return {
