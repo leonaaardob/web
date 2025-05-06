@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronUp,
   SettingsIcon,
+  Search,
 } from "lucide-vue-next";
 import {
   Collapsible,
@@ -174,6 +175,23 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
             </CardHeader>
             <CardContent>
               <div class="space-y-6">
+                <div
+                  class="flex items-center justify-between"
+                  v-if="form.values.custom_map_pool"
+                >
+                  <div class="relative w-full">
+                    <Input
+                      v-model="filterMaps"
+                      type="text"
+                      :placeholder="$t('match.options.filter_maps')"
+                      class="pl-10"
+                    />
+                    <Search
+                      class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
+                    />
+                  </div>
+                </div>
+
                 <template
                   v-for="(maps, type) in {
                     [$t('maps.official')]: availableMaps.official,
@@ -187,6 +205,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                       class="text-2xl font-bold mb-4 text-center my-8"
                       :label="type"
                     ></Separator>
+
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <template v-for="map in maps" :key="map.id">
                         <div
@@ -845,6 +864,7 @@ export default {
   },
   data() {
     return {
+      filterMaps: undefined,
       select_single_region: null as string | null,
       showAdvancedSettings: false,
     };
@@ -1033,6 +1053,12 @@ export default {
         })
         .sort((a: Map, b: Map) => {
           return a.name.localeCompare(b.name);
+        })
+        .filter((map: Map) => {
+          if (!this.filterMaps) {
+            return true;
+          }
+          return map.name.toLowerCase().includes(this.filterMaps.toLowerCase());
         });
 
       return {

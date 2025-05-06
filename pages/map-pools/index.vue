@@ -9,6 +9,8 @@ import {
   SheetDescription,
 } from "~/components/ui/sheet";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Search } from "lucide-vue-next";
 import MapForm from "~/components/map-pools/MapForm.vue";
 import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
 </script>
@@ -48,9 +50,22 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
 
     <Separator />
 
-    <h2 class="text-2xl font-bold">
-      {{ $t("pages.map_pools.maps") }}
-    </h2>
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-bold">
+        {{ $t("pages.map_pools.maps") }}
+      </h2>
+      <div class="relative w-full max-w-sm">
+        <Input
+          v-model="searchQuery"
+          type="text"
+          :placeholder="$t('pages.map_pools.search')"
+          class="pl-10"
+        />
+        <Search
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
+        />
+      </div>
+    </div>
     <table class="min-w-full bg-background rounded-lg shadow-md">
       <thead>
         <tr>
@@ -127,6 +142,7 @@ export default {
       mapFormSheet: false,
       map_pools: [] as MapPool[],
       maps: [] as Map[],
+      searchQuery: "",
       matchTypes: [
         e_match_types_enum.Competitive,
         e_match_types_enum.Wingman,
@@ -195,6 +211,14 @@ export default {
           return a.name
             .replace("de_", "")
             .localeCompare(b.name.replace("de_", ""));
+        })
+        .filter((map) => {
+          if (!this.searchQuery) {
+            return true;
+          }
+          return map.name
+            .toLowerCase()
+            .includes(this.searchQuery.toLowerCase());
         });
     },
   },

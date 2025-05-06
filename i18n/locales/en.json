@@ -302,7 +302,8 @@
       "maps": "Available Maps",
       "active_duty": "Active Duty",
       "available_modes": "Available In Modes",
-      "workshop_id": "Workshop Link"
+      "workshop_id": "Workshop Link",
+      "search": "Search Maps"
     },
     "map_pool": {
       "toggle_pool_type": "Updated Map Pools",
@@ -620,6 +621,7 @@
       "no_matches": "You don't have any recent matches."
     },
     "options": {
+      "filter_maps": "Filter Maps",
       "table": {
         "match": "Match",
         "type": "Type",
