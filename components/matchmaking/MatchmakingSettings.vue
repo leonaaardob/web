@@ -79,7 +79,7 @@ import { Loader2 } from "lucide-vue-next";
             }"
           >
             <td class="px-6 py-4 whitespace-nowrap">
-              {{ region.description }}
+              {{ region.description || region.value }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <span

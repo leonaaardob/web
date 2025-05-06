@@ -481,7 +481,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                                 :key="region.value"
                                 :value="region.value"
                               >
-                                {{ region.description }}
+                                {{ region.description || region.value }}
                               </SelectItem>
                             </SelectGroup>
                           </SelectContent>
@@ -560,7 +560,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                                     }
                                   "
                                 >
-                                  {{ region.description }}
+                                  {{ region.description || region.value }}
                                   <Check
                                     :class="[
                                       'mr-2 h-4 mx-auto',

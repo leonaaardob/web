@@ -281,7 +281,7 @@ provide("commander", commander);
                     {{ match.server_region }}
                   </span>
                   <span v-else-if="match.e_region">
-                    {{ match.e_region.description }}
+                    {{ match.e_region.description || match.e_region.value }}
                   </span>
                 </li>
               </ul>

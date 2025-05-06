@@ -78,7 +78,7 @@ import UpdateGameServerLabel from "~/components/game-server-nodes/UpdateGameServ
         <SelectContent>
           <SelectGroup>
             <SelectItem :value="region.value" v-for="region of server_regions">
-              {{ region.description }}
+              {{ region.description || region.value }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>

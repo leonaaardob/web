@@ -44,7 +44,7 @@ import { FormControl, FormField, FormItem } from "~/components/ui/form";
                 v-for="region in server_regions"
                 :key="region.value"
               >
-                {{ region.description }}
+                {{ region.description || region.value }}
               </SelectItem>
             </SelectGroup>
           </SelectContent>

@@ -46,7 +46,7 @@ import {
                 :key="region.value"
                 :value="`0:${region.value}`"
               >
-                {{ region.description }}
+                {{ region.description || region.value }}
               </SelectItem>
             </SelectGroup>
           </SelectContent>

@@ -15,7 +15,7 @@ import MapDisplay from "~/components/MapDisplay.vue";
       />
       <div class="absolute inset-0 bg-black bg-opacity-45"></div>
       <div class="absolute inset-0 flex flex-col items-center justify-center">
-        {{ match.e_region.description }}
+        {{ match.e_region.description || match.e_region.value }}
       </div>
     </div>
 

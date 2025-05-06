@@ -23,7 +23,7 @@
               }"
             ></span>
           </span>
-          <span>{{ region.description }}</span>
+          <span>{{ region.description || region.value }}</span>
         </TableCell>
       </TableRow>
     </TableBody>
