@@ -31,7 +31,12 @@ import PlayerSearch from "~/components/PlayerSearch.vue";
 
   <template v-else>
     <div class="flex items-center justify-between my-4">
-      <h3 class="text-lg font-medium">{{ $t("matchmaking.friends.title") }}</h3>
+      <h3 class="text-lg font-medium">
+        {{ $t("matchmaking.friends.title") }}
+        <span class="text-sm text-muted-foreground">
+          ({{ onlineFriends.length }} {{ $t("matchmaking.friends.online") }})
+        </span>
+      </h3>
       <Button variant="ghost" size="sm" class="h-8" @click="syncSteamFriends">
         <RefreshCw class="mr-2 h-4 w-4" />
         {{ $t("matchmaking.friends.sync") }}
