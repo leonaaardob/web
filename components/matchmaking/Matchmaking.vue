@@ -104,7 +104,7 @@ import TimeAgo from "../TimeAgo.vue";
             :class="[
               'flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors',
             ]"
-            @click="joinMatchmaking(type)"
+            @click="joinMatchmaking(type.value)"
           >
             <h3 class="text-lg font-medium">{{ type.value }}</h3>
             <p class="text-sm text-muted-foreground">{{ type.description }}</p>
@@ -245,7 +245,7 @@ export default {
   methods: {
     joinMatchmaking(matchType: MatchType): void {
       socket.event("matchmaking:join-queue", {
-        type: matchType.type,
+        type: matchType,
         regions: useMatchmakingStore().preferredRegions.map(
           (region: Region) => {
             return region.value;
