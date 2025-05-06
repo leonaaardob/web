@@ -5,6 +5,7 @@ import MatchmakingSettings from "~/components/matchmaking/MatchmakingSettings.vu
 import { Collapsible, CollapsibleContent } from "~/components/ui/collapsible";
 import { Button } from "~/components/ui/button";
 import TimeAgo from "../TimeAgo.vue";
+import CustomMatch from "~/components/CustomMatch.vue";
 </script>
 
 <template>
@@ -101,15 +102,16 @@ import TimeAgo from "../TimeAgo.vue";
           <div
             v-for="type in e_match_types"
             :key="type.value"
-            :class="[
-              'flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors',
-            ]"
+            class="flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
             @click="joinMatchmaking(type.value)"
           >
             <h3 class="text-lg font-medium">{{ type.value }}</h3>
             <p class="text-sm text-muted-foreground">{{ type.description }}</p>
           </div>
         </div>
+
+        <Separator class="my-4" />
+        <CustomMatch />
       </div>
     </template>
     <template v-else-if="match">

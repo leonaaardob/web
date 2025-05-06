@@ -314,6 +314,10 @@
       "map_pools": {}
     }
   },
+  "custom_match": {
+    "title": "Custom Match",
+    "description": "Create and customize your own match. Set rules, choose maps, and invite friends for a personalized gaming experience."
+  },
   "layouts": {
     "profile_settings": {
       "title": "Profile Settings",

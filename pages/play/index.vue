@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
 import MyUpcomingMatches from "~/components/MyUpcomingMatches.vue";
 import Matchmaking from "~/components/matchmaking/Matchmaking.vue";
-import { PlusCircle } from "lucide-vue-next";
 import OpenMatches from "~/components/match/OpenMatches.vue";
+import CustomMatch from "~/components/CustomMatch.vue";
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <template v-if="matchmakingAllowed">
       <Matchmaking></Matchmaking>
-
       <Separator class="my-4" />
+    </template>
+    <template v-else-if="canCreateMatch">
+      <CustomMatch class="bg-card p-8 rounded-lg" />
     </template>
 
     <MyUpcomingMatches>
