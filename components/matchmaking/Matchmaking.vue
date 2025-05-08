@@ -107,14 +107,14 @@ import CustomMatch from "~/components/CustomMatch.vue";
             class="flex-1 p-4 border rounded-lg transition-all duration-300 relative overflow-hidden group h-[100px]"
             :class="{
               'hover:bg-accent/50 cursor-pointer':
-                pendingMatchType?.value !== type.value,
+                pendingMatchType !== type.value,
               'bg-primary/20 border-primary cursor-pointer shadow-lg scale-[1.02]':
-                pendingMatchType?.value === type.value,
+                pendingMatchType === type.value,
             }"
             @click="handleMatchTypeClick(type.value)"
           >
             <div class="relative z-10 h-full">
-              <template v-if="pendingMatchType?.value !== type.value">
+              <template v-if="pendingMatchType !== type.value">
                 <h3 class="text-lg font-medium">{{ type.value }}</h3>
                 <p class="text-sm text-muted-foreground">
                   {{ type.description }}
@@ -132,7 +132,7 @@ import CustomMatch from "~/components/CustomMatch.vue";
               </div>
             </div>
             <div
-              v-if="pendingMatchType?.value === type.value"
+              v-if="pendingMatchType === type.value"
               class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10 animate-pulse"
             ></div>
           </div>
@@ -276,37 +276,28 @@ export default {
     };
   },
   methods: {
-    handleMatchTypeClick(matchType: MatchType): void {
-      if (this.pendingMatchType?.value === matchType.value) {
+    handleMatchTypeClick(matchType: e_match_types_enum): void {
+      if (this.pendingMatchType === matchType) {
         // Second click - confirm
         if (this.confirmationTimeout) {
           clearTimeout(this.confirmationTimeout);
           this.confirmationTimeout = undefined;
         }
-        this.joinMatchmaking(matchType);
-        this.pendingMatchType = undefined;
-      } else {
-        // First click - show confirmation state
-        if (this.confirmationTimeout) {
-          clearTimeout(this.confirmationTimeout);
-        }
-        this.pendingMatchType = matchType;
-        this.confirmationTimeout = setTimeout(() => {
-          this.pendingMatchType = undefined;
-          this.confirmationTimeout = undefined;
-        }, 5000);
-      }
-    },
-    showMatchmakingConfirmation(matchType: MatchType): void {
-      this.pendingMatchType = matchType;
-      this.showConfirmation = true;
-    },
-    confirmMatchmaking(): void {
-      if (this.pendingMatchType) {
         this.joinMatchmaking(this.pendingMatchType);
-        this.showConfirmation = false;
         this.pendingMatchType = undefined;
+        return;
       }
+
+      // First click - show confirmation state
+      if (this.confirmationTimeout) {
+        clearTimeout(this.confirmationTimeout);
+      }
+
+      this.pendingMatchType = matchType;
+      this.confirmationTimeout = setTimeout(() => {
+        this.pendingMatchType = undefined;
+        this.confirmationTimeout = undefined;
+      }, 5000);
     },
     joinMatchmaking(matchType: MatchType): void {
       socket.event("matchmaking:join-queue", {
