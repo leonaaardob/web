@@ -3,6 +3,10 @@ import TeamSearch from "~/components/teams/TeamSearch.vue";
 import MatchOptions from "~/components/MatchOptions.vue";
 import PageHeading from "~/components/PageHeading.vue";
 import { Info } from "lucide-vue-next";
+
+definePageMeta({
+  middleware: ["match-create"],
+});
 </script>
 
 <template>
