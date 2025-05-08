@@ -6,9 +6,13 @@ definePageMeta({
 
 <template>
   <div class="mb-8 p-4 bg-muted rounded-lg">
-    <h3 class="text-lg font-semibold mb-2">{{ $t("pages.settings.application.demo_settings.current_storage") }}</h3>
+    <h3 class="text-lg font-semibold mb-2">
+      {{ $t("pages.settings.application.demo_settings.current_storage") }}
+    </h3>
     <div>
-      <p class="text-sm text-muted-foreground">{{ $t("pages.settings.application.demo_settings.used_storage") }}</p>
+      <p class="text-sm text-muted-foreground">
+        {{ $t("pages.settings.application.demo_settings.used_storage") }}
+      </p>
       <p class="text-2xl font-bold">~{{ currentStorage }} GB</p>
     </div>
   </div>
@@ -20,7 +24,9 @@ definePageMeta({
           $t("pages.settings.application.demo_settings.min_retention")
         }}</FormLabel>
         <FormDescription>{{
-          $t("pages.settings.application.demo_settings.min_retention_description")
+          $t(
+            "pages.settings.application.demo_settings.min_retention_description",
+          )
         }}</FormDescription>
         <Input type="number" v-bind="componentField"></Input>
         <FormMessage />
@@ -173,7 +179,7 @@ export default {
     },
     currentStorage() {
       const size = this.match_map_demos_aggregate?.aggregate.sum.size;
-      if(!size) {
+      if (!size) {
         return;
       }
 

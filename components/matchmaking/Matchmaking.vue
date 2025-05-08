@@ -52,8 +52,10 @@ import CustomMatch from "~/components/CustomMatch.vue";
         </div>
 
         <div class="relative z-10 flex flex-col items-center text-center">
-          <div class="flex items-center gap-4 mb-4 text-2xl font-medium">
-            Searching for a {{ matchMakingQueueDetails.type }} Match
+          <div
+            class="flex items-center gap-4 mb-4 text-2xl font-medium capitalize"
+          >
+            Searching for a {{ matchMakingQueueDetails.type.value }} Match
           </div>
           <div class="text-xl text-gray-400/90 flex items-center gap-2">
             <TimeAgo
@@ -102,11 +104,37 @@ import CustomMatch from "~/components/CustomMatch.vue";
           <div
             v-for="type in e_match_types"
             :key="type.value"
-            class="flex-1 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
-            @click="joinMatchmaking(type.value)"
+            class="flex-1 p-4 border rounded-lg transition-all duration-300 relative overflow-hidden group h-[100px]"
+            :class="{
+              'hover:bg-accent/50 cursor-pointer':
+                pendingMatchType?.value !== type.value,
+              'bg-primary/20 border-primary cursor-pointer shadow-lg scale-[1.02]':
+                pendingMatchType?.value === type.value,
+            }"
+            @click="handleMatchTypeClick(type)"
           >
-            <h3 class="text-lg font-medium">{{ type.value }}</h3>
-            <p class="text-sm text-muted-foreground">{{ type.description }}</p>
+            <div class="relative z-10 h-full">
+              <template v-if="pendingMatchType?.value !== type.value">
+                <h3 class="text-lg font-medium">{{ type.value }}</h3>
+                <p class="text-sm text-muted-foreground">
+                  {{ type.description }}
+                </p>
+              </template>
+              <div
+                v-else
+                class="absolute inset-0 flex items-center justify-center"
+              >
+                <span
+                  class="text-xl font-semibold text-primary animate-fade-in"
+                >
+                  Confirm {{ type.value }}
+                </span>
+              </div>
+            </div>
+            <div
+              v-if="pendingMatchType?.value === type.value"
+              class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10 animate-pulse"
+            ></div>
           </div>
         </div>
 
@@ -145,8 +173,7 @@ import { generateQuery } from "~/graphql/graphqlGen";
 import { e_match_types_enum, e_match_status_enum } from "~/generated/zeus";
 
 interface MatchType {
-  type: e_match_types_enum;
-  title: string;
+  value: e_match_types_enum;
   description: string;
 }
 
@@ -242,9 +269,45 @@ export default {
       match: undefined as Match | undefined,
       playerSanctions: [] as any[],
       showSettings: false,
+      showConfirmation: false,
+      pendingMatchType: undefined as MatchType | undefined,
+      e_match_types: [] as MatchType[],
+      confirmationTimeout: undefined as NodeJS.Timeout | undefined,
     };
   },
   methods: {
+    handleMatchTypeClick(matchType: MatchType): void {
+      if (this.pendingMatchType?.value === matchType.value) {
+        // Second click - confirm
+        if (this.confirmationTimeout) {
+          clearTimeout(this.confirmationTimeout);
+          this.confirmationTimeout = undefined;
+        }
+        this.joinMatchmaking(matchType);
+        this.pendingMatchType = undefined;
+      } else {
+        // First click - show confirmation state
+        if (this.confirmationTimeout) {
+          clearTimeout(this.confirmationTimeout);
+        }
+        this.pendingMatchType = matchType;
+        this.confirmationTimeout = setTimeout(() => {
+          this.pendingMatchType = undefined;
+          this.confirmationTimeout = undefined;
+        }, 5000);
+      }
+    },
+    showMatchmakingConfirmation(matchType: MatchType): void {
+      this.pendingMatchType = matchType;
+      this.showConfirmation = true;
+    },
+    confirmMatchmaking(): void {
+      if (this.pendingMatchType) {
+        this.joinMatchmaking(this.pendingMatchType);
+        this.showConfirmation = false;
+        this.pendingMatchType = undefined;
+      }
+    },
     joinMatchmaking(matchType: MatchType): void {
       socket.event("matchmaking:join-queue", {
         type: matchType,
@@ -314,17 +377,31 @@ export default {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-in;
+  animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
   }
 }
 </style>
