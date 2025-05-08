@@ -984,6 +984,7 @@
     },
     "banned": "You are banned from matchmaking",
     "go_to_match": "Go to Match",
+    "confirm_selection": "Confirming",
     "temp_banned": "You are temporarily banned from matchmaking",
     "confirm": {
       "players": "Players Ready",

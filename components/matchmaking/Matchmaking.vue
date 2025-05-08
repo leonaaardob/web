@@ -127,7 +127,7 @@ import CustomMatch from "~/components/CustomMatch.vue";
                 <span
                   class="text-xl font-semibold text-primary animate-fade-in"
                 >
-                  Confirm {{ type.value }}
+                  {{ $t("matchmaking.confirm_selection") }} {{ type.value }}
                 </span>
               </div>
             </div>
