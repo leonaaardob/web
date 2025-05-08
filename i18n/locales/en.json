@@ -100,7 +100,7 @@
           "number_of_cpus_per_server_description": "Number of CPUs to allocate per server",
           "update": "Update"
         },
-        "s3": {
+        "demo_settings": {
           "update": "Update",
           "title": "Demo Settings",
           "min_retention": "Minimum Retention",
@@ -108,7 +108,9 @@
           "cloudflare_worker_url": "Cloudflare Worker URL",
           "max_storage_description": "The maximum storage size for the demo files in GB.",
           "cloudflare_worker_url_description": "The URL of the Cloudflare worker that will be used to store and retrieve the demo files.",
-          "min_retention_description": "The minimum retention days for the demo files."
+          "min_retention_description": "The minimum retention days for the demo files.",
+          "current_storage": "Current Storage",
+          "used_storage": "Approximate Storage Used"
         },
         "update_map_pools": {
           "title": "Automatic Update Map Pools",

@@ -5,14 +5,22 @@ definePageMeta({
 </script>
 
 <template>
+  <div class="mb-8 p-4 bg-muted rounded-lg">
+    <h3 class="text-lg font-semibold mb-2">{{ $t("pages.settings.application.demo_settings.current_storage") }}</h3>
+    <div>
+      <p class="text-sm text-muted-foreground">{{ $t("pages.settings.application.demo_settings.used_storage") }}</p>
+      <p class="text-2xl font-bold">~{{ currentStorage }} GB</p>
+    </div>
+  </div>
+
   <form @submit.prevent="updateSettings" class="grid gap-4">
     <FormField v-slot="{ componentField }" name="s3_min_retention">
       <FormItem>
         <FormLabel>{{
-          $t("pages.settings.application.s3.min_retention")
+          $t("pages.settings.application.demo_settings.min_retention")
         }}</FormLabel>
         <FormDescription>{{
-          $t("pages.settings.application.s3.min_retention_description")
+          $t("pages.settings.application.demo_settings.min_retention_description")
         }}</FormDescription>
         <Input type="number" v-bind="componentField"></Input>
         <FormMessage />
@@ -22,10 +30,10 @@ definePageMeta({
     <FormField v-slot="{ componentField }" name="s3_max_storage">
       <FormItem>
         <FormLabel>{{
-          $t("pages.settings.application.s3.max_storage")
+          $t("pages.settings.application.demo_settings.max_storage")
         }}</FormLabel>
         <FormDescription>{{
-          $t("pages.settings.application.s3.max_storage_description")
+          $t("pages.settings.application.demo_settings.max_storage_description")
         }}</FormDescription>
         <Input type="number" v-bind="componentField"></Input>
         <FormMessage />
@@ -35,12 +43,12 @@ definePageMeta({
     <FormField v-slot="{ componentField }" name="cloudflare_worker_url">
       <FormItem>
         <FormLabel>{{
-          $t("pages.settings.application.s3.cloudflare_worker_url")
+          $t("pages.settings.application.demo_settings.cloudflare_worker_url")
         }}</FormLabel>
         <FormDescription>
           {{
             $t(
-              "pages.settings.application.s3.cloudflare_worker_url_description",
+              "pages.settings.application.demo_settings.cloudflare_worker_url_description",
             )
           }}
           <a
@@ -62,7 +70,7 @@ definePageMeta({
         :disabled="Object.keys(form.errors).length > 0"
         class="my-3"
       >
-        {{ $t("pages.settings.application.s3.update") }}
+        {{ $t("pages.settings.application.demo_settings.update") }}
       </Button>
     </div>
   </form>
@@ -70,14 +78,27 @@ definePageMeta({
 
 <script lang="ts">
 import { settings_constraint, settings_update_column } from "~/generated/zeus";
-import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { generateMutation } from "~/graphql/graphqlGen";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import { toast } from "@/components/ui/toast";
+import { generateQuery } from "~/graphql/graphqlGen";
 
 export default {
+  apollo: {
+    match_map_demos_aggregate: {
+      query: generateQuery({
+        match_map_demos_aggregate: {
+          aggregate: {
+            sum: {
+              size: true,
+            },
+          },
+        },
+      }),
+    },
+  },
   data() {
     return {
       form: useForm({
@@ -149,6 +170,14 @@ export default {
   computed: {
     settings() {
       return useApplicationSettingsStore().settings;
+    },
+    currentStorage() {
+      const size = this.match_map_demos_aggregate?.aggregate.sum.size;
+      if(!size) {
+        return;
+      }
+
+      return (size / 1024 / 1024 / 1024).toFixed(2);
     },
   },
 };
