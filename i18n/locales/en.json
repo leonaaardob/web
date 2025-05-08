@@ -109,6 +109,10 @@
           "max_storage_description": "The maximum storage size for the demo files in GB.",
           "cloudflare_worker_url_description": "The URL of the Cloudflare worker that will be used to store and retrieve the demo files.",
           "min_retention_description": "The minimum retention days for the demo files."
+        },
+        "update_map_pools": {
+          "title": "Automatic Update Map Pools",
+          "description": "Automatically add / update map pools when new maps are added or removed from the active duty pool."
         }
       },
       "language": {

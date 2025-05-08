@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Info } from "lucide-vue-next";
 import PageHeading from "~/components/PageHeading.vue";
 import { Separator } from "~/components/ui/separator";
 import {
@@ -13,6 +14,7 @@ import { Input } from "~/components/ui/input";
 import { Search } from "lucide-vue-next";
 import MapForm from "~/components/map-pools/MapForm.vue";
 import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
+import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
 </script>
 
 <template>
@@ -23,13 +25,39 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
       <template #description>
         {{ $t("pages.map_pools.description") }}
       </template>
-    </PageHeading>
 
-    <div class="flex justify-end mb-4">
-      <Button @click="mapFormSheet = true">
-        {{ $t("pages.map_pools.add_new_map") }}
-      </Button>
-    </div>
+      <template #actions>
+        <div class="flex flex-row items-center gap-4">
+          <div class="flex flex-row items-center gap-2">
+            <FiveStackToolTip>
+              <template #trigger>
+                <div
+                  class="flex items-center gap-2"
+                  @click="toggleUpdateMapPools"
+                >
+                  <div class="flex items-center gap-1">
+                    <Info :size="14" />
+                    {{
+                      $t("pages.settings.application.update_map_pools.title")
+                    }}
+                  </div>
+                  <Switch
+                    :model-value="updateMapPools"
+                    @update:model-value="toggleUpdateMapPools"
+                  />
+                </div>
+              </template>
+              {{
+                $t("pages.settings.application.update_map_pools.description")
+              }}
+            </FiveStackToolTip>
+          </div>
+          <Button @click="mapFormSheet = true">
+            {{ $t("pages.map_pools.add_new_map") }}
+          </Button>
+        </div>
+      </template>
+    </PageHeading>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div
@@ -109,6 +137,8 @@ import MapPoolRow from "~/components/map-pools/MapPoolRow.vue";
 import { generateQuery, generateSubscription } from "~/graphql/graphqlGen";
 import { e_map_pool_types_enum, e_match_types_enum } from "~/generated/zeus";
 import { mapFields } from "~/graphql/mapGraphql";
+import { settings_constraint, settings_update_column } from "~/generated/zeus";
+import { generateMutation } from "~/graphql/graphqlGen";
 
 interface Map {
   id: string;
@@ -186,6 +216,29 @@ export default {
       }),
     },
   },
+  methods: {
+    async toggleUpdateMapPools() {
+      await this.$apollo.mutate({
+        mutation: generateMutation({
+          insert_settings_one: [
+            {
+              object: {
+                name: "update_map_pools",
+                value: this.updateMapPools ? "false" : "true",
+              },
+              on_conflict: {
+                constraint: settings_constraint.settings_pkey,
+                update_columns: [settings_update_column.value],
+              },
+            },
+            {
+              __typename: true,
+            },
+          ],
+        }),
+      });
+    },
+  },
   computed: {
     availableMaps(): Map[] {
       const uniqueMapsMap = new Map<string, Map>();
@@ -220,6 +273,20 @@ export default {
             .toLowerCase()
             .includes(this.searchQuery.toLowerCase());
         });
+    },
+    settings() {
+      return useApplicationSettingsStore().settings;
+    },
+    updateMapPools() {
+      const updateMapPoolsSetting = this.settings.find(
+        (setting) => setting.name === "update_map_pools",
+      );
+
+      if (updateMapPoolsSetting) {
+        return updateMapPoolsSetting.value === "true";
+      }
+
+      return true;
     },
   },
 };
