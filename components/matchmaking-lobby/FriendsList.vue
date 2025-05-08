@@ -291,6 +291,9 @@ export default {
     me() {
       return useAuthStore().me;
     },
+    matches() {
+      return useMatchmakingStore().matches;
+    },
     friends() {
       return useMatchmakingStore().friends.sort((a, b) => {
         return a.name.localeCompare(b.name);

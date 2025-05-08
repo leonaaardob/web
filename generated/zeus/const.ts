@@ -2224,6 +2224,82 @@ export const AllTypesProps: Record<string,any> = {
 		_set:"maps_set_input",
 		where:"maps_bool_exp"
 	},
+	match_invites_aggregate_fields:{
+		count:{
+			columns:"match_invites_select_column"
+		}
+	},
+	match_invites_bool_exp:{
+		_and:"match_invites_bool_exp",
+		_not:"match_invites_bool_exp",
+		_or:"match_invites_bool_exp",
+		created_at:"timestamptz_comparison_exp",
+		id:"uuid_comparison_exp",
+		invited_by:"players_bool_exp",
+		invited_by_player_steam_id:"bigint_comparison_exp",
+		match:"matches_bool_exp",
+		match_id:"uuid_comparison_exp",
+		player:"players_bool_exp",
+		steam_id:"bigint_comparison_exp"
+	},
+	match_invites_constraint: "enum" as const,
+	match_invites_inc_input:{
+		invited_by_player_steam_id:"bigint",
+		steam_id:"bigint"
+	},
+	match_invites_insert_input:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by:"players_obj_rel_insert_input",
+		invited_by_player_steam_id:"bigint",
+		match:"matches_obj_rel_insert_input",
+		match_id:"uuid",
+		player:"players_obj_rel_insert_input",
+		steam_id:"bigint"
+	},
+	match_invites_on_conflict:{
+		constraint:"match_invites_constraint",
+		update_columns:"match_invites_update_column",
+		where:"match_invites_bool_exp"
+	},
+	match_invites_order_by:{
+		created_at:"order_by",
+		id:"order_by",
+		invited_by:"players_order_by",
+		invited_by_player_steam_id:"order_by",
+		match:"matches_order_by",
+		match_id:"order_by",
+		player:"players_order_by",
+		steam_id:"order_by"
+	},
+	match_invites_pk_columns_input:{
+		id:"uuid"
+	},
+	match_invites_select_column: "enum" as const,
+	match_invites_set_input:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by_player_steam_id:"bigint",
+		match_id:"uuid",
+		steam_id:"bigint"
+	},
+	match_invites_stream_cursor_input:{
+		initial_value:"match_invites_stream_cursor_value_input",
+		ordering:"cursor_ordering"
+	},
+	match_invites_stream_cursor_value_input:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by_player_steam_id:"bigint",
+		match_id:"uuid",
+		steam_id:"bigint"
+	},
+	match_invites_update_column: "enum" as const,
+	match_invites_updates:{
+		_inc:"match_invites_inc_input",
+		_set:"match_invites_set_input",
+		where:"match_invites_bool_exp"
+	},
 	match_lineup_players_aggregate_bool_exp:{
 		bool_and:"match_lineup_players_aggregate_bool_exp_bool_and",
 		bool_or:"match_lineup_players_aggregate_bool_exp_bool_or",
@@ -4356,6 +4432,12 @@ export const AllTypesProps: Record<string,any> = {
 		delete_maps_by_pk:{
 			id:"uuid"
 		},
+		delete_match_invites:{
+			where:"match_invites_bool_exp"
+		},
+		delete_match_invites_by_pk:{
+			id:"uuid"
+		},
 		delete_match_lineup_players:{
 			where:"match_lineup_players_bool_exp"
 		},
@@ -4794,6 +4876,14 @@ export const AllTypesProps: Record<string,any> = {
 		insert_maps_one:{
 			object:"maps_insert_input",
 			on_conflict:"maps_on_conflict"
+		},
+		insert_match_invites:{
+			objects:"match_invites_insert_input",
+			on_conflict:"match_invites_on_conflict"
+		},
+		insert_match_invites_one:{
+			object:"match_invites_insert_input",
+			on_conflict:"match_invites_on_conflict"
 		},
 		insert_match_lineup_players:{
 			objects:"match_lineup_players_insert_input",
@@ -5429,6 +5519,19 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		update_maps_many:{
 			updates:"maps_updates"
+		},
+		update_match_invites:{
+			_inc:"match_invites_inc_input",
+			_set:"match_invites_set_input",
+			where:"match_invites_bool_exp"
+		},
+		update_match_invites_by_pk:{
+			_inc:"match_invites_inc_input",
+			_set:"match_invites_set_input",
+			pk_columns:"match_invites_pk_columns_input"
+		},
+		update_match_invites_many:{
+			updates:"match_invites_updates"
 		},
 		update_match_lineup_players:{
 			_inc:"match_lineup_players_inc_input",
@@ -8648,6 +8751,19 @@ export const AllTypesProps: Record<string,any> = {
 		maps_by_pk:{
 			id:"uuid"
 		},
+		match_invites:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
+		match_invites_aggregate:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
+		match_invites_by_pk:{
+			id:"uuid"
+		},
 		match_lineup_players:{
 			distinct_on:"match_lineup_players_select_column",
 			order_by:"match_lineup_players_order_by",
@@ -9987,6 +10103,23 @@ export const AllTypesProps: Record<string,any> = {
 		maps_stream:{
 			cursor:"maps_stream_cursor_input",
 			where:"maps_bool_exp"
+		},
+		match_invites:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
+		match_invites_aggregate:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
+		match_invites_by_pk:{
+			id:"uuid"
+		},
+		match_invites_stream:{
+			cursor:"match_invites_stream_cursor_input",
+			where:"match_invites_bool_exp"
 		},
 		match_lineup_players:{
 			distinct_on:"match_lineup_players_select_column",
@@ -13930,6 +14063,83 @@ export const ReturnTypes: Record<string,any> = {
 		affected_rows:"Int",
 		returning:"maps"
 	},
+	match_invites:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by:"players",
+		invited_by_player_steam_id:"bigint",
+		match:"matches",
+		match_id:"uuid",
+		player:"players",
+		steam_id:"bigint"
+	},
+	match_invites_aggregate:{
+		aggregate:"match_invites_aggregate_fields",
+		nodes:"match_invites"
+	},
+	match_invites_aggregate_fields:{
+		avg:"match_invites_avg_fields",
+		count:"Int",
+		max:"match_invites_max_fields",
+		min:"match_invites_min_fields",
+		stddev:"match_invites_stddev_fields",
+		stddev_pop:"match_invites_stddev_pop_fields",
+		stddev_samp:"match_invites_stddev_samp_fields",
+		sum:"match_invites_sum_fields",
+		var_pop:"match_invites_var_pop_fields",
+		var_samp:"match_invites_var_samp_fields",
+		variance:"match_invites_variance_fields"
+	},
+	match_invites_avg_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_max_fields:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by_player_steam_id:"bigint",
+		match_id:"uuid",
+		steam_id:"bigint"
+	},
+	match_invites_min_fields:{
+		created_at:"timestamptz",
+		id:"uuid",
+		invited_by_player_steam_id:"bigint",
+		match_id:"uuid",
+		steam_id:"bigint"
+	},
+	match_invites_mutation_response:{
+		affected_rows:"Int",
+		returning:"match_invites"
+	},
+	match_invites_stddev_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_stddev_pop_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_stddev_samp_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_sum_fields:{
+		invited_by_player_steam_id:"bigint",
+		steam_id:"bigint"
+	},
+	match_invites_var_pop_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_var_samp_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
+	match_invites_variance_fields:{
+		invited_by_player_steam_id:"Float",
+		steam_id:"Float"
+	},
 	match_lineup_players:{
 		captain:"Boolean",
 		checked_in:"Boolean",
@@ -14952,6 +15162,8 @@ export const ReturnTypes: Record<string,any> = {
 		delete_map_pools_by_pk:"map_pools",
 		delete_maps:"maps_mutation_response",
 		delete_maps_by_pk:"maps",
+		delete_match_invites:"match_invites_mutation_response",
+		delete_match_invites_by_pk:"match_invites",
 		delete_match_lineup_players:"match_lineup_players_mutation_response",
 		delete_match_lineup_players_by_pk:"match_lineup_players",
 		delete_match_lineups:"match_lineups_mutation_response",
@@ -15077,6 +15289,8 @@ export const ReturnTypes: Record<string,any> = {
 		insert_map_pools_one:"map_pools",
 		insert_maps:"maps_mutation_response",
 		insert_maps_one:"maps",
+		insert_match_invites:"match_invites_mutation_response",
+		insert_match_invites_one:"match_invites",
 		insert_match_lineup_players:"match_lineup_players_mutation_response",
 		insert_match_lineup_players_one:"match_lineup_players",
 		insert_match_lineups:"match_lineups_mutation_response",
@@ -15252,6 +15466,9 @@ export const ReturnTypes: Record<string,any> = {
 		update_maps:"maps_mutation_response",
 		update_maps_by_pk:"maps",
 		update_maps_many:"maps_mutation_response",
+		update_match_invites:"match_invites_mutation_response",
+		update_match_invites_by_pk:"match_invites",
+		update_match_invites_many:"match_invites_mutation_response",
 		update_match_lineup_players:"match_lineup_players_mutation_response",
 		update_match_lineup_players_by_pk:"match_lineup_players",
 		update_match_lineup_players_many:"match_lineup_players_mutation_response",
@@ -16704,6 +16921,9 @@ export const ReturnTypes: Record<string,any> = {
 		maps:"maps",
 		maps_aggregate:"maps_aggregate",
 		maps_by_pk:"maps",
+		match_invites:"match_invites",
+		match_invites_aggregate:"match_invites_aggregate",
+		match_invites_by_pk:"match_invites",
 		match_lineup_players:"match_lineup_players",
 		match_lineup_players_aggregate:"match_lineup_players_aggregate",
 		match_lineup_players_by_pk:"match_lineup_players",
@@ -17136,6 +17356,10 @@ export const ReturnTypes: Record<string,any> = {
 		maps_aggregate:"maps_aggregate",
 		maps_by_pk:"maps",
 		maps_stream:"maps",
+		match_invites:"match_invites",
+		match_invites_aggregate:"match_invites_aggregate",
+		match_invites_by_pk:"match_invites",
+		match_invites_stream:"match_invites",
 		match_lineup_players:"match_lineup_players",
 		match_lineup_players_aggregate:"match_lineup_players_aggregate",
 		match_lineup_players_by_pk:"match_lineup_players",

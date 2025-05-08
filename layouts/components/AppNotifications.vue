@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { Button } from "~/components/ui/button";
 import TimeAgo from "~/components/TimeAgo.vue";
 import TeamInviteNotification from "~/components/TeamInviteNotification.vue";
+import MatchInviteNotification from "~/components/MatchInviteNotification.vue";
 </script>
 
 <template>
@@ -36,9 +37,23 @@ import TeamInviteNotification from "~/components/TeamInviteNotification.vue";
             v-if="
               team_invites.length > 0 ||
               tournament_team_invites.length > 0 ||
+              match_invites.length > 0 ||
               notifications.length > 0
             "
           >
+            <div
+              v-if="match_invites.length > 0"
+              class="mb-4 p-4 bg-accent rounded-lg"
+            >
+              <MatchInviteNotification
+                type="match"
+                :invite="invite"
+                :key="invite.id"
+                v-for="invite of match_invites"
+              />
+              <Separator v-if="notifications.length > 0"></Separator>
+            </div>
+
             <div
               v-if="team_invites.length > 0"
               class="mb-4 p-4 bg-accent rounded-lg"
@@ -197,6 +212,7 @@ export default {
       isOpen: false,
       team_invites: [],
       tournament_team_invites: [],
+      match_invites: [],
       notifications: [] as Array<{
         id: string;
         title: string;
@@ -219,6 +235,41 @@ export default {
   },
   apollo: {
     $subscribe: {
+      match_invites: {
+        query: typedGql("subscription")({
+          match_invites: [
+            {
+              order_by: [
+                {},
+                {
+                  created_at: order_by.desc,
+                },
+              ],
+              where: {
+                steam_id: {
+                  _eq: $("steam_id", "bigint!"),
+                },
+              },
+            },
+            {
+              id: true,
+              match_id: true,
+              invited_by: {
+                name: true,
+              },
+              created_at: true,
+            },
+          ],
+        }),
+        variables: function () {
+          return {
+            steam_id: this.me.steam_id,
+          };
+        },
+        result({ data }: { data: any }) {
+          this.match_invites = data.match_invites;
+        },
+      },
       team_invites: {
         query: typedGql("subscription")({
           team_invites: [
@@ -472,6 +523,10 @@ export default {
       return useAuthStore().me;
     },
     hasNotifications() {
+      if (this.match_invites.length > 0) {
+        return true;
+      }
+
       if (this.team_invites.length > 0) {
         return true;
       }

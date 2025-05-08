@@ -13,7 +13,7 @@ import { generateSubscription } from "~/graphql/graphqlGen";
 export const useMatchLobbyStore = defineStore("matchLobby", () => {
   const lobbies = ref(new Map<string, { players: any[]; match: any }>());
   const lobbyChat = ref<Record<string, Map<string, unknown>>>({});
-  const upcomingMatches = ref([]);
+  const managingMatches = ref([]);
   const viewMatchLobby = ref();
 
   const subscribeToMyMatches = async () => {
@@ -28,7 +28,13 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
                     _eq: $("steam_id", "bigint!"),
                   },
                   status: {
-                    _in: [e_match_status_enum.PickingPlayers],
+                    _nin: [
+                      e_match_status_enum.Finished,
+                      e_match_status_enum.Tie,
+                      e_match_status_enum.Canceled,
+                      e_match_status_enum.Forfeit,
+                      e_match_status_enum.Surrendered,
+                    ],
                   },
                 },
                 {
@@ -78,7 +84,7 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
     subscription.subscribe({
       next: ({ data }) => {
         if (data?.matches) {
-          upcomingMatches.value = data.matches;
+          managingMatches.value = data.matches;
 
           const _matches = data.matches.filter((match) => {
             return [
@@ -89,6 +95,8 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
               e_match_status_enum.Scheduled,
             ].includes(match.status);
           });
+
+          // TODO - check that they are in the line up otherwise its pointless to see lobbies
 
           // Create a set of match IDs from the new data
           const newMatchIds = new Set(_matches.map((match) => match.id));
@@ -149,7 +157,24 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
   return {
     lobbies,
     lobbyChat,
-    upcomingMatches,
+    managingMatches,
+    currentMatch: computed(() => {
+      const matches = managingMatches.value.filter((match) => {
+        if (match.status != e_match_status_enum.PickingPlayers) {
+          return false;
+        }
+
+        if (!match.lineup_1.is_on_lineup && !match.lineup_2.is_on_lineup) {
+          return false;
+        }
+
+        return true;
+      });
+
+      if (matches.length === 1) {
+        return matches.at(0);
+      }
+    }),
     viewMatchLobby,
     add,
     set,

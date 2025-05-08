@@ -6,6 +6,7 @@ export const simpleMatchFields = Selector("matches")({
   id: true,
   status: true,
   ended_at: true,
+  organizer_steam_id: true,
   e_match_status: {
     description: true,
   },
@@ -18,6 +19,12 @@ export const simpleMatchFields = Selector("matches")({
     type: true,
     lobby_access: true,
   },
+  invites: [
+    {},
+    {
+      steam_id: true,
+    },
+  ],
   match_maps: [
     {
       order_by: [

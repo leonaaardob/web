@@ -322,6 +322,17 @@
       "map_pools": {}
     }
   },
+  "notifications": {
+    "match": {  
+      "title": "Match Invite",
+      "description": "You have been invited to join a match",
+      "invited_by": "Invited by"
+    },
+    "invite": {
+      "deny": "Deny",
+      "accept": "Accept"
+    }
+  },
   "custom_match": {
     "title": "Custom Match",
     "description": "Create and customize your own match. Set rules, choose maps, and invite friends for a personalized gaming experience."
@@ -863,8 +874,7 @@
     },
     "join": {
       "live": "Match is Live",
-      "call_organizer": "Call For Organizer",
-      "connect": "Join Server"
+      "call_organizer": "Call For Organizer"
     },
     "check_in": {
       "title": "Check In",
@@ -977,6 +987,7 @@
       "pending_requests": "Pending Requests",
       "online": "Online",
       "invite_to_lobby": "Invite to Lobby",
+      "invite_to_match": "Invite Player to Match",
       "remove": "Remove Friend",
       "join_lobby": "Join Lobby",
       "offline": "Offline",

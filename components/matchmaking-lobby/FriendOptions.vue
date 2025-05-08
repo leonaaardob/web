@@ -20,6 +20,16 @@ import { Plus, Trash2, User } from "lucide-vue-next";
 
       <DropdownMenuSeparator />
 
+      <DropdownMenuItem
+        @click="inviteToMatch"
+        :class="!canInviteToMatch ? 'opacity-50 pointer-events-none' : ''"
+      >
+        <Plus class="mr-2 h-4 w-4" />
+        <span>{{ $t("matchmaking.friends.invite_to_match") }}</span>
+      </DropdownMenuItem>
+
+      <DropdownMenuSeparator />
+
       <DropdownMenuItem @click="removeFriend" class="text-red-500">
         <Trash2 class="mr-2 h-4 w-4" />
         <span>{{ $t("matchmaking.friends.remove") }}</span>
@@ -30,6 +40,9 @@ import { Plus, Trash2, User } from "lucide-vue-next";
 
 <script lang="ts">
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
+import { generateMutation } from "~/graphql/graphqlGen";
+import { e_lobby_access_enum } from "~/generated/zeus";
+
 export default {
   props: {
     player: {
@@ -41,6 +54,28 @@ export default {
     me() {
       return useAuthStore().me;
     },
+    currentMatch() {
+      return useMatchLobbyStore().currentMatch;
+    },
+    canInviteToMatch() {
+      return (
+        this.currentMatch &&
+        this.currentMatch.options.lobby_access.includes([
+          e_lobby_access_enum.Open,
+          e_lobby_access_enum.Friends,
+          e_lobby_access_enum.Invite,
+        ])
+      );
+    },
+    invitedToMatch() {
+      if (!this.currentMatch) {
+        return false;
+      }
+
+      return this.currentMatch.invites.find(
+        (invite) => invite.steam_id === this.player.steam_id,
+      );
+    },
   },
   methods: {
     async viewProfile() {
@@ -48,6 +83,27 @@ export default {
     },
     async inviteToLobby() {
       await useMatchmakingStore().inviteToLobby(this.player.steam_id);
+    },
+    async inviteToMatch() {
+      if (!this.currentMatch) {
+        return;
+      }
+
+      await this.$apollo.mutate({
+        mutation: generateMutation({
+          insert_match_invites_one: [
+            {
+              object: {
+                steam_id: this.player.steam_id,
+                match_id: this.currentMatch.id,
+              },
+            },
+            {
+              __typename: true,
+            },
+          ],
+        }),
+      });
     },
     async removeFriend() {
       await this.$apollo.mutate({

@@ -26,7 +26,7 @@ import SimpleMatchDisplay from "./SimpleMatchDisplay.vue";
 export default {
   computed: {
     matches() {
-      return useMatchLobbyStore().upcomingMatches;
+      return useMatchLobbyStore().managingMatches;
     },
   },
 };
