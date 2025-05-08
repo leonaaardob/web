@@ -111,7 +111,7 @@ import CustomMatch from "~/components/CustomMatch.vue";
               'bg-primary/20 border-primary cursor-pointer shadow-lg scale-[1.02]':
                 pendingMatchType?.value === type.value,
             }"
-            @click="handleMatchTypeClick(type)"
+            @click="handleMatchTypeClick(type.value)"
           >
             <div class="relative z-10 h-full">
               <template v-if="pendingMatchType?.value !== type.value">
