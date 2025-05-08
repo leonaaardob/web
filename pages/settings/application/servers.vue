@@ -14,7 +14,6 @@ definePageMeta({
       <div class="space-y-0.5">
         <h4 class="text-base font-medium">
           {{ $t("pages.settings.application.servers.enable_cpu_pinning") }}
-          <Badge variant="destructive" class="ml-2">expirmental</Badge>
         </h4>
         <p class="text-sm text-muted-foreground">
           {{
