@@ -78,6 +78,20 @@ import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
 
     <Separator />
 
+    <div
+      v-if="missingMaps.length > 0"
+      class="mt-2 p-2 bg-yellow-100 border border-yellow-400 rounded text-yellow-800"
+    >
+      <p class="font-medium">
+        {{ $t("pages.map_pools.missing_from_collection_description") }}
+      </p>
+      <ul class="list-disc list-inside">
+        <li v-for="mapId in missingMaps" :key="mapId">{{ mapId }}</li>
+      </ul>
+    </div>
+
+    <Separator />
+
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-bold">
         {{ $t("pages.map_pools.maps") }}
@@ -116,6 +130,7 @@ import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
           :key="map.id"
           :map="map"
           :match-types="matchTypes"
+          :is-in-collection="workshopMapIds.includes(map.workshop_map_id)"
         />
       </tbody>
     </table>
@@ -178,6 +193,7 @@ export default {
         e_match_types_enum.Wingman,
         e_match_types_enum.Duel,
       ],
+      workshopMapIds: [] as string[],
     };
   },
   apollo: {
@@ -239,7 +255,40 @@ export default {
       });
     },
   },
+  watch: {
+    collectionId: {
+      immediate: true,
+      async handler() {
+        if (!this.collectionId) {
+          return;
+        }
+
+        const response = await fetch(
+          `/api/get-workshop-map-collection?collection_id=${this.collectionId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        this.workshopMapIds = await response.json();
+      },
+    },
+  },
   computed: {
+    missingMaps() {
+      if (this.workshopMapIds.length === 0 || this.maps.length === 0) {
+        return [];
+      }
+
+      return this.workshopMapIds.filter((id) => {
+        return !this.maps?.some(function (map) {
+          return map.workshop_map_id === id;
+        });
+      });
+    },
     availableMaps(): Map[] {
       const uniqueMapsMap = new Map<string, Map>();
 
@@ -276,6 +325,10 @@ export default {
     },
     settings() {
       return useApplicationSettingsStore().settings;
+    },
+    collectionId() {
+      return this.settings.find((setting) => setting.name === "collection_id")
+        ?.value;
     },
     updateMapPools() {
       const updateMapPoolsSetting = this.settings.find(

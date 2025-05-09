@@ -109,6 +109,8 @@
                     "enable_cpu_pinning_description": "Enable CPU pinning on game server nodes for better performance",
                     "number_of_cpus_per_server": "Number of CPUs per Server",
                     "number_of_cpus_per_server_description": "Number of CPUs to allocate per server",
+                    "collection": "Collection ID",
+                    "collection_description": "The ID of the collection to use for the server",
                     "update": "Update"
                 },
                 "demo_settings": {
@@ -277,6 +279,9 @@
         },
         "map_pools": {
             "title": "Default Map Pools",
+            "in_collection": "In Collection",
+            "missing_from_collection": "Missing from Collection",
+            "missing_from_collection_description": "The following maps are in your workshop collection but not in the maps list.",
             "description": "Manage map pools and available maps for matchmaking.",
             "form": {
                 "name": "Name",
