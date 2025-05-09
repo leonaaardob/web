@@ -705,8 +705,10 @@ export default {
   watch: {
     isMedium: {
       immediate: true,
-      handler() {
-        this.rightSidebarOpen = !this.isMedium;
+      handler(oldValue, newValue) {
+        if (this.rightSidebarOpen && oldValue && newValue == false) {
+          this.rightSidebarOpen = false;
+        }
       },
     },
     detectedCountry: {
