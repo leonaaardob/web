@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { Users, Trophy } from "lucide-vue-next";
+import { Users } from "lucide-vue-next";
 import { useRouter } from "vue-router";
 import { useApplicationSettingsStore } from "~/stores/ApplicationSettings";
-
-const router = useRouter();
-const applicationSettingsStore = useApplicationSettingsStore();
-
-const navigateToCreate = () => {
-  router.push("/matches/create");
-};
 </script>
 
 <template>
-  <div
-    v-if="applicationSettingsStore.canCreateMatch"
-    @click="navigateToCreate"
+  <NuxtLink
+    :to="{ name: 'matches-create' }"
     class="flex-1 p-6 border rounded-lg hover:bg-accent/10 cursor-pointer transition-all duration-200 group relative overflow-hidden"
   >
     <div class="flex items-start gap-4">
@@ -37,7 +29,7 @@ const navigateToCreate = () => {
     <div
       class="absolute bottom-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mb-16 group-hover:bg-primary/10 transition-colors"
     ></div>
-  </div>
+  </NuxtLink>
 </template>
 
 <script lang="ts">

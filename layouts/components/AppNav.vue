@@ -16,6 +16,7 @@ import {
   Globe,
   Map,
   Settings,
+  User,
 } from "lucide-vue-next";
 import TournamentBracket from "~/components/icons/tournament-bracket.vue";
 import SystemUpdate from "./SystemUpdate.vue";
@@ -452,6 +453,20 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 <DropdownMenuGroup>
                   <DropdownMenuItem class="flex gap-2 cursor-pointer" as-child>
                     <NuxtLink
+                      :to="{ name: 'players-id', params: { id: me.steam_id } }"
+                      :class="{
+                        'router-link-active': isRouteActive('players'),
+                      }"
+                    >
+                      <User class="size-4" />
+                      {{ $t("layouts.app_nav.profile.my_profile") }}
+                    </NuxtLink>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuGroup>
+                  <DropdownMenuItem class="flex gap-2 cursor-pointer" as-child>
+                    <NuxtLink
                       :to="{ name: 'settings' }"
                       :class="{
                         'router-link-active': isRouteActive('settings'),
@@ -480,7 +495,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
       <SidebarRail />
     </Sidebar>
 
-    <SidebarInset class="bg-muted/40 overflow-hidden">
+    <SidebarInset class="bg-muted/40 pt-4 overflow-hidden">
       <header
         class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 px-4"
       >

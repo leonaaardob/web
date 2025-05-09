@@ -47,14 +47,15 @@ import PlayerElo from "~/components/PlayerElo.vue";
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow
-            v-for="player of players"
-            @click="viewPlayer(player.steam_id)"
-            class="cursor-pointer"
-          >
-            <TableCell class="font-medium">
-              <PlayerDisplay :player="player"></PlayerDisplay>
-            </TableCell>
+          <TableRow v-for="player of players" class="cursor-pointer">
+            <NuxtLink
+              :to="{ name: 'players-id', params: { id: player.steam_id } }"
+              class="contents"
+            >
+              <TableCell class="font-medium">
+                <PlayerDisplay :player="player"></PlayerDisplay>
+              </TableCell>
+            </NuxtLink>
           </TableRow>
         </TableBody>
       </Table>
@@ -117,9 +118,6 @@ export default {
       }
 
       this.viewPlayer(player.steam_id);
-    },
-    viewPlayer(steam_id) {
-      this.$router.push(`/players/${steam_id}`);
     },
     async searchPlayers() {
       const response = await $fetch("/api/players-search", {

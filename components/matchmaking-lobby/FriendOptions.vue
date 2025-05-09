@@ -8,9 +8,14 @@ import { Plus, Trash2, User } from "lucide-vue-next";
       <slot></slot>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
-      <DropdownMenuItem @click="viewProfile">
-        <User class="mr-2 h-4 w-4" />
-        <span>{{ $t("matchmaking.friends.view_profile") }}</span>
+      <DropdownMenuItem>
+        <NuxtLink
+          :to="{ name: 'players-id', params: { id: player.steam_id } }"
+          class="flex items-center"
+        >
+          <User class="mr-2 h-4 w-4" />
+          <span>{{ $t("matchmaking.friends.view_profile") }}</span>
+        </NuxtLink>
       </DropdownMenuItem>
 
       <DropdownMenuItem @click="inviteToLobby">
@@ -78,9 +83,6 @@ export default {
     },
   },
   methods: {
-    async viewProfile() {
-      this.$router.push(`/players/${this.player.steam_id}`);
-    },
     async inviteToLobby() {
       await useMatchmakingStore().inviteToLobby(this.player.steam_id);
     },

@@ -37,26 +37,33 @@ import TimeAgo from "~/components/TimeAgo.vue";
       </template>
       <template v-else>
         <TableRow
-          @click="viewTournament(tournament.id)"
           v-for="tournament of tournaments"
           :key="tournament.id"
           class="cursor-pointer"
         >
-          <TableCell class="font-medium">
-            {{ tournament.name }}
-          </TableCell>
-          <TableCell>
-            <Badge>{{ tournament.e_tournament_status.description }}</Badge>
-          </TableCell>
-          <TableCell>
-            {{ tournament.options.type }}
-          </TableCell>
-          <TableCell>
-            {{ tournament.teams_aggregate.aggregate.count }}
-          </TableCell>
-          <TableCell>
-            <TimeAgo :date="tournament.start"></TimeAgo>
-          </TableCell>
+          <NuxtLink
+            :to="{
+              name: 'tournaments-tournamentId',
+              params: { tournamentId: tournament.id },
+            }"
+            class="contents"
+          >
+            <TableCell class="font-medium">
+              {{ tournament.name }}
+            </TableCell>
+            <TableCell>
+              <Badge>{{ tournament.e_tournament_status.description }}</Badge>
+            </TableCell>
+            <TableCell>
+              {{ tournament.options.type }}
+            </TableCell>
+            <TableCell>
+              {{ tournament.teams_aggregate.aggregate.count }}
+            </TableCell>
+            <TableCell>
+              <TimeAgo :date="tournament.start"></TimeAgo>
+            </TableCell>
+          </NuxtLink>
         </TableRow>
       </template>
     </TableBody>
@@ -69,11 +76,6 @@ export default {
     tournaments: {
       required: true,
       type: Object,
-    },
-  },
-  methods: {
-    viewTournament(tournamentId: string) {
-      this.$router.push(`/tournaments/${tournamentId}`);
     },
   },
 };

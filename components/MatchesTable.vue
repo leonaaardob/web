@@ -40,62 +40,65 @@ import cleanMapName from "~/utilities/cleanMapName";
         <TableRow
           v-for="match of matches"
           :key="match.id"
-          @click="viewMatch(match.id)"
           class="cursor-pointer"
         >
-          <TableCell>
-            <div class="flex items-center space-x-2">
-              <span class="font-bold">{{ match.lineup_1.name }}</span>
-              <span class="text-gray-500">{{ $t("match.simple.vs") }}</span>
-              <span class="font-bold">{{ match.lineup_2.name }}</span>
-            </div>
-            <div class="flex items-center space-x-2">
-              <time-ago
-                :date="match.created_at"
-                class="text-sm text-gray500 dark:text-gray-400"
-              ></time-ago>
-            </div>
-          </TableCell>
-          <TableCell class="text-center">
-            <Button
-              @click="viewMatch(match.id)"
-              variant="outline"
-              v-if="
-                match.status === e_match_status_enum.PickingPlayers &&
-                match.options.lobby_access === e_lobby_access_enum.Open &&
-                !match.lineup_1.is_on_lineup &&
-                !match.lineup_2.is_on_lineup
-              "
-            >
-              <UserPlusIcon class="h-4 w-4" />
-              {{ $t("match.options.table.join") }}
-            </Button>
-          </TableCell>
-          <TableCell class="text-center">
-            <Badge>
-              {{ match.e_match_status.description }}
-              <template
-                v-if="match.status === e_match_status_enum.PickingPlayers"
-              >
-                ({{ totalPlayers(match) }} /
-                {{ match.min_players_per_lineup * 2 }})
-              </template>
-            </Badge>
-          </TableCell>
-          <TableCell class="hidden sm:table-cell">
-            {{ match.options.type }}
-          </TableCell>
-          <TableCell class="hidden md:table-cell">
-            <div class="flex flex-wrap gap-1">
-              <Badge
-                v-for="(match_map, index) of match.match_maps"
-                :key="index"
+          <NuxtLink
+            :to="{ name: 'matches-id', params: { id: match.id } }"
+            class="contents"
+          >
+            <TableCell>
+              <div class="flex items-center space-x-2">
+                <span class="font-bold">{{ match.lineup_1.name }}</span>
+                <span class="text-gray-500">{{ $t("match.simple.vs") }}</span>
+                <span class="font-bold">{{ match.lineup_2.name }}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <time-ago
+                  :date="match.created_at"
+                  class="text-sm text-gray500 dark:text-gray-400"
+                ></time-ago>
+              </div>
+            </TableCell>
+            <TableCell class="text-center">
+              <Button
                 variant="outline"
+                v-if="
+                  match.status === e_match_status_enum.PickingPlayers &&
+                  match.options.lobby_access === e_lobby_access_enum.Open &&
+                  !match.lineup_1.is_on_lineup &&
+                  !match.lineup_2.is_on_lineup
+                "
               >
-                {{ cleanMapName(match_map.map.name) }}
+                <UserPlusIcon class="h-4 w-4" />
+                {{ $t("match.options.table.join") }}
+              </Button>
+            </TableCell>
+            <TableCell class="text-center">
+              <Badge>
+                {{ match.e_match_status.description }}
+                <template
+                  v-if="match.status === e_match_status_enum.PickingPlayers"
+                >
+                  ({{ totalPlayers(match) }} /
+                  {{ match.min_players_per_lineup * 2 }})
+                </template>
               </Badge>
-            </div>
-          </TableCell>
+            </TableCell>
+            <TableCell class="hidden sm:table-cell">
+              {{ match.options.type }}
+            </TableCell>
+            <TableCell class="hidden md:table-cell">
+              <div class="flex flex-wrap gap-1">
+                <Badge
+                  v-for="(match_map, index) of match.match_maps"
+                  :key="index"
+                  variant="outline"
+                >
+                  {{ cleanMapName(match_map.map.name) }}
+                </Badge>
+              </div>
+            </TableCell>
+          </NuxtLink>
         </TableRow>
       </template>
     </TableBody>
@@ -111,9 +114,6 @@ export default {
     },
   },
   methods: {
-    viewMatch(matchId) {
-      this.$router.push(`/matches/${matchId}`);
-    },
     totalPlayers(match) {
       return (
         Math.min(

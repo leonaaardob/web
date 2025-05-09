@@ -7,9 +7,9 @@ import { e_match_status_enum } from "~/generated/zeus";
 </script>
 
 <template>
-  <div
+  <NuxtLink
+    :to="{ name: 'matches-id', params: { id: match.id } }"
     class="relative w-80 h-48 overflow-hidden rounded-lg transition-all duration-300 transform hover:scale-105 cursor-pointer"
-    @click="goToMatch"
   >
     <div class="flex w-full h-full">
       <template v-if="match.match_maps.length === 0">
@@ -83,7 +83,7 @@ import { e_match_status_enum } from "~/generated/zeus";
         </div>
       </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <script lang="ts">
@@ -92,11 +92,6 @@ export default {
     match: {
       type: Object,
       required: true,
-    },
-  },
-  methods: {
-    goToMatch() {
-      this.$router.push(`/matches/${this.match.id}`);
     },
   },
   computed: {

@@ -62,25 +62,29 @@ import ServerStatus from "~/components/servers/ServerStatus.vue";
           <TableRow
             v-for="server of servers"
             :key="server.id"
-            @click="viewServer(server.id)"
             class="cursor-pointer"
           >
-            <TableCell>
-              <div class="flex gap-2 items-center">
-                <ServerStatus :server="server" />
-                <span class="truncate">
-                  {{ server.host }}
-                </span>
-              </div>
-            </TableCell>
-            <TableCell>{{ server.label }}</TableCell>
-            <TableCell>{{ server.region }}</TableCell>
-            <TableCell>{{ server.tv_port }}</TableCell>
-            <TableCell>{{
-              server.enabled
-                ? $t("pages.dedicated_servers.table.yes")
-                : $t("pages.dedicated_servers.table.no")
-            }}</TableCell>
+            <NuxtLink
+              :to="{ name: 'dedicated-servers-id', params: { id: server.id } }"
+              class="contents"
+            >
+              <TableCell>
+                <div class="flex gap-2 items-center">
+                  <ServerStatus :server="server" />
+                  <span class="truncate">
+                    {{ server.host }}
+                  </span>
+                </div>
+              </TableCell>
+              <TableCell>{{ server.label }}</TableCell>
+              <TableCell>{{ server.region }}</TableCell>
+              <TableCell>{{ server.tv_port }}</TableCell>
+              <TableCell>{{
+                server.enabled
+                  ? $t("pages.dedicated_servers.table.yes")
+                  : $t("pages.dedicated_servers.table.no")
+              }}</TableCell>
+            </NuxtLink>
           </TableRow>
         </TableBody>
       </Table>
@@ -159,11 +163,6 @@ export default {
           },
         ],
       }),
-    },
-  },
-  methods: {
-    viewServer(serverId) {
-      this.$router.push(`/dedicated-servers/${serverId}`);
     },
   },
 };

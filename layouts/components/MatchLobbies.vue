@@ -6,16 +6,16 @@ import { ArrowRight, ChevronDown } from "lucide-vue-next";
 <template>
   <div class="flex gap-4 items-center">
     <template v-if="match">
-      <Button
-        class="flex gap-2 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white animate-pulse"
-        @click="goToMatch"
+      <NuxtLink
+        :to="{ name: 'matches-id', params: { id: match.id } }"
+        class="p-2 rounded flex gap-2 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white animate-pulse"
         v-show="!onMatchPage"
       >
         <span class="md:inline hidden">{{
           match.e_match_status.description
         }}</span>
         <ArrowRight />
-      </Button>
+      </NuxtLink>
 
       <Popover v-model:open="choosingLobby">
         <PopoverTrigger>
@@ -80,9 +80,6 @@ export default {
     },
   },
   methods: {
-    goToMatch() {
-      this.$router.push(`/matches/${this.match.id}`);
-    },
     selectLobby(matchId: string) {
       this.choosingLobby = false;
       useMatchLobbyStore().viewMatchLobby = matchId;

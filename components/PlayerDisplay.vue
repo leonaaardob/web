@@ -6,9 +6,13 @@ import { Crown, Shield, BadgeCheck, BadgeIcon } from "lucide-vue-next";
 import FiveStackToolTip from "./FiveStackToolTip.vue";
 </script>
 <template>
-  <div
+  <NuxtLink
+    :to="
+      linkable && player?.steam_id
+        ? { name: 'players-id', params: { id: player?.steam_id } }
+        : null
+    "
     class="grid gap-2"
-    @click="viewPlayer"
     :class="{
       'cursor-pointer': linkable,
       'grid-cols-[52px_1fr]':
@@ -168,7 +172,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
       </slot>
     </div>
     <slot name="footer"></slot>
-  </div>
+  </NuxtLink>
 </template>
 
 <script lang="ts">
@@ -234,11 +238,6 @@ export default {
           ],
         }),
       });
-    },
-    viewPlayer() {
-      if (this.linkable && this.player) {
-        this.$router.push(`/players/${this.player.steam_id}`);
-      }
     },
   },
   computed: {

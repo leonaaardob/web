@@ -34,18 +34,18 @@ import {
         </TableRow>
       </template>
       <template v-else>
-        <TableRow
-          @click="viewTeam(team.id)"
-          v-for="team in teams"
-          :key="team.id"
-          class="cursor-pointer"
-        >
-          <TableCell class="font-medium">
-            {{ team.name }}
-          </TableCell>
-          <TableCell>{{ team.wins }}</TableCell>
-          <TableCell>{{ team.losses }}</TableCell>
-          <TableCell>{{ team.overtimeLosses }}</TableCell>
+        <TableRow class="cursor-pointer" v-for="team in teams" :key="team.id">
+          <NuxtLink
+            :to="{ name: 'teams-id', params: { id: team.id } }"
+            class="contents"
+          >
+            <TableCell class="font-medium">
+              {{ team.name }}
+            </TableCell>
+            <TableCell>{{ team.wins }}</TableCell>
+            <TableCell>{{ team.losses }}</TableCell>
+            <TableCell>{{ team.overtimeLosses }}</TableCell>
+          </NuxtLink>
         </TableRow>
       </template>
     </TableBody>
@@ -58,11 +58,6 @@ export default {
     teams: {
       required: true,
       type: Object,
-    },
-  },
-  methods: {
-    viewTeam(teamId) {
-      this.$router.push(`/teams/${teamId}`);
     },
   },
 };

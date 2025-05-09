@@ -5,9 +5,12 @@ import MapDisplay from "~/components/MapDisplay.vue";
 </script>
 
 <template>
-  <div
+  <NuxtLink
+    :to="{
+      name: 'tournaments-tournamentId',
+      params: { tournamentId: tournament.id },
+    }"
     class="relative w-80 h-48 overflow-hidden rounded-lg transition-all duration-300 transform hover:scale-105 cursor-pointer"
-    @click="goToTournament"
   >
     <div class="flex w-full h-full">
       <MapDisplay
@@ -38,7 +41,7 @@ import MapDisplay from "~/components/MapDisplay.vue";
         </div>
       </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <script lang="ts">
@@ -47,11 +50,6 @@ export default {
     tournament: {
       type: Object,
       required: true,
-    },
-  },
-  methods: {
-    goToTournament() {
-      this.$router.push(`/tournaments/${this.tournament.id}`);
     },
   },
 };

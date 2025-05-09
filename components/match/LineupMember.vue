@@ -4,9 +4,7 @@ import PlayerStatusDisplay from "./PlayerStatusDisplay.vue";
 
 <template>
   <template v-if="member.player">
-    <div @click="viewPlayer" class="cursor-pointer text-left">
-      <PlayerStatusDisplay :member="member" :match="match" />
-    </div>
+    <PlayerStatusDisplay :member="member" :match="match" />
   </template>
   <template v-else>
     <div class="ml-1 flex gap-4">
@@ -42,11 +40,6 @@ export default {
     match: {
       type: Object,
       required: false,
-    },
-  },
-  methods: {
-    viewPlayer() {
-      this.$router.push(`/players/${this.member.steam_id}`);
     },
   },
 };

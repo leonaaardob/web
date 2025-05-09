@@ -12,6 +12,7 @@ import { e_match_status_enum } from "~/generated/zeus";
     :show-name="showDetails"
     :ping-status="showDetails"
     :show-role="showDetails"
+    :linkable="linkable"
   >
     <template v-slot:avatar-sub v-if="showDetails">
       <Badge variant="outline" v-if="member.captain">
@@ -95,6 +96,10 @@ export default {
       required: false,
     },
     showDetails: {
+      default: true,
+      type: Boolean,
+    },
+    linkable: {
       default: true,
       type: Boolean,
     },

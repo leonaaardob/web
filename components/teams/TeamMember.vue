@@ -28,16 +28,11 @@ import Separator from "../ui/separator/Separator.vue";
 </script>
 
 <template>
-  <div
-    class="flex items-center space-x-4 cursor-pointer"
-    @click="viewPlayer(member.player.steam_id)"
-  >
-    <PlayerDisplay :player="member.player">
-      <template v-slot:avatar-sub>
-        <badge v-if="memberRole">{{ memberRole }}</badge>
-      </template>
-    </PlayerDisplay>
-  </div>
+  <PlayerDisplay :player="member.player" :linkable="true">
+    <template v-slot:avatar-sub>
+      <badge v-if="memberRole">{{ memberRole }}</badge>
+    </template>
+  </PlayerDisplay>
   <Popover
     v-if="
       !isInvite &&
@@ -204,9 +199,6 @@ export default {
     },
   },
   methods: {
-    viewPlayer(steam_id: string) {
-      this.$router.push(`/players/${steam_id}`);
-    },
     async removeMember() {
       this.removeMemberDialog = false;
       await this.$apollo.mutate({

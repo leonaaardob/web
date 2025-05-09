@@ -4,7 +4,10 @@ import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
 </script>
 
 <template>
-  <div class="flex gap-2 items-center cursor-pointer" @click="goToMatch">
+  <NuxtLink
+    :to="canSwitch ? { name: 'matches-id', params: { id: match.id } } : null"
+    class="flex gap-2 items-center cursor-pointer"
+  >
     <TooltipProvider v-for="member of myLineup">
       <Tooltip>
         <TooltipTrigger as-child>
@@ -12,6 +15,7 @@ import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
             :member="member"
             :match="match"
             :show-details="false"
+            :linkable="false"
             v-if="member.player"
           />
           <template v-else>
@@ -60,7 +64,7 @@ import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
     >
       <ArrowLeftRight />
     </Button>
-  </div>
+  </NuxtLink>
 </template>
 
 <script lang="ts">
@@ -124,15 +128,6 @@ export default {
       return lineup_1.is_on_lineup
         ? lineup_2.lineup_players
         : lineup_1.lineup_players;
-    },
-  },
-  methods: {
-    goToMatch() {
-      if (this.canSwitch) {
-        return;
-      }
-
-      this.$router.push(`/matches/${this.match.id}`);
     },
   },
   unmounted() {
