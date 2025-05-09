@@ -8,6 +8,8 @@ export const meFields = Selector("players")({
   profile_url: true,
   matchmaking_cooldown: true,
   current_lobby_id: true,
+  language: true,
+  country: true,
   teams: [
     {},
     {

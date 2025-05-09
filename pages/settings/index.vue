@@ -14,6 +14,37 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useI18n } from "vue-i18n";
+const { locale, locales, setLocale } = useI18n();
+
+const availableLocales = computed(() => {
+  return locales.value.filter((i) => i.code !== locale.value);
+});
+
+const currentLocale = computed(() => {
+  return locales.value.find((i) => i.code === locale.value);
+});
+
+const handleLocaleChange = (
+  newLocale:
+    | "en"
+    | "sv"
+    | "ua"
+    | "ko"
+    | "ja"
+    | "de"
+    | "fr"
+    | "it"
+    | "es"
+    | "da"
+    | "pl"
+    | "ru"
+    | "lv"
+    | "pt-BR"
+    | "zh",
+) => {
+  setLocale(newLocale);
+};
 
 definePageMeta({
   layout: "profile-settings",
@@ -23,10 +54,10 @@ definePageMeta({
 <template>
   <div>
     <h3 class="text-lg font-medium">
-      {{ $t("pages.settings.profile.title") }}
+      {{ $t("pages.settings.account.title") }}
     </h3>
     <p class="text-sm text-muted-foreground">
-      {{ $t("pages.settings.profile.description") }}
+      {{ $t("pages.settings.account.description") }}
     </p>
   </div>
   <Separator />
@@ -35,7 +66,7 @@ definePageMeta({
     <FormField v-slot="{ componentField }" name="name">
       <FormItem>
         <FormLabel class="flex items-center gap-2">
-          {{ $t("pages.settings.profile.name") }}
+          {{ $t("pages.settings.account.name") }}
         </FormLabel>
         <FormControl>
           <Input v-bind="componentField" readonly disabled />
@@ -49,7 +80,7 @@ definePageMeta({
 
     <FormField v-slot="{ componentField }" name="avatar_url">
       <FormItem>
-        <FormLabel>{{ $t("pages.settings.profile.avatar_url") }}</FormLabel>
+        <FormLabel>{{ $t("pages.settings.account.avatar_url") }}</FormLabel>
         <FormControl>
           <Input v-bind="componentField" />
           <FormMessage />
@@ -57,9 +88,69 @@ definePageMeta({
       </FormItem>
     </FormField>
 
+    <div class="space-y-2">
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        {{ $t("pages.settings.language.select") }}
+      </label>
+      <Popover v-model:open="isLanguagePopoverOpen">
+        <PopoverTrigger as-child>
+          <Button
+            variant="outline"
+            role="combobox"
+            class="w-full justify-between"
+          >
+            <div class="flex items-center gap-2">
+              <Languages class="size-4" />
+              <span>
+                {{ currentLocale?.flag }}
+              </span>
+              <span>
+                {{ currentLocale?.name }}
+              </span>
+            </div>
+            <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent class="w-full p-0">
+          <Command>
+            <CommandInput :placeholder="$t('pages.settings.language.search')" />
+            <CommandList>
+              <CommandGroup>
+                <CommandItem
+                  v-for="loc in availableLocales"
+                  :key="loc.code"
+                  :value="loc.code"
+                  @select="
+                    () => {
+                      form.setFieldValue('language', loc.code);
+                      handleLocaleChange(loc.code);
+                      isLanguagePopoverOpen = false;
+                    }
+                  "
+                >
+                  <div class="flex items-center gap-2">
+                    <span>{{ loc.flag }}</span>
+                    <span>{{ loc.name }}</span>
+                  </div>
+                  <Check
+                    :class="[
+                      'ml-auto h-4 w-4 flex-shrink-0',
+                      locale === loc.code ? 'opacity-100' : 'opacity-0',
+                    ]"
+                  />
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+
     <FormField v-slot="{ componentField }" name="country">
       <FormItem>
-        <FormLabel>{{ $t("pages.settings.profile.country") }}</FormLabel>
+        <FormLabel>{{ $t("pages.settings.account.country") }}</FormLabel>
 
         <Popover v-model:open="open">
           <PopoverTrigger as-child>
@@ -76,7 +167,7 @@ definePageMeta({
                 {{
                   form.values.country
                     ? countries[form.values.country]?.name
-                    : $t("pages.settings.profile.select_country")
+                    : $t("pages.settings.account.select_country")
                 }}
               </div>
               <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -85,10 +176,10 @@ definePageMeta({
           <PopoverContent class="w-full p-0">
             <Command class="w-[300px]">
               <CommandInput
-                :placeholder="$t('pages.settings.profile.search_country')"
+                :placeholder="$t('pages.settings.account.search_country')"
               />
               <CommandEmpty>{{
-                $t("pages.settings.profile.no_country_found")
+                $t("pages.settings.account.no_country_found")
               }}</CommandEmpty>
               <CommandList>
                 <CommandGroup>
@@ -127,7 +218,7 @@ definePageMeta({
 
     <div class="flex justify-start">
       <Button type="submit" :disabled="Object.keys(form.errors).length > 0">
-        {{ $t("pages.settings.profile.update") }}
+        {{ $t("pages.settings.account.update") }}
       </Button>
     </div>
   </form>
@@ -147,12 +238,14 @@ export default {
     return {
       open: false,
       countries: getAllCountries(),
+      isLanguagePopoverOpen: false,
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
             name: z.string().min(1),
             avatar_url: z.string().min(1),
             country: z.string().min(1),
+            language: z.string().optional(),
           }),
         ),
       }),
@@ -191,6 +284,7 @@ export default {
                   ? { avatar_url: this.form.values.avatar_url }
                   : {}),
                 country: this.form.values.country,
+                language: this.form.values.language,
               },
             },
             {
@@ -201,7 +295,7 @@ export default {
       });
 
       toast({
-        title: "Updated Profile",
+        title: this.$t("pages.settings.account.update_success"),
       });
     },
   },

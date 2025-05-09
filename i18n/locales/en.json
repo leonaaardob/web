@@ -35,20 +35,31 @@
             "search": "Search..."
         },
         "settings": {
-            "profile": {
-                "title": "Profile",
-                "description": "Your Profile Details",
+            "account": {
+                "title": "Account Settings",
+                "description": "Your Account Details",
                 "my_account": "My Account",
                 "appearance": "Appearance",
                 "name": "Name",
                 "avatar_url": "Avatar URL",
-                "language": "Language",
                 "country": "Country",
                 "select_country": "Select country...",
                 "search_country": "Search country...",
                 "no_country_found": "No country found.",
-                "update": "Update Profile",
-                "matchmaking": "Matchmaking"
+                "update": "Update Account",
+                "matchmaking": "Matchmaking",
+                "update_success": "Updated Profile",
+                "discord": {
+                  "unlink": "Unlink Discord",
+                  "link": "Link Discord",
+                  "unlink_dialog": {
+                      "title": "Unlink Discord Account",
+                      "description": "Are you sure you want to unlink your Discord account? This will remove the connection between your 5Stack and Discord accounts.",
+                      "cancel": "Cancel",
+                      "confirm": "Unlink"
+                  },
+                  "unlinked": "Discord account unlinked successfully"
+              }
             },
             "appearance": {
                 "title": "Appearance",
@@ -334,20 +345,9 @@
         "description": "Create and customize your own match. Set rules, choose maps, and invite friends for a personalized gaming experience."
     },
     "layouts": {
-        "profile_settings": {
-            "title": "Profile Settings",
-            "description": "Manage your account settings and preferences",
-            "discord": {
-                "unlink": "Unlink Discord",
-                "link": "Link Discord",
-                "unlink_dialog": {
-                    "title": "Unlink Discord Account",
-                    "description": "Are you sure you want to unlink your Discord account? This will remove the connection between your 5Stack and Discord accounts.",
-                    "cancel": "Cancel",
-                    "confirm": "Unlink"
-                },
-                "unlinked": "Discord account unlinked successfully"
-            }
+        "account_settings": {
+            "title": "Account Settings",
+            "description": "Manage your account settings and preferences"
         },
         "application_settings": {
             "title": "Application Settings",

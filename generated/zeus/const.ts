@@ -2224,10 +2224,39 @@ export const AllTypesProps: Record<string,any> = {
 		_set:"maps_set_input",
 		where:"maps_bool_exp"
 	},
+	match_invites_aggregate_bool_exp:{
+		count:"match_invites_aggregate_bool_exp_count"
+	},
+	match_invites_aggregate_bool_exp_count:{
+		arguments:"match_invites_select_column",
+		filter:"match_invites_bool_exp",
+		predicate:"Int_comparison_exp"
+	},
 	match_invites_aggregate_fields:{
 		count:{
 			columns:"match_invites_select_column"
 		}
+	},
+	match_invites_aggregate_order_by:{
+		avg:"match_invites_avg_order_by",
+		count:"order_by",
+		max:"match_invites_max_order_by",
+		min:"match_invites_min_order_by",
+		stddev:"match_invites_stddev_order_by",
+		stddev_pop:"match_invites_stddev_pop_order_by",
+		stddev_samp:"match_invites_stddev_samp_order_by",
+		sum:"match_invites_sum_order_by",
+		var_pop:"match_invites_var_pop_order_by",
+		var_samp:"match_invites_var_samp_order_by",
+		variance:"match_invites_variance_order_by"
+	},
+	match_invites_arr_rel_insert_input:{
+		data:"match_invites_insert_input",
+		on_conflict:"match_invites_on_conflict"
+	},
+	match_invites_avg_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
 	},
 	match_invites_bool_exp:{
 		_and:"match_invites_bool_exp",
@@ -2257,6 +2286,20 @@ export const AllTypesProps: Record<string,any> = {
 		player:"players_obj_rel_insert_input",
 		steam_id:"bigint"
 	},
+	match_invites_max_order_by:{
+		created_at:"order_by",
+		id:"order_by",
+		invited_by_player_steam_id:"order_by",
+		match_id:"order_by",
+		steam_id:"order_by"
+	},
+	match_invites_min_order_by:{
+		created_at:"order_by",
+		id:"order_by",
+		invited_by_player_steam_id:"order_by",
+		match_id:"order_by",
+		steam_id:"order_by"
+	},
 	match_invites_on_conflict:{
 		constraint:"match_invites_constraint",
 		update_columns:"match_invites_update_column",
@@ -2283,6 +2326,18 @@ export const AllTypesProps: Record<string,any> = {
 		match_id:"uuid",
 		steam_id:"bigint"
 	},
+	match_invites_stddev_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
+	match_invites_stddev_pop_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
+	match_invites_stddev_samp_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
 	match_invites_stream_cursor_input:{
 		initial_value:"match_invites_stream_cursor_value_input",
 		ordering:"cursor_ordering"
@@ -2294,11 +2349,27 @@ export const AllTypesProps: Record<string,any> = {
 		match_id:"uuid",
 		steam_id:"bigint"
 	},
+	match_invites_sum_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
 	match_invites_update_column: "enum" as const,
 	match_invites_updates:{
 		_inc:"match_invites_inc_input",
 		_set:"match_invites_set_input",
 		where:"match_invites_bool_exp"
+	},
+	match_invites_var_pop_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
+	match_invites_var_samp_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
+	},
+	match_invites_variance_order_by:{
+		invited_by_player_steam_id:"order_by",
+		steam_id:"order_by"
 	},
 	match_lineup_players_aggregate_bool_exp:{
 		bool_and:"match_lineup_players_aggregate_bool_exp_bool_and",
@@ -3755,6 +3826,16 @@ export const AllTypesProps: Record<string,any> = {
 			order_by:"match_map_demos_order_by",
 			where:"match_map_demos_bool_exp"
 		},
+		invites:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
+		invites_aggregate:{
+			distinct_on:"match_invites_select_column",
+			order_by:"match_invites_order_by",
+			where:"match_invites_bool_exp"
+		},
 		lineup_counts:{
 
 		},
@@ -3928,6 +4009,8 @@ export const AllTypesProps: Record<string,any> = {
 		ended_at:"timestamptz_comparison_exp",
 		id:"uuid_comparison_exp",
 		invite_code:"String_comparison_exp",
+		invites:"match_invites_bool_exp",
+		invites_aggregate:"match_invites_aggregate_bool_exp",
 		is_captain:"Boolean_comparison_exp",
 		is_coach:"Boolean_comparison_exp",
 		is_in_lineup:"Boolean_comparison_exp",
@@ -4000,6 +4083,7 @@ export const AllTypesProps: Record<string,any> = {
 		e_region:"server_regions_obj_rel_insert_input",
 		ended_at:"timestamptz",
 		id:"uuid",
+		invites:"match_invites_arr_rel_insert_input",
 		lineup_1:"match_lineups_obj_rel_insert_input",
 		lineup_1_id:"uuid",
 		lineup_2:"match_lineups_obj_rel_insert_input",
@@ -4087,6 +4171,7 @@ export const AllTypesProps: Record<string,any> = {
 		ended_at:"order_by",
 		id:"order_by",
 		invite_code:"order_by",
+		invites_aggregate:"match_invites_aggregate_order_by",
 		is_captain:"order_by",
 		is_coach:"order_by",
 		is_in_lineup:"order_by",
@@ -8232,6 +8317,7 @@ export const AllTypesProps: Record<string,any> = {
 		is_muted:"Boolean_comparison_exp",
 		kills:"player_kills_bool_exp",
 		kills_aggregate:"player_kills_aggregate_bool_exp",
+		language:"String_comparison_exp",
 		lobby_players:"lobby_players_bool_exp",
 		lobby_players_aggregate:"lobby_players_aggregate_bool_exp",
 		matches:"matches_bool_exp",
@@ -8336,6 +8422,7 @@ export const AllTypesProps: Record<string,any> = {
 		is_in_another_match:"order_by",
 		is_muted:"order_by",
 		kills_aggregate:"player_kills_aggregate_order_by",
+		language:"order_by",
 		lobby_players_aggregate:"lobby_players_aggregate_order_by",
 		matches_aggregate:"matches_aggregate_order_by",
 		matchmaking_cooldown:"order_by",
@@ -13050,6 +13137,7 @@ export const ReturnTypes: Record<string,any> = {
 		avatar_url:"String",
 		country:"String",
 		discord_id:"String",
+		language:"String",
 		name:"String",
 		player:"players",
 		profile_url:"String",
@@ -14894,6 +14982,8 @@ export const ReturnTypes: Record<string,any> = {
 		ended_at:"timestamptz",
 		id:"uuid",
 		invite_code:"String",
+		invites:"match_invites",
+		invites_aggregate:"match_invites_aggregate",
 		is_captain:"Boolean",
 		is_coach:"Boolean",
 		is_in_lineup:"Boolean",
@@ -16711,6 +16801,7 @@ export const ReturnTypes: Record<string,any> = {
 		is_muted:"Boolean",
 		kills:"player_kills",
 		kills_aggregate:"player_kills_aggregate",
+		language:"String",
 		lobby_players:"lobby_players",
 		lobby_players_aggregate:"lobby_players_aggregate",
 		matches:"matches",
@@ -16776,6 +16867,7 @@ export const ReturnTypes: Record<string,any> = {
 		current_lobby_id:"uuid",
 		discord_id:"String",
 		elo:"numeric",
+		language:"String",
 		matchmaking_cooldown:"timestamptz",
 		name:"String",
 		profile_url:"String",
@@ -16789,6 +16881,7 @@ export const ReturnTypes: Record<string,any> = {
 		current_lobby_id:"uuid",
 		discord_id:"String",
 		elo:"numeric",
+		language:"String",
 		matchmaking_cooldown:"timestamptz",
 		name:"String",
 		profile_url:"String",

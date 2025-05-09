@@ -22,10 +22,10 @@ import Default from "~/layouts/default.vue";
   <default>
     <div class="space-y-0.5">
       <h2 class="text-2xl font-bold tracking-tight">
-        {{ $t("layouts.profile_settings.title") }}
+        {{ $t("layouts.account_settings.title") }}
       </h2>
       <p class="text-muted-foreground">
-        {{ $t("layouts.profile_settings.description") }}
+        {{ $t("layouts.account_settings.description") }}
       </p>
     </div>
     <Separator class="my-6" />
@@ -36,25 +36,19 @@ import Default from "~/layouts/default.vue";
         >
           <nuxt-link to="/settings">
             <Button variant="ghost" class="w-full text-left justify-start">
-              {{ $t("pages.settings.profile.my_account") }}
-            </Button>
-          </nuxt-link>
-
-          <nuxt-link to="/settings/language">
-            <Button variant="ghost" class="w-full text-left justify-start">
-              {{ $t("pages.settings.profile.language") }}
+              {{ $t("pages.settings.account.my_account") }}
             </Button>
           </nuxt-link>
 
           <nuxt-link to="/settings/appearance">
             <Button variant="ghost" class="w-full text-left justify-start">
-              {{ $t("pages.settings.profile.appearance") }}
+              {{ $t("pages.settings.account.appearance") }}
             </Button>
           </nuxt-link>
 
           <nuxt-link to="/settings/matchmaking">
             <Button variant="ghost" class="w-full text-left justify-start">
-              {{ $t("pages.settings.profile.matchmaking") }}
+              {{ $t("pages.settings.account.matchmaking") }}
             </Button>
           </nuxt-link>
 
@@ -65,14 +59,14 @@ import Default from "~/layouts/default.vue";
               @click.stop.prevent="showUnlinkDiscordDialog = true"
             >
               <Unlink class="mr-2 h-4 w-4" />
-              {{ $t("layouts.profile_settings.discord.unlink") }}
+              {{ $t("pages.settings.account.discord.unlink") }}
             </Button>
           </template>
 
           <nuxt-link @click.native="linkDiscord" v-else-if="supportsDiscordBot">
             <Button variant="ghost" class="w-full text-left justify-start">
               <Link class="mr-2 h-4 w-4" />
-              {{ $t("layouts.profile_settings.discord.link") }}
+              {{ $t("pages.settings.account.discord.link") }}
             </Button>
           </nuxt-link>
         </nav>
@@ -89,20 +83,18 @@ import Default from "~/layouts/default.vue";
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{{
-            $t("layouts.profile_settings.discord.unlink_dialog.title")
+            $t("pages.settings.account.discord.unlink_dialog.title")
           }}</AlertDialogTitle>
           <AlertDialogDescription>
-            {{
-              $t("layouts.profile_settings.discord.unlink_dialog.description")
-            }}
+            {{ $t("pages.settings.account.discord.unlink_dialog.description") }}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel @click="showUnlinkDiscordDialog = false">
-            {{ $t("layouts.profile_settings.discord.unlink_dialog.cancel") }}
+            {{ $t("pages.settings.account.discord.unlink_dialog.cancel") }}
           </AlertDialogCancel>
           <AlertDialogAction @click="unlinkDiscord" variant="destructive">
-            {{ $t("layouts.profile_settings.discord.unlink_dialog.confirm") }}
+            {{ $t("pages.settings.account.discord.unlink_dialog.confirm") }}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -146,7 +138,7 @@ export default {
       useAuthStore().getMe();
 
       toast({
-        title: this.$t("layouts.profile_settings.discord.unlinked"),
+        title: this.$t("pages.settings.account.discord.unlinked"),
       });
     },
   },
