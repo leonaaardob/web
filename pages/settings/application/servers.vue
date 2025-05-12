@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Switch } from "@/components/ui/switch";
-import { ExternalLink } from "lucide-vue-next";
 definePageMeta({
   layout: "application-settings",
 });
@@ -45,30 +44,6 @@ definePageMeta({
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="collection_id">
-      <FormItem>
-        <FormLabel class="text-lg font-semibold">{{
-          $t("pages.settings.application.servers.collection")
-        }}</FormLabel>
-        <FormDescription>{{
-          $t("pages.settings.application.servers.collection_description")
-        }}</FormDescription>
-        <FormControl>
-          <Input v-bind="componentField" type="text" />
-          <a
-            v-if="collectionLink"
-            :href="collectionLink"
-            target="_blank"
-            class="text-sm text-muted-foreground flex flex-row items-center gap-2"
-          >
-            View on Steam
-            <ExternalLink class="w-4 h-4" />
-          </a>
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <div class="flex justify-start">
       <Button
         type="submit"
@@ -95,7 +70,6 @@ export default {
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
-            collection_id: z.string().optional(),
             number_of_cpus_per_server: z.number().min(1).default(2),
           }),
         ),
@@ -109,9 +83,6 @@ export default {
         for (const setting of this.settings) {
           if (setting.name === "number_of_cpus_per_server") {
             this.form.setFieldValue(setting.name, parseInt(setting.value));
-          }
-          if (setting.name === "collection_id") {
-            this.form.setFieldValue(setting.name, setting.value);
           }
         }
       },
@@ -128,10 +99,6 @@ export default {
                 {
                   name: "number_of_cpus_per_server",
                   value: this.form.values.number_of_cpus_per_server?.toString(),
-                },
-                {
-                  name: "collection_id",
-                  value: this.form.values.collection_id,
                 },
               ],
               on_conflict: {
@@ -182,16 +149,6 @@ export default {
   computed: {
     settings() {
       return useApplicationSettingsStore().settings;
-    },
-    collectionLink() {
-      const collectionId = this.settings.find((setting) => {
-        return setting.name === "collection_id";
-      })?.value;
-
-      if (!collectionId) {
-        return;
-      }
-      return `https://steamcommunity.com/sharedfiles/filedetails/?id=${collectionId}`;
     },
     cpuPinningEnabled() {
       return (

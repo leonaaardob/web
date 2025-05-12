@@ -40,14 +40,6 @@ import { Pencil } from "lucide-vue-next";
     </TableCell>
     <TableCell class="px-4 py-2 text-sm">
       <template v-if="map.workshop_map_id">
-        <Badge :variant="isInCollection ? 'outline' : 'destructive'">
-          <template v-if="isInCollection">
-            {{ $t("pages.map_pools.in_collection") }}
-          </template>
-          <template v-else>
-            {{ $t("pages.map_pools.missing_from_collection") }}
-          </template>
-        </Badge>
         <ViewOnSteam :workshop_map_id="map.workshop_map_id" />
       </template>
     </TableCell>
@@ -106,10 +98,6 @@ export default {
     },
     matchTypes: {
       type: Array as () => e_match_types_enum[],
-      required: true,
-    },
-    isInCollection: {
-      type: Boolean,
       required: true,
     },
   },
