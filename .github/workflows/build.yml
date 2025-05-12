@@ -63,4 +63,5 @@ jobs:
         with:
           package-name: web
           package-type: container
+          min-versions-to-keep: 3
     
