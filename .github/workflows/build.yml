@@ -61,6 +61,6 @@ jobs:
       - name: Delete Package Versions
         uses: actions/delete-package-versions@v5.0.0
         with:
-          package-name: api
+          package-name: web
           package-type: container
     
