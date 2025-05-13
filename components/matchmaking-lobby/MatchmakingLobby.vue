@@ -182,7 +182,6 @@ export default {
     },
     isCaptain() {
       const me = this.currentLobby?.players.find(({ player }) => {
-        console.info("PLAYER", player);
         return this.me.steam_id === player.steam_id;
       });
       return me?.captain;
