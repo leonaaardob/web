@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { webrtc } from "~/web-sockets/Webrtc";
 import { useApplicationSettingsStore } from "~/stores/ApplicationSettings";
 import { Button } from "~/components/ui/button";
 import { RefreshCw } from "lucide-vue-next";
@@ -12,22 +11,24 @@ import { Loader2 } from "lucide-vue-next";
       <div class="flex-1">
         <div class="flex justify-between mb-4">
           <Label class="text-lg font-semibold">
-            {{ $t("pages.settings.matchmaking.max_acceptable_ping") }}
+            {{ $t("pages.settings.matchmaking.max_acceptable_latency") }}
           </Label>
 
-          <span class="text-xl font-medium">{{ maxAcceptablePing }}ms</span>
+          <span class="text-xl font-medium"
+            >{{ playerMaxAcceptablelatnecy }}ms</span
+          >
         </div>
         <input
           type="range"
-          v-model="maxAcceptablePing"
-          min="50"
-          max="200"
+          v-model="playerMaxAcceptablelatnecy"
+          min="5"
+          :max="maxAcceptableLatency"
           step="5"
           class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-          @change="updateMaxAcceptablePing"
+          @change="updateMaxAcceptableLatency"
         />
         <p class="text-sm text-muted-foreground mt-2">
-          {{ $t("pages.settings.matchmaking.max_ping_description") }}
+          {{ $t("pages.settings.matchmaking.max_latency_description") }}
         </p>
       </div>
     </div>
@@ -126,12 +127,13 @@ import { Loader2 } from "lucide-vue-next";
 export default {
   data() {
     return {
-      maxAcceptablePing: 75,
       isRefreshing: false,
+      playerMaxAcceptablelatnecy: 75,
     };
   },
   mounted() {
-    this.maxAcceptablePing = useMatchmakingStore().maxAcceptablePing || 75;
+    this.playerMaxAcceptablelatnecy =
+      useMatchmakingStore().playerMaxAcceptableLatency || 75;
   },
   methods: {
     async refreshLatencies() {
@@ -145,8 +147,10 @@ export default {
     togglePreferredRegion(region: string) {
       useMatchmakingStore().togglePreferredRegion(region);
     },
-    updateMaxAcceptablePing() {
-      useMatchmakingStore().updateMaxAcceptablePing(this.maxAcceptablePing);
+    updateMaxAcceptableLatency() {
+      useMatchmakingStore().updateMaxAcceptableLatency(
+        this.playerMaxAcceptablelatnecy,
+      );
     },
     getRegionlatencyResult(region: string):
       | {
@@ -169,15 +173,15 @@ export default {
         return "Measuring...";
       }
 
-      if (regionLatency < 50) {
+      if (regionLatency < 30) {
         return "Excellent";
       }
 
-      if (regionLatency < 100) {
+      if (regionLatency < 50) {
         return "Good";
       }
 
-      if (regionLatency < this.maxAcceptablePing) {
+      if (regionLatency < this.maxAcceptableLatency) {
         return "Fair";
       }
 
@@ -185,15 +189,21 @@ export default {
     },
     isPreferredRegion(region: string): boolean {
       return (
-        useMatchmakingStore().preferredRegions.find((r) => {
-          return r.value === region;
+        this.storedRegions.find((storedRegion) => {
+          return storedRegion === region;
         }) !== undefined
       );
     },
   },
   computed: {
+    storedRegions() {
+      return useMatchmakingStore().storedRegions;
+    },
     availableRegions() {
       return useApplicationSettingsStore()?.availableRegions || [];
+    },
+    maxAcceptableLatency() {
+      return useApplicationSettingsStore().maxAcceptableLatency || 100;
     },
   },
 };

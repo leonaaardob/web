@@ -8,7 +8,7 @@ import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { webrtc } from "~/web-sockets/Webrtc";
 
 const REGION_LATENCY_PREFIX = "5stack_region_latency_";
-const MAX_PING_KEY = "5stack_max_acceptable_ping";
+const MAX_LATENCY_KEY = "5stack_max_acceptable_latency";
 const PREFERRED_REGIONS_KEY = "5stack_preferred_regions";
 
 export const useMatchmakingStore = defineStore("matchmaking", () => {
@@ -193,9 +193,14 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     });
   };
 
-  const savedRegions = localStorage.getItem(PREFERRED_REGIONS_KEY);
-  const preferredRegions = ref<string[]>(
-    savedRegions ? JSON.parse(savedRegions) : [],
+  const localStoragePreferredRegions = localStorage.getItem(
+    PREFERRED_REGIONS_KEY,
+  );
+
+  const storedRegions = ref<string[]>(
+    localStoragePreferredRegions
+      ? JSON.parse(localStoragePreferredRegions)
+      : [],
   );
 
   const latencies = ref(new Map<string, number[]>());
@@ -210,8 +215,10 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     }
   });
 
-  const savedMaxPing = localStorage.getItem(MAX_PING_KEY);
-  const maxAcceptablePing = ref(savedMaxPing ? parseInt(savedMaxPing) : 75);
+  const savedMaxLatency = localStorage.getItem(MAX_LATENCY_KEY);
+  const playerMaxAcceptableLatency = ref(
+    savedMaxLatency ? parseInt(savedMaxLatency) : 75,
+  );
 
   const isRefreshing = ref(false);
   async function refreshLatencies() {
@@ -259,21 +266,21 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
   }
 
   function togglePreferredRegion(region: string) {
-    const index = preferredRegions.value.indexOf(region);
+    const index = storedRegions.value.indexOf(region);
     if (index !== -1) {
-      preferredRegions.value.splice(index, 1);
+      storedRegions.value.splice(index, 1);
     } else {
-      preferredRegions.value.push(region);
+      storedRegions.value.push(region);
     }
     localStorage.setItem(
       PREFERRED_REGIONS_KEY,
-      JSON.stringify(preferredRegions.value.filter(Boolean)),
+      JSON.stringify(storedRegions.value.filter(Boolean)),
     );
   }
 
-  function updateMaxAcceptablePing(ping: number) {
-    maxAcceptablePing.value = ping;
-    localStorage.setItem(MAX_PING_KEY, ping.toString());
+  function updateMaxAcceptableLatency(latency: number) {
+    playerMaxAcceptableLatency.value = latency;
+    localStorage.setItem(MAX_LATENCY_KEY, latency.toString());
   }
 
   function resetLatencies() {
@@ -299,15 +306,23 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     };
   }
 
-  const preferredRegionsComputed = computed(() => {
+  const preferredRegions = computed(() => {
     const availableRegions =
       useApplicationSettingsStore().availableRegions.filter((region) => {
-        if (region.is_lan) {
-          const regionLatency = getRegionlatencyResult(region.value);
-          if (regionLatency && !regionLatency.isLan) {
-            return false;
-          }
+        const regionLatency = getRegionlatencyResult(region.value);
+
+        if (regionLatency && region.is_lan && regionLatency.isLan) {
+          return true;
         }
+
+        if (
+          regionLatency &&
+          regionLatency.latency >
+            (useApplicationSettingsStore().maxAcceptableLatency || 100)
+        ) {
+          return false;
+        }
+
         return true;
       });
 
@@ -315,9 +330,9 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
       return availableRegions;
     }
 
-    if (preferredRegions.value.length > 0) {
+    if (storedRegions.value.length > 0) {
       return availableRegions.filter((region) => {
-        return preferredRegions.value.includes(region.value);
+        return storedRegions.value.includes(region.value);
       });
     }
 
@@ -331,7 +346,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
         return (
           !isNaN(Number(regionResult.latency)) &&
-          Number(regionResult.latency) <= maxAcceptablePing.value
+          Number(regionResult.latency) <= playerMaxAcceptableLatency.value
         );
       })
       .sort((a, b) => {
@@ -361,11 +376,12 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     refreshLatencies,
     getRegionlatencyResult,
     togglePreferredRegion,
-    updateMaxAcceptablePing,
+    updateMaxAcceptableLatency,
 
     latencies,
-    preferredRegions: preferredRegionsComputed,
-    maxAcceptablePing,
+    storedRegions,
+    preferredRegions,
+    playerMaxAcceptableLatency,
 
     inviteToLobby,
   };

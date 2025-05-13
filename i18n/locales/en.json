@@ -96,8 +96,13 @@
                     "base_config": "Base Config (5stack.base.cfg)"
                 },
                 "create_matches_role": "Minimum Role Allowed to Create Matches",
+                "create_matches_role_description": "This role will be able to create matches.",
                 "create_tournaments_role": "Minimum Role Allowed to Create Tournaments",
+                "create_tournaments_role_description": "This role will be able to create tournaments.",
                 "matchmaking_min_role": "Minimum Role Allowed to Join Matchmaking",
+                "matchmaking_min_role_description": "This role will be able to join matchmaking.",
+                "max_acceptable_latency": "Maximum Acceptable Latency",
+                "max_acceptable_latency_description": "This is the maximum latency that a player can have to join a match.",
                 "update": "Update",
                 "players": {
                     "force_name_registration": "Force Player Name Registration",
@@ -140,8 +145,8 @@
                 "region": "Region",
                 "average_latency": "Latency",
                 "preferred": "Preferred",
-                "max_acceptable_ping": "Maximum Acceptable Ping",
-                "max_ping_description": "If no regions are preferred, matchmaking will only use regions with ping below this value."
+                "max_acceptable_latency": "Maximum Acceptable Latency",
+                "max_latency_description": "If no regions are preferred, matchmaking will only use regions with latency below this value."
             }
         },
         "regions": {
@@ -1002,7 +1007,8 @@
         "settings_section": {
             "toggle": "Adjust Settings",
             "queue_order": "Queue Order"
-        }
+        },
+        "high_latency_warning": "Your latency is too high for competitive matches"
     },
     "game_server": {
         "update_cs": "Update CS",

@@ -177,9 +177,16 @@ export const useApplicationSettingsStore = defineStore(
       return useAuthStore().isRoleAbove(matchCreateRole.value);
     });
 
+    const maxAcceptableLatency = computed(() => {
+      return settings.value.find(
+        (setting) => setting.name === "public.max_acceptable_latency",
+      )?.value;
+    });
+
     return {
       settings,
       availableRegions,
+      maxAcceptableLatency,
       matchCreateRole,
       matchmakingAllowed,
       tournamentCreateRole,

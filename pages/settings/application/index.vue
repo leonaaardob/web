@@ -31,6 +31,11 @@ definePageMeta({
         <FormLabel class="text-lg font-semibold">{{
           $t("pages.settings.application.matchmaking_min_role")
         }}</FormLabel>
+        <FormDescription>
+          {{
+            $t("pages.settings.application.matchmaking_min_role_description")
+          }}
+        </FormDescription>
         <FormControl>
           <Select v-bind="componentField">
             <FormControl>
@@ -55,11 +60,31 @@ definePageMeta({
       </FormItem>
     </FormField>
 
+    <FormField v-slot="{ componentField }" name="public.max_acceptable_latency">
+      <FormItem>
+        <FormLabel class="text-lg font-semibold">{{
+          $t("pages.settings.application.max_acceptable_latency")
+        }}</FormLabel>
+        <FormDescription>
+          {{
+            $t("pages.settings.application.max_acceptable_latency_description")
+          }}
+        </FormDescription>
+        <FormControl>
+          <Input v-bind="componentField" type="number" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
     <FormField v-slot="{ componentField }" name="public.create_matches_role">
       <FormItem>
         <FormLabel class="text-lg font-semibold">{{
           $t("pages.settings.application.create_matches_role")
         }}</FormLabel>
+        <FormDescription>
+          {{ $t("pages.settings.application.create_matches_role_description") }}
+        </FormDescription>
         <FormControl>
           <Select v-bind="componentField">
             <FormControl>
@@ -92,6 +117,11 @@ definePageMeta({
         <FormLabel class="text-lg font-semibold">{{
           $t("pages.settings.application.create_tournaments_role")
         }}</FormLabel>
+        <FormDescription>
+          {{
+            $t("pages.settings.application.create_tournaments_role_description")
+          }}
+        </FormDescription>
         <FormControl>
           <Select v-bind="componentField">
             <FormControl>
@@ -163,6 +193,7 @@ export default {
               matchmaking_min_role: z
                 .string()
                 .default(e_player_roles_enum.user),
+              max_acceptable_latency: z.number().default(100),
             }),
           }),
         ),
@@ -174,7 +205,11 @@ export default {
       immediate: true,
       handler(newVal) {
         for (const setting of newVal) {
-          this.form.setFieldValue(setting.name, setting.value || "");
+          if (setting.name === "public.max_acceptable_latency") {
+            this.form.setFieldValue(setting.name, Number(setting.value) || 100);
+          } else {
+            this.form.setFieldValue(setting.name, setting.value || "");
+          }
         }
       },
     },
@@ -218,6 +253,11 @@ export default {
                 {
                   name: "public.matchmaking_min_role",
                   value: this.form.values.public.matchmaking_min_role,
+                },
+                {
+                  name: "public.max_acceptable_latency",
+                  value:
+                    this.form.values.public.max_acceptable_latency.toString(),
                 },
               ],
               on_conflict: {

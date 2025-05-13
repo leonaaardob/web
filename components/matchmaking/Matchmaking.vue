@@ -31,7 +31,6 @@ import FiveStackToolTip from "../FiveStackToolTip.vue";
         </AlertDescription>
       </Alert>
     </template>
-
     <template v-else-if="!confirmationDetails">
       <div
         v-if="isInQueue && matchMakingQueueDetails"
@@ -86,10 +85,24 @@ import FiveStackToolTip from "../FiveStackToolTip.vue";
 
       <div class="flex flex-col gap-4 bg-card p-8 rounded-lg" v-else>
         <div>
-          <div class="flex justify-end mb-2">
+          <div
+            class="flex mb-4"
+            :class="{
+              'justify-end': preferredRegions.length,
+              'justify-between': !preferredRegions.length,
+            }"
+          >
+            <template v-if="!preferredRegions.length">
+              <Alert class="w-fit p-2" variant="destructive">
+                <AlertDescription class="flex items-center gap-2">
+                  <AlertTriangle class="h-4 w-4" />
+                  {{ $t("matchmaking.high_ping_warning") }}
+                </AlertDescription>
+              </Alert>
+            </template>
+
             <Button
               variant="outline"
-              size="sm"
               @click="showSettings = !showSettings"
               class="flex items-center gap-2"
             >
@@ -301,6 +314,9 @@ export default {
       return useMatchmakingStore().getRegionlatencyResult(region);
     },
     handleMatchTypeClick(matchType: e_match_types_enum): void {
+      if (this.preferredRegions.length === 0) {
+        return;
+      }
       if (this.pendingMatchType === matchType) {
         // Second click - confirm
         if (this.confirmationTimeout) {
