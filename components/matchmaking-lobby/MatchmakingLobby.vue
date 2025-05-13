@@ -53,7 +53,8 @@ import MatchmakingLobbyAccess from "~/components/matchmaking-lobby/MatchmakingLo
             v-if="
               !mini &&
               (player.status === 'Invited' || player.status === 'Accepted') &&
-              player.player.steam_id !== me?.steam_id
+              player.player.steam_id !== me?.steam_id &&
+              isCaptain
             "
           >
             <XIcon class="h-4 w-4" />
@@ -178,6 +179,13 @@ export default {
   computed: {
     me() {
       return useAuthStore().me;
+    },
+    isCaptain() {
+      const me = this.currentLobby?.players.find(({ player }) => {
+        console.info("PLAYER", player);
+        return this.me.steam_id === player.steam_id;
+      });
+      return me?.captain;
     },
     currentLobby() {
       return this.lobbies?.find((lobby: any) => {

@@ -163,7 +163,7 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                 {{ player?.role?.replace("_", " ") }}
               </span>
             </FiveStackToolTip>
-            <PlayerElo :elo="player.elo" />
+            <PlayerElo :elo="player.elo" v-if="showElo" />
             <p class="text-muted-foreground text-xs" v-if="showSteamId">
               {{ player.steam_id }}
             </p>
@@ -218,6 +218,10 @@ export default {
       default: false,
     },
     showAddFriend: {
+      type: Boolean,
+      default: true,
+    },
+    showElo: {
       type: Boolean,
       default: true,
     },

@@ -137,6 +137,8 @@ import PlayerSearch from "~/components/PlayerSearch.vue";
                       :showAddFriend="false"
                       :showName="false"
                       :showFlag="false"
+                      :showElo="false"
+                      :showRole="false"
                     />
                   </template>
                 </div>
