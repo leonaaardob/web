@@ -38,7 +38,7 @@ class WebRTCClient {
 
   public async connect(
     region: string,
-    callback: () => void,
+    callback: (data: any) => void,
   ): Promise<RTCDataChannel> {
     if (!this.hasSetupSocketListeners) {
       this.setupSocketListeners();
@@ -59,8 +59,8 @@ class WebRTCClient {
         resolve(dataChannel);
       };
 
-      dataChannel.onmessage = () => {
-        callback();
+      dataChannel.onmessage = (event) => {
+        callback(event.data);
       };
 
       dataChannel.onerror = (error: any) => {

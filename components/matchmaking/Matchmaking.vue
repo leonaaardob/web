@@ -324,6 +324,9 @@ export default {
     regions(): Region[] {
       return useApplicationSettingsStore().availableRegions;
     },
+    regionStats() {
+      return useMatchmakingStore().regionStats;
+    },
     matchMakingQueueDetails(): QueueDetails | undefined {
       return useMatchmakingStore().joinedMatchmakingQueues.details;
     },

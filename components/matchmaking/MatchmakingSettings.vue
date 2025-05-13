@@ -86,26 +86,26 @@ import { Loader2 } from "lucide-vue-next";
                 :class="{
                   'px-3 py-1 rounded-full text-xs font-medium': true,
                   'bg-green-500/20 text-green-400':
-                    Number(getAverageLatency(region.value)) < 50,
+                    Number(getRegionlatency(region.value)) < 50,
                   'bg-blue-500/20 text-blue-400':
-                    Number(getAverageLatency(region.value)) < 100 &&
-                    Number(getAverageLatency(region.value)) >= 50,
+                    Number(getRegionlatency(region.value)) < 100 &&
+                    Number(getRegionlatency(region.value)) >= 50,
                   'bg-yellow-500/20 text-yellow-400':
-                    Number(getAverageLatency(region.value)) <
+                    Number(getRegionlatency(region.value)) <
                       maxAcceptablePing &&
-                    Number(getAverageLatency(region.value)) >= 100,
+                    Number(getRegionlatency(region.value)) >= 100,
                   'bg-red-500/20 text-red-400':
-                    Number(getAverageLatency(region.value)) >=
+                    Number(getRegionlatency(region.value)) >=
                     maxAcceptablePing,
                   'bg-gray-500/20 text-gray-400': isNaN(
-                    Number(getAverageLatency(region.value)),
+                    Number(getRegionlatency(region.value)),
                   ),
                 }"
               >
                 {{
-                  isNaN(Number(getAverageLatency(region.value)))
+                  isNaN(Number(getRegionlatency(region.value)))
                     ? "Measuring..."
-                    : `${getAverageLatency(region.value)} ms`
+                    : `${getRegionlatency(region.value)} ms`
                 }}
               </span>
             </td>
@@ -149,11 +149,11 @@ export default {
     updateMaxAcceptablePing() {
       useMatchmakingStore().updateMaxAcceptablePing(this.maxAcceptablePing);
     },
-    getAverageLatency(region: string): string {
-      return useMatchmakingStore().getAverageLatency(region);
+    getRegionlatency(region: string): string {
+      return useMatchmakingStore().getRegionlatency(region);
     },
     getLatencyStatus(region: string): string {
-      const avg = Number(this.getAverageLatency(region));
+      const avg = Number(this.getRegionlatency(region));
       if (isNaN(avg)) {
         return "Measuring...";
       }

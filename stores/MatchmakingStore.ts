@@ -233,34 +233,27 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
   async function getLatency(region: string) {
     try {
-      const latencyArray: number[] = [];
-      let pingCount = 0;
-      const totalPings = 4;
-      let startTime: number;
+      const buffer = new Uint8Array([0x01]).buffer;
 
-      const datachannel = await webrtc.connect(region, () => {
-        const endTime = performance.now();
-        const latency = endTime - startTime;
-        latencyArray.push(latency);
-
-        if (latencyArray.length === totalPings) {
-          latencies.value.set(region, latencyArray);
-          localStorage.setItem(
-            REGION_LATENCY_PREFIX + region,
-            JSON.stringify(latencyArray),
-          );
-          datachannel.close();
+      const datachannel = await webrtc.connect(region, (data) => {
+        if (data === "") {
+          datachannel.send(buffer);
           return;
         }
 
-        startTime = performance.now();
-        datachannel.send("");
-        pingCount++;
+        const event = JSON.parse(data) as {
+          type: string;
+          data: Record<string, unknown>;
+        };
+
+        if (event.type === "latency-results") {
+          console.info("i am event", event);
+          latencies.value.set(region, event.data);
+          datachannel.close();
+        }
       });
 
-      startTime = performance.now();
-      datachannel.send("");
-      pingCount++;
+      datachannel.send("latency-test");
     } catch (error) {
       console.error(`Failed to get latency for ${region}`, error);
     }
@@ -291,15 +284,12 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     });
   }
 
-  function getAverageLatency(region: string): string {
+  function getRegionlatency(region: string): string {
     const regionLatencies = latencies.value.get(region);
-    if (!regionLatencies || regionLatencies.length === 0) {
-      return "Measuring...";
+    if (!regionLatencies) {
+      return;
     }
-    const avg =
-      regionLatencies.reduce((a: number, b: number) => a + b, 0) /
-      regionLatencies.length;
-    return avg.toFixed(0);
+    return Number(regionLatencies.latency).toFixed(2);
   }
 
   const preferredRegionsComputed = computed(() => {
@@ -316,7 +306,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     }
 
     const filteredRegions = availableRegions.filter((region) => {
-      const avgLatency = Number(getAverageLatency(region.value));
+      const avgLatency = getRegionlatency(region.value);
       return !isNaN(avgLatency) && avgLatency <= maxAcceptablePing.value;
     });
 
@@ -336,7 +326,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
     checkLatenies,
     refreshLatencies,
-    getAverageLatency,
+    getRegionlatency,
     togglePreferredRegion,
     updateMaxAcceptablePing,
 
