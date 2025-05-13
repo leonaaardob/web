@@ -367,7 +367,7 @@
             "queue_order": "Порядок очереди"
         },
         "confirm_selection": "Подтверждающий",
-        "searching_for_match": "Поиск совпадения {тип}",
+        "searching_for_match": "Поиск совпадения {type}",
         "high_latency_warning": "Ваша задержка слишком высока для конкурентных матчей"
     },
     "match": {
