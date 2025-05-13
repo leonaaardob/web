@@ -1,34 +1,45 @@
 <script setup lang="ts">
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
 </script>
 
 <template>
-  <AlertDialog :open="shouldShow && confirmation">
+  <AlertDialog :open="!!shouldShow">
     <AlertDialogContent>
-      <div class="text-4xl font-bold text-center my-4">
-        {{ remainingSeconds }}
-      </div>
-
-      <template v-if="confirmation?.isReady">
-        <div class="flex justify-center items-center">
-          <span class="text-4xl font-bold">
-            {{ $t("matchmaking.confirm.players") }}
-            ({{ confirmation?.confirmed }} / {{ confirmation?.players }})
-          </span>
+      <div class="flex flex-col items-center justify-center py-6">
+        <div class="text-3xl font-bold text-red-600 tracking-widest">
+          {{
+            remainingSeconds < 10
+              ? `00:0${remainingSeconds}`
+              : `00:${remainingSeconds}`
+          }}
         </div>
-      </template>
-      <AlertDialogFooter v-else>
+
+        <div class="text-gray-400 text-md mb-4 text-center tracking-widest">
+          WAITING FOR PLAYERS...
+        </div>
+        <div class="flex justify-center items-center mb-6">
+          <template v-for="i in confirmation?.players" :key="i">
+            <span
+              v-if="i <= (confirmation?.confirmed || 0)"
+              class="w-4 h-4 mx-1 rounded-full bg-green-500 border border-green-400"
+            ></span>
+            <span
+              v-else
+              class="w-4 h-4 mx-1 rounded-full border border-gray-500"
+            ></span>
+          </template>
+        </div>
+
         <Button
+          v-show="!confirmation?.isReady"
           @click="ready"
-          class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 text-xl rounded-sm shadow-lg transition duration-300 ease-in-out transform hover:scale-105 w-full p-8"
+          variant="default"
+          size="lg"
+          class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 text-xl rounded-sm shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 w-full p-8"
         >
-          {{ $t("matchmaking.confirm.ready") }}
+          <span class="flex items-center justify-center"> READY </span>
         </Button>
-      </AlertDialogFooter>
+      </div>
     </AlertDialogContent>
   </AlertDialog>
 </template>
@@ -53,14 +64,12 @@ export default {
       if (!this.confirmation || this.confirmation.matchId || this.isExpired) {
         return false;
       }
-
       return true;
     },
     isExpired() {
       if (!this.confirmation) {
         return true;
       }
-
       return new Date(this.confirmation.expiresAt) <= new Date();
     },
   },
@@ -69,7 +78,6 @@ export default {
       immediate: true,
       handler() {
         this.updateCountdown();
-
         if (this.confirmation?.matchId) {
           if (this.routedConfirmedId !== this.confirmation.matchId) {
             this.routedConfirmedId = this.confirmation.matchId;
@@ -84,7 +92,6 @@ export default {
       if (!this.confirmation) {
         return;
       }
-
       socket.event("matchmaking:confirm", {
         confirmationId: this.confirmation.confirmationId,
       });

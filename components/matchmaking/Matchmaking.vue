@@ -55,7 +55,11 @@ import CustomMatch from "~/components/CustomMatch.vue";
           <div
             class="flex items-center gap-4 mb-4 text-2xl font-medium capitalize"
           >
-            Searching for a {{ matchMakingQueueDetails.type.value }} Match
+            {{
+              $t("matchmaking.searching_for_match", {
+                type: matchMakingQueueDetails.type,
+              })
+            }}
           </div>
           <div class="text-xl text-gray-400/90 flex items-center gap-2">
             <TimeAgo
@@ -127,7 +131,7 @@ import CustomMatch from "~/components/CustomMatch.vue";
                 <span
                   class="text-xl font-semibold text-primary animate-fade-in"
                 >
-                  {{ $t("matchmaking.confirm_selection") }} {{ type.value }}
+                  {{ $t("matchmaking.confirm_selection") }}
                 </span>
               </div>
             </div>

@@ -970,6 +970,7 @@
         }
     },
     "matchmaking": {
+        "searching_for_match": "Searching for a {type} match",
         "lobby": {
             "title": "Matchmaking Lobby",
             "leave": "Leave Lobby",
@@ -992,7 +993,7 @@
         },
         "banned": "You are banned from matchmaking",
         "go_to_match": "Go to Match",
-        "confirm_selection": "Confirming",
+        "confirm_selection": "Join Queue",
         "temp_banned": "You are temporarily banned from matchmaking",
         "confirm": {
             "players": "Players Ready",
