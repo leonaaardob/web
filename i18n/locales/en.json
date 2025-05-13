@@ -1000,7 +1000,8 @@
             "ready": "Ready"
         },
         "settings_section": {
-            "toggle": "Adjust Settings"
+            "toggle": "Adjust Settings",
+            "queue_order": "Queue Order"
         }
     },
     "game_server": {

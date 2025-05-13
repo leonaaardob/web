@@ -78,44 +78,43 @@ import { Loader2 } from "lucide-vue-next";
                 !isPreferredRegion(region.value),
             }"
           >
-            <td class="px-6 py-4 whitespace-nowrap">
-              {{ region.description || region.value }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span
-                :class="{
-                  'px-3 py-1 rounded-full text-xs font-medium': true,
-                  'bg-green-500/20 text-green-400':
-                    Number(getRegionlatency(region.value)) < 50,
-                  'bg-blue-500/20 text-blue-400':
-                    Number(getRegionlatency(region.value)) < 100 &&
-                    Number(getRegionlatency(region.value)) >= 50,
-                  'bg-yellow-500/20 text-yellow-400':
-                    Number(getRegionlatency(region.value)) <
-                      maxAcceptablePing &&
-                    Number(getRegionlatency(region.value)) >= 100,
-                  'bg-red-500/20 text-red-400':
-                    Number(getRegionlatency(region.value)) >=
-                    maxAcceptablePing,
-                  'bg-gray-500/20 text-gray-400': isNaN(
-                    Number(getRegionlatency(region.value)),
-                  ),
-                }"
-              >
-                {{
-                  isNaN(Number(getRegionlatency(region.value)))
-                    ? "Measuring..."
-                    : `${getRegionlatency(region.value)} ms`
-                }}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <Switch
-                class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-                :model-value="isPreferredRegion(region.value)"
-                @click="togglePreferredRegion(region.value)"
-              />
-            </td>
+            <template
+              v-if="
+                !region.is_lan || getRegionlatencyResult(region.value)?.isLan
+              "
+            >
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ region.description || region.value }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="px-3 py-1 rounded-full text-xs font-medium"
+                    :class="{
+                      'bg-green-500/20 text-green-400':
+                        getLatencyStatus(region.value) === 'Excellent',
+                      'bg-blue-500/20 text-blue-400':
+                        getLatencyStatus(region.value) === 'Good',
+                      'bg-yellow-500/20 text-yellow-400':
+                        getLatencyStatus(region.value) === 'Fair',
+                      'bg-red-500/20 text-red-400':
+                        getLatencyStatus(region.value) === 'Poor',
+                      'bg-gray-500/20 text-gray-400':
+                        getLatencyStatus(region.value) === 'Measuring',
+                    }"
+                  >
+                    {{ getRegionLatency(region.value) }} ms
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <Switch
+                  class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
+                  :model-value="isPreferredRegion(region.value)"
+                  @click="togglePreferredRegion(region.value)"
+                />
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>
@@ -149,24 +148,36 @@ export default {
     updateMaxAcceptablePing() {
       useMatchmakingStore().updateMaxAcceptablePing(this.maxAcceptablePing);
     },
-    getRegionlatency(region: string): string {
-      return useMatchmakingStore().getRegionlatency(region);
+    getRegionlatencyResult(region: string):
+      | {
+          isLan: boolean;
+          latency: string;
+        }
+      | undefined {
+      return useMatchmakingStore().getRegionlatencyResult(region);
+    },
+    getRegionLatency(region: string): number | undefined {
+      const regionLatency = this.getRegionlatencyResult(region);
+      if (!regionLatency) {
+        return;
+      }
+      return Number(regionLatency.latency);
     },
     getLatencyStatus(region: string): string {
-      const avg = Number(this.getRegionlatency(region));
-      if (isNaN(avg)) {
+      const regionLatency = this.getRegionLatency(region);
+      if (!regionLatency) {
         return "Measuring...";
       }
 
-      if (avg < 50) {
+      if (regionLatency < 50) {
         return "Excellent";
       }
 
-      if (avg < 100) {
+      if (regionLatency < 100) {
         return "Good";
       }
 
-      if (avg < this.maxAcceptablePing) {
+      if (regionLatency < this.maxAcceptablePing) {
         return "Fair";
       }
 

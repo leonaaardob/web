@@ -6,6 +6,7 @@ import { Collapsible, CollapsibleContent } from "~/components/ui/collapsible";
 import { Button } from "~/components/ui/button";
 import TimeAgo from "../TimeAgo.vue";
 import CustomMatch from "~/components/CustomMatch.vue";
+import FiveStackToolTip from "../FiveStackToolTip.vue";
 </script>
 
 <template>
@@ -94,6 +95,18 @@ import CustomMatch from "~/components/CustomMatch.vue";
             >
               <Settings2 class="h-4 w-4" />
               {{ $t("matchmaking.settings_section.toggle") }}
+              <FiveStackToolTip>
+                <div class="flex gap-1">
+                  {{ $t("matchmaking.settings_section.queue_order") }}
+                  <span
+                    v-for="(region, index) in preferredRegions"
+                    :key="region.value"
+                  >
+                    {{ region.value
+                    }}{{ index < preferredRegions.length - 1 ? ", " : "" }}
+                  </span>
+                </div>
+              </FiveStackToolTip>
             </Button>
           </div>
 
@@ -175,11 +188,7 @@ import socket from "~/web-sockets/Socket";
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { generateQuery } from "~/graphql/graphqlGen";
 import { e_match_types_enum, e_match_status_enum } from "~/generated/zeus";
-
-interface MatchType {
-  value: e_match_types_enum;
-  description: string;
-}
+import FiveStackToolTip from "../FiveStackToolTip.vue";
 
 interface Region {
   value: string;
@@ -274,12 +283,23 @@ export default {
       playerSanctions: [] as any[],
       showSettings: false,
       showConfirmation: false,
-      pendingMatchType: undefined as MatchType | undefined,
-      e_match_types: [] as MatchType[],
+      pendingMatchType: undefined as e_match_types_enum | undefined,
+      e_match_types: [] as {
+        value: e_match_types_enum;
+        description: string;
+      }[],
       confirmationTimeout: undefined as NodeJS.Timeout | undefined,
     };
   },
   methods: {
+    getRegionlatencyResult(region: string):
+      | {
+          isLan: boolean;
+          latency: string;
+        }
+      | undefined {
+      return useMatchmakingStore().getRegionlatencyResult(region);
+    },
     handleMatchTypeClick(matchType: e_match_types_enum): void {
       if (this.pendingMatchType === matchType) {
         // Second click - confirm
@@ -306,11 +326,9 @@ export default {
     joinMatchmaking(matchType: MatchType): void {
       socket.event("matchmaking:join-queue", {
         type: matchType,
-        regions: useMatchmakingStore().preferredRegions.map(
-          (region: Region) => {
-            return region.value;
-          },
-        ),
+        regions: this.preferredRegions.map((region: Region) => {
+          return region.value;
+        }),
       });
     },
     leaveMatchmaking(): void {
@@ -321,8 +339,8 @@ export default {
     isInQueue(): boolean {
       return !!this.matchMakingQueueDetails;
     },
-    regions(): Region[] {
-      return useApplicationSettingsStore().availableRegions;
+    preferredRegions(): Region[] {
+      return useMatchmakingStore().preferredRegions;
     },
     regionStats() {
       return useMatchmakingStore().regionStats;

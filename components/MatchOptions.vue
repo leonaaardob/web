@@ -403,7 +403,6 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                       @update:model-value="
                         (checked) => form.setFieldValue('lan', checked)
                       "
-                      aria-label="Toggle LAN Match"
                     />
                   </div>
                 </CardTitle>

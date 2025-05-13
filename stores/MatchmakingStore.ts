@@ -247,9 +247,8 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
         };
 
         if (event.type === "latency-results") {
-          console.info("i am event", event);
-          latencies.value.set(region, event.data);
           datachannel.close();
+          latencies.value.set(region, event.data);
         }
       });
 
@@ -284,37 +283,71 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     });
   }
 
-  function getRegionlatency(region: string): string {
+  function getRegionlatencyResult(region: string):
+    | {
+        isLan: boolean;
+        latency: string;
+      }
+    | undefined {
     const regionLatencies = latencies.value.get(region);
     if (!regionLatencies) {
       return;
     }
-    return Number(regionLatencies.latency).toFixed(2);
+    return {
+      isLan: regionLatencies.isLan,
+      latency: Number(regionLatencies.latency).toFixed(2),
+    };
   }
 
   const preferredRegionsComputed = computed(() => {
-    const availableRegions = useApplicationSettingsStore().availableRegions;
+    const availableRegions =
+      useApplicationSettingsStore().availableRegions.filter((region) => {
+        if (region.is_lan) {
+          const regionLatency = getRegionlatencyResult(region.value);
+          if (regionLatency && !regionLatency.isLan) {
+            return false;
+          }
+        }
+        return true;
+      });
 
     if (isRefreshing.value) {
       return availableRegions;
     }
 
     if (preferredRegions.value.length > 0) {
-      return availableRegions.filter((region) =>
-        preferredRegions.value.includes(region.value),
-      );
+      return availableRegions.filter((region) => {
+        return preferredRegions.value.includes(region.value);
+      });
     }
 
-    const filteredRegions = availableRegions.filter((region) => {
-      const avgLatency = getRegionlatency(region.value);
-      return !isNaN(avgLatency) && avgLatency <= maxAcceptablePing.value;
-    });
+    return availableRegions
+      .filter((region) => {
+        const regionResult = getRegionlatencyResult(region.value);
 
-    if (filteredRegions.length === 0) {
-      return availableRegions;
-    }
+        if (!regionResult) {
+          return true;
+        }
 
-    return filteredRegions;
+        return (
+          !isNaN(Number(regionResult.latency)) &&
+          Number(regionResult.latency) <= maxAcceptablePing.value
+        );
+      })
+      .sort((a, b) => {
+        if (a.is_lan && !b.is_lan) {
+          return -1;
+        }
+        if (!a.is_lan && b.is_lan) {
+          return 1;
+        }
+
+        // For non-LAN regions, sort by latency
+        return (
+          Number(getRegionlatencyResult(a.value)?.latency) -
+          Number(getRegionlatencyResult(b.value)?.latency)
+        );
+      });
   });
 
   return {
@@ -326,7 +359,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
     checkLatenies,
     refreshLatencies,
-    getRegionlatency,
+    getRegionlatencyResult,
     togglePreferredRegion,
     updateMaxAcceptablePing,
 
