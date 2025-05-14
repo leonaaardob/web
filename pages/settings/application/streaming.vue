@@ -7,7 +7,7 @@ definePageMeta({
 </script>
 
 <template>
-    <form @submit.prevent="updateSettings" class="grid gap-4">
+  <form @submit.prevent="updateSettings" class="grid gap-4">
     <FormField v-slot="{ componentField }" name="public.minimum_role_to_stream">
       <FormItem>
         <FormLabel class="text-lg font-semibold">{{
@@ -85,8 +85,10 @@ export default {
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
-            public: z.object({  
-              minimum_role_to_stream: z.string().default(e_player_roles_enum.user),
+            public: z.object({
+              minimum_role_to_stream: z
+                .string()
+                .default(e_player_roles_enum.user),
             }),
           }),
         ),
