@@ -95,6 +95,11 @@
                     "type": "Game Type",
                     "base_config": "Base Config (5stack.base.cfg)"
                 },
+                "streaming": {
+                    "title": "Streaming",
+                    "minimum_role_to_stream": "Minimum Role Allowed to Stream",
+                    "minimum_role_to_stream_description": "This role will be able to stream matches."
+                },
                 "create_matches_role": "Minimum Role Allowed to Create Matches",
                 "create_matches_role_description": "This role will be able to create matches.",
                 "create_tournaments_role": "Minimum Role Allowed to Create Tournaments",
@@ -147,6 +152,7 @@
                 "preferred": "Preferred",
                 "max_acceptable_latency": "Maximum Acceptable Latency",
                 "max_latency_description": "If no regions are preferred, matchmaking will only use regions with latency below this value."
+
             }
         },
         "regions": {
@@ -1000,10 +1006,6 @@
         "go_to_match": "Go to Match",
         "confirm_selection": "Join Queue",
         "temp_banned": "You are temporarily banned from matchmaking",
-        "confirm": {
-            "players": "Players Ready",
-            "ready": "Ready"
-        },
         "settings_section": {
             "toggle": "Adjust Settings",
             "queue_order": "Queue Order"
