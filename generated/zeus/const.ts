@@ -4066,7 +4066,6 @@ export const AllTypesProps: Record<string,any> = {
 		teams:"teams_bool_exp",
 		tournament_brackets:"tournament_brackets_bool_exp",
 		tournament_brackets_aggregate:"tournament_brackets_aggregate_bool_exp",
-		tv_connection_link:"String_comparison_exp",
 		tv_connection_string:"String_comparison_exp",
 		winner:"match_lineups_bool_exp",
 		winning_lineup_id:"uuid_comparison_exp"
@@ -4216,7 +4215,6 @@ export const AllTypesProps: Record<string,any> = {
 		status:"order_by",
 		teams_aggregate:"teams_aggregate_order_by",
 		tournament_brackets_aggregate:"tournament_brackets_aggregate_order_by",
-		tv_connection_link:"order_by",
 		tv_connection_string:"order_by",
 		winner:"match_lineups_order_by",
 		winning_lineup_id:"order_by"
@@ -15039,7 +15037,6 @@ export const ReturnTypes: Record<string,any> = {
 		teams:"teams",
 		tournament_brackets:"tournament_brackets",
 		tournament_brackets_aggregate:"tournament_brackets_aggregate",
-		tv_connection_link:"String",
 		tv_connection_string:"String",
 		winner:"match_lineups",
 		winning_lineup_id:"uuid"
@@ -15092,7 +15089,6 @@ export const ReturnTypes: Record<string,any> = {
 		server_region:"String",
 		server_type:"String",
 		started_at:"timestamptz",
-		tv_connection_link:"String",
 		tv_connection_string:"String",
 		winning_lineup_id:"uuid"
 	},
@@ -15122,7 +15118,6 @@ export const ReturnTypes: Record<string,any> = {
 		server_region:"String",
 		server_type:"String",
 		started_at:"timestamptz",
-		tv_connection_link:"String",
 		tv_connection_string:"String",
 		winning_lineup_id:"uuid"
 	},

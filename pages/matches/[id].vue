@@ -139,7 +139,6 @@ export default {
               connection_link: true,
               connection_string: true,
               tv_connection_string: true,
-              tv_connection_link: true,
               is_match_server_available: true,
               cancels_at: true,
               scheduled_at: true,
