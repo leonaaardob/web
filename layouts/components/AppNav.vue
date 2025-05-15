@@ -61,8 +61,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 <NuxtLink
                   :to="{ name: 'play' }"
                   :class="{
-                    'router-link-active':
-                      isRouteActive('matches') || isRouteActive('play'),
+                    'router-link-active': isRouteActive('play'),
                   }"
                 >
                   <Play />
