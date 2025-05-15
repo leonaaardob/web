@@ -11,7 +11,7 @@ import MatchInviteNotification from "~/components/MatchInviteNotification.vue";
   <Sheet :open="isOpen" @update:open="(open) => (isOpen = open)">
     <SheetTrigger>
       <div class="relative">
-        <Bell :class="{ 'animate-bell': hasNotifications }" />
+        <Bell size="20" :class="{ 'animate-bell': hasNotifications }" />
         <span
           v-if="hasNotifications"
           class="absolute -top-1 -right-1 inline-flex"
