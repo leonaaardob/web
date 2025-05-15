@@ -27,7 +27,7 @@ import { Plus, Trash2, User } from "lucide-vue-next";
 
       <DropdownMenuItem
         @click="inviteToMatch"
-        :class="canInviteToMatch ? 'opacity-50 pointer-events-none' : ''"
+        :class="!canInviteToMatch ? 'opacity-50 pointer-events-none' : ''"
       >
         <Plus class="mr-2 h-4 w-4" />
         <span>{{ $t("matchmaking.friends.invite_to_match") }}</span>
