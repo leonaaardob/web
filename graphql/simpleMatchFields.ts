@@ -69,6 +69,7 @@ export const simpleMatchFields = Selector("matches")({
   },
   created_at: true,
   scheduled_at: true,
+  max_players_per_lineup: true,
   min_players_per_lineup: true,
   lineup_counts: [{}, true],
 });

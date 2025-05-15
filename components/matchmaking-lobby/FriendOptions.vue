@@ -27,7 +27,7 @@ import { Plus, Trash2, User } from "lucide-vue-next";
 
       <DropdownMenuItem
         @click="inviteToMatch"
-        :class="!canInviteToMatch ? 'opacity-50 pointer-events-none' : ''"
+        :class="canInviteToMatch ? 'opacity-50 pointer-events-none' : ''"
       >
         <Plus class="mr-2 h-4 w-4" />
         <span>{{ $t("matchmaking.friends.invite_to_match") }}</span>
@@ -63,14 +63,30 @@ export default {
       return useMatchLobbyStore().currentMatch;
     },
     canInviteToMatch() {
-      return (
-        this.currentMatch &&
-        this.currentMatch.options.lobby_access.includes([
+      if (!this.currentMatch) {
+        return false;
+      }
+
+      if (
+        ![
           e_lobby_access_enum.Open,
           e_lobby_access_enum.Friends,
           e_lobby_access_enum.Invite,
-        ])
-      );
+        ].includes(this.currentMatch.options.lobby_access)
+      ) {
+        return false;
+      }
+
+      if (
+        this.currentMatch.lineup_counts.lineup_1_count <
+          this.currentMatch.max_players_per_lineup ||
+        this.currentMatch.lineup_counts.lineup_2_count <
+          this.currentMatch.max_players_per_lineup
+      ) {
+        return true;
+      }
+
+      return false;
     },
     invitedToMatch() {
       if (!this.currentMatch) {

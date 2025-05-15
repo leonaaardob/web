@@ -346,13 +346,7 @@
     },
     "notifications": {
         "match": {
-            "title": "Match Invite",
-            "description": "You have been invited to join a match",
-            "invited_by": "Invited by"
-        },
-        "invite": {
-            "deny": "Deny",
-            "accept": "Accept"
+            "title": "Match Invites"
         }
     },
     "custom_match": {

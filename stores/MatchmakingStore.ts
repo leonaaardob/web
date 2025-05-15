@@ -1,6 +1,11 @@
 import { ref, watch, computed } from "vue";
 import { defineStore, acceptHMRUpdate } from "pinia";
-import { e_match_types_enum, $, e_lobby_access_enum } from "~/generated/zeus";
+import {
+  e_match_types_enum,
+  $,
+  e_lobby_access_enum,
+  order_by,
+} from "~/generated/zeus";
 import getGraphqlClient from "~/graphql/getGraphqlClient";
 import { generateQuery, generateSubscription } from "~/graphql/graphqlGen";
 import { playerFields } from "~/graphql/playerFields";
@@ -136,11 +141,52 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
     });
   };
 
+  const matchInvites = ref([]);
+  const subscribeToMatchInvites = async (steam_id: bigint) => {
+    const subscription = getGraphqlClient().subscribe({
+      query: generateSubscription({
+        match_invites: [
+          {
+            order_by: [
+              {},
+              {
+                created_at: order_by.desc,
+              },
+            ],
+            where: {
+              steam_id: {
+                _eq: $("steam_id", "bigint!"),
+              },
+            },
+          },
+          {
+            id: true,
+            match_id: true,
+            invited_by: {
+              steam_id: true,
+            },
+            created_at: true,
+          },
+        ],
+      }),
+      variables: {
+        steam_id,
+      },
+    });
+
+    subscription.subscribe({
+      next: ({ data }) => {
+        matchInvites.value = data.match_invites;
+      },
+    });
+  };
+
   watch(
     () => useAuthStore().me,
     (me) => {
       if (me) {
         subscribeToFriends(me.steam_id);
+        subscribeToMatchInvites(me.steam_id);
       }
     },
     { immediate: true },
@@ -367,6 +413,7 @@ export const useMatchmakingStore = defineStore("matchmaking", () => {
 
   return {
     friends,
+    matchInvites,
     regionStats,
     playersOnline,
     onlinePlayerSteamIds,

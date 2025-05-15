@@ -1,36 +1,71 @@
 <script lang="ts" setup>
 import TimeAgo from "./TimeAgo.vue";
+import PlayerDisplay from "./PlayerDisplay.vue";
+import { Check, XIcon } from "lucide-vue-next";
 </script>
 
 <template>
-  <div>
-    <h3 class="text-lg font-semibold mb-2">
-      {{ $t("notifications.match.title") }}
-    </h3>
+  <div class="flex flex-row gap-2 justify-between" v-if="matches_by_pk">
+    <div class="flex flex-row gap-2 items-center overflow-scroll">
+      <div class="flex flex-row gap-2 items-center overflow-scroll">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <PlayerDisplay
+                :player="invitedBy"
+                :showOnline="false"
+                :showFlag="false"
+                :showName="false"
+                :showRole="false"
+              />
+            </TooltipTrigger>
+            <TooltipContent> {{ invitedBy.name }} </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
-    {{ $t("notifications.match.description", { match: invite.match_id }) }}
-
-    <div class="flex justify-between space-x-2 mt-3">
-      <p class="text-sm text-muted-foreground mb-2">
-        {{ $t("notifications.match.invited_by") }}
-        {{ invite.invited_by.name }}
-        <TimeAgo :date="invite.created_at" class="text-xs" />
-      </p>
-
-      <div class="flex gap-2">
-        <Button variant="outline" @click="denyInvite(invite.id)">{{
-          $t("notifications.invite.deny")
-        }}</Button>
-        <Button variant="default" @click="acceptInvite(invite.id)">{{
-          $t("notifications.invite.accept")
-        }}</Button>
+        <template v-for="player in players">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <PlayerDisplay
+                  :player="player.player"
+                  :showOnline="false"
+                  :showFlag="false"
+                  :showName="false"
+                  :showRole="false"
+                />
+              </TooltipTrigger>
+              <TooltipContent> {{ player.player.name }} </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </template>
       </div>
+
+      <div
+        class="border border-gray-200 border-dashed h-full p-4 rounded-md cursor-pointer hover:bg-green-500/20 bg-transparent transition-all duration-200"
+        @click="acceptInvite(invite.id)"
+      >
+        <Check class="h-3 w-3" />
+      </div>
+    </div>
+
+    <div
+      class="h-full p-4 rounded-md cursor-pointer hover:bg-red-500/20 bg-transparent transition-all duration-200"
+      @click="denyInvite(invite.id)"
+    >
+      <XIcon class="h-3 w-3" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { generateMutation } from "~/graphql/graphqlGen";
+import { $ } from "~/generated/zeus";
+import {
+  generateQuery,
+  generateMutation,
+  generateSubscription,
+} from "~/graphql/graphqlGen";
+import { simpleMatchFields } from "~/graphql/simpleMatchFields";
 
 export default {
   props: {
@@ -41,6 +76,33 @@ export default {
     type: {
       type: String,
       required: true,
+    },
+  },
+  data() {
+    return {
+      matches_by_pk: null,
+    };
+  },
+  apollo: {
+    $subscribe: {
+      matches_by_pk: {
+        query: generateSubscription({
+          matches_by_pk: [
+            {
+              id: $("id", "uuid!"),
+            },
+            simpleMatchFields,
+          ],
+        }),
+        variables() {
+          return {
+            id: this.invite.match_id,
+          };
+        },
+        result({ data }: { data: any }) {
+          this.matches_by_pk = data.matches_by_pk;
+        },
+      },
     },
   },
   methods: {
@@ -75,6 +137,26 @@ export default {
           ],
         }),
       });
+    },
+  },
+  computed: {
+    allPlayers() {
+      if (!this.matches_by_pk) {
+        return [];
+      }
+      return this.matches_by_pk.lineup_1.lineup_players.concat(
+        this.matches_by_pk.lineup_2.lineup_players,
+      );
+    },
+    players() {
+      return this.allPlayers.filter(
+        (player) => player.player.steam_id !== this.invite.invited_by.steam_id,
+      );
+    },
+    invitedBy() {
+      return this.allPlayers.find((player) => {
+        return player.player.steam_id === this.invite.invited_by.steam_id;
+      }).player;
     },
   },
 };

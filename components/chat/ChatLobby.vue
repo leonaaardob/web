@@ -8,9 +8,7 @@ import { FormControl, FormField, FormItem } from "~/components/ui/form";
 </script>
 
 <template>
-  <div
-    class="relative flex max-h-[500px] min-h-[25vh] flex-col rounded-xl bg-muted/50 p-4"
-  >
+  <div class="relative flex min-h-[25vh] flex-col rounded-xl bg-muted/50 p-4">
     <div class="absolute right-3 top-3">
       <div class="flex">
         <Badge variant="secondary">

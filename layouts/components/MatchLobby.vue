@@ -4,10 +4,7 @@ import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
 </script>
 
 <template>
-  <NuxtLink
-    :to="canSwitch ? { name: 'matches-id', params: { id: match.id } } : null"
-    class="flex gap-2 items-center cursor-pointer"
-  >
+  <div @click="goToMatch" class="flex gap-2 items-center cursor-pointer">
     <TooltipProvider v-for="member of myLineup">
       <Tooltip>
         <TooltipTrigger as-child>
@@ -61,10 +58,11 @@ import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
     <Button
       class="flex gap-2 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white animate-pulse"
       v-if="showSwitch"
+      @click="goToMatch"
     >
       <ArrowLeftRight />
     </Button>
-  </NuxtLink>
+  </div>
 </template>
 
 <script lang="ts">
@@ -91,6 +89,16 @@ export default {
   },
   created() {
     this.lobby = socket.joinLobby(`match-lobby`, "match", this.match.id);
+  },
+  methods: {
+    goToMatch() {
+      if (!this.canSwitch) {
+        this.$router.push({
+          name: "matches-id",
+          params: { id: this.match.id },
+        });
+      }
+    },
   },
   computed: {
     me() {

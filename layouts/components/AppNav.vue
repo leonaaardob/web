@@ -34,6 +34,7 @@ import InstallPWA from "~/components/InstallPWA.vue";
 import MatchmakingLobby from "~/components/matchmaking-lobby/MatchmakingLobby.vue";
 import FriendsList from "~/components/matchmaking-lobby/FriendsList.vue";
 import ChatLobby from "~/components/chat/ChatLobby.vue";
+import MiniDisplay from "~/components/matchmaking-lobby/MiniDisplay.vue";
 </script>
 
 <template>
@@ -405,7 +406,11 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup v-if="telemetryStats?.online > 0 && open">
-          <Badge variant="outline" class="p-2 flex items-center gap-2">
+          <Badge
+            size="sm"
+            variant="outline"
+            class="p-2 flex items-center gap-2"
+          >
             <Server class="w-3 h-3" />
             {{ telemetryStats.online }} System{{
               telemetryStats.online > 1 ? "s" : ""
@@ -676,6 +681,7 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
 
           <SidebarGroup v-if="me.current_lobby_id">
             <ChatLobby
+              class="max-h-[25vh]"
               instance="matchmaking"
               :lobby-id="me.current_lobby_id"
               type="matchmaking"
@@ -683,9 +689,14 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
             />
           </SidebarGroup>
 
-          <SidebarGroup v-if="me.current_lobby_id" class="overflow-hidden">
+          <SidebarGroup
+            v-if="me.current_lobby_id"
+            class="overflow-hidden"
+            :class="{ '-mt-8': !rightSidebarOpen }"
+          >
             <SidebarSeparator class="my-4" />
-            <FriendsList :mini="!rightSidebarOpen" />
+            <FriendsList v-if="rightSidebarOpen" />
+            <MiniDisplay v-if="!rightSidebarOpen" />
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
