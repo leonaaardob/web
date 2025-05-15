@@ -2,7 +2,7 @@
 import TimezoneFlag from "~/components/TimezoneFlag.vue";
 import { Ban, MicOff, MessageSquareOff, UserPlus } from "lucide-vue-next";
 import PlayerElo from "~/components/PlayerElo.vue";
-import { Crown, Shield, BadgeCheck, BadgeIcon } from "lucide-vue-next";
+import { Crown, Shield, BadgeCheck, BadgeIcon, Podcast } from "lucide-vue-next";
 import FiveStackToolTip from "./FiveStackToolTip.vue";
 </script>
 <template>
@@ -148,6 +148,9 @@ import FiveStackToolTip from "./FiveStackToolTip.vue";
                 </template>
                 <template v-if="isVerified">
                   <BadgeCheck class="w-3 h-3 mr-1 text-green-500" />
+                </template>
+                <template v-if="isStreamer">
+                  <Podcast class="w-3 h-3 mr-1 text-green-500" />
                 </template>
                 <template v-if="isOrganizer">
                   <Shield class="w-3 h-3 mr-1 text-yellow-500" />
