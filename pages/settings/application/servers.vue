@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     async updateSettings() {
-      console.log(this.form.values);
       await this.$apollo.mutate({
         mutation: generateMutation({
           insert_settings: [

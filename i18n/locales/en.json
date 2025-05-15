@@ -338,6 +338,10 @@
             "toggle_pool_type": "Updated Map Pools",
             "toggle_active_pool": "Maps Activity Status Updated",
             "save_success": "Map pool saved successfully"
+        },
+        "manage_matches": {
+            "title": "Manage Matches",
+            "description": "View and manage all matches across the platform."
         }
     },
     "notifications": {
@@ -401,7 +405,8 @@
                 "logs": "System Logs",
                 "metrics": "System Metrics",
                 "app_settings": "App Settings",
-                "map_pools": "Map Pools"
+                "map_pools": "Map Pools",
+                "manage_matches": "Manage Matches"
             },
             "profile": {
                 "my_profile": "My Profile",
@@ -427,7 +432,8 @@
                 "app_settings": "App Settings",
                 "report_issue": "Report an Issue",
                 "join_discord": "Join our Discord",
-                "map_pools": "Map Pools"
+                "map_pools": "Map Pools",
+                "manage_matches": "Manage Matches"
             },
             "logout_dialog": {
                 "title": "Logout",

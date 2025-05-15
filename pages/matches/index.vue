@@ -6,7 +6,6 @@ import OtherMatches from "~/components/match/OtherMatches.vue";
 import MyMatches from "~/components/match/MyMatches.vue";
 import LastTenWins from "~/components/charts/LastTenWins.vue";
 import LastTenLosses from "~/components/charts/LastTenLosses.vue";
-import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
 import { PlusCircle } from "lucide-vue-next";
 </script>
 

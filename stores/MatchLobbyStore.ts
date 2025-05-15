@@ -4,17 +4,60 @@ import { simpleMatchFields } from "~/graphql/simpleMatchFields";
 import {
   $,
   e_match_status_enum,
-  e_lobby_access_enum,
   order_by,
+  e_player_roles_enum,
 } from "~/generated/zeus";
+import { useAuthStore } from "~/stores/AuthStore";
 import getGraphqlClient from "~/graphql/getGraphqlClient";
 import { generateSubscription } from "~/graphql/graphqlGen";
 
 export const useMatchLobbyStore = defineStore("matchLobby", () => {
   const lobbies = ref(new Map<string, { players: any[]; match: any }>());
   const lobbyChat = ref<Record<string, Map<string, unknown>>>({});
-  const managingMatches = ref([]);
   const viewMatchLobby = ref();
+
+  const myMatches = ref([]);
+  const managingMatchesCount = ref(0);
+
+  const subscribeToManagingMatches = async () => {
+    const subscription = getGraphqlClient().subscribe({
+      query: generateSubscription({
+        matches_aggregate: [
+          {
+            where: {
+              organizer_steam_id: {
+                _eq: $("steam_id", "bigint!"),
+              },
+              status: {
+                _in: [
+                  e_match_status_enum.Live,
+                  e_match_status_enum.Veto,
+                  e_match_status_enum.WaitingForCheckIn,
+                  e_match_status_enum.WaitingForServer,
+                  e_match_status_enum.Scheduled,
+                  e_match_status_enum.PickingPlayers,
+                ],
+              },
+            },
+          },
+          {
+            aggregate: {
+              count: true,
+            },
+          },
+        ],
+      }),
+      variables: {
+        steam_id: useAuthStore().me?.steam_id,
+      },
+    });
+
+    subscription.subscribe({
+      next: ({ data }) => {
+        managingMatchesCount.value = data.matches_aggregate.aggregate.count;
+      },
+    });
+  };
 
   const subscribeToMyMatches = async () => {
     const subscription = getGraphqlClient().subscribe({
@@ -24,40 +67,42 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
             where: {
               _or: [
                 {
-                  organizer_steam_id: {
-                    _eq: $("steam_id", "bigint!"),
+                  is_in_lineup: {
+                    _eq: true,
                   },
                   status: {
-                    _nin: [
-                      e_match_status_enum.Finished,
-                      e_match_status_enum.Tie,
-                      e_match_status_enum.Canceled,
-                      e_match_status_enum.Forfeit,
-                      e_match_status_enum.Surrendered,
+                    _in: [
+                      e_match_status_enum.Live,
+                      e_match_status_enum.Veto,
+                      e_match_status_enum.WaitingForCheckIn,
+                      e_match_status_enum.WaitingForServer,
+                      e_match_status_enum.Scheduled,
                     ],
                   },
                 },
                 {
-                  is_in_lineup: {
-                    _eq: true,
+                  organizer_steam_id: {
+                    _eq: $("steam_id", "bigint!"),
                   },
-                  _or: [
-                    {
-                      options: {
-                        lobby_access: {
-                          _neq: e_lobby_access_enum.Private,
+                  ...(useAuthStore().isRoleAbove(
+                    e_player_roles_enum.match_organizer,
+                  ) === true
+                    ? {
+                        is_in_lineup: {
+                          _eq: true,
                         },
-                      },
-                      status: {
-                        _in: [e_match_status_enum.PickingPlayers],
-                      },
-                    },
-                    {
-                      status: {
-                        _in: $("statuses", "[e_match_status_enum!]!"),
-                      },
-                    },
-                  ],
+                      }
+                    : {}),
+                  status: {
+                    _in: [
+                      e_match_status_enum.Live,
+                      e_match_status_enum.Veto,
+                      e_match_status_enum.WaitingForCheckIn,
+                      e_match_status_enum.WaitingForServer,
+                      e_match_status_enum.Scheduled,
+                      e_match_status_enum.PickingPlayers,
+                    ],
+                  },
                 },
               ],
             },
@@ -72,34 +117,15 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
       }),
       variables: {
         steam_id: useAuthStore().me?.steam_id,
-        statuses: [
-          e_match_status_enum.Live,
-          e_match_status_enum.Veto,
-          e_match_status_enum.Scheduled,
-          e_match_status_enum.WaitingForCheckIn,
-        ],
       },
     });
 
     subscription.subscribe({
       next: ({ data }) => {
-        if (data?.matches) {
-          managingMatches.value = data.matches;
+        myMatches.value = data?.matches;
 
-          const _matches = data.matches.filter((match) => {
-            return [
-              e_match_status_enum.Live,
-              e_match_status_enum.Veto,
-              e_match_status_enum.WaitingForCheckIn,
-              e_match_status_enum.WaitingForServer,
-              e_match_status_enum.Scheduled,
-            ].includes(match.status);
-          });
-
-          // TODO - check that they are in the line up otherwise its pointless to see lobbies
-
-          // Create a set of match IDs from the new data
-          const newMatchIds = new Set(_matches.map((match) => match.id));
+        if (myMatches.value) {
+          const newMatchIds = new Set(myMatches.value.map((match) => match.id));
 
           // Remove matches that are no longer in data.matches
           for (const [matchId] of lobbies.value.entries()) {
@@ -109,7 +135,7 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
           }
 
           // Update or add matches
-          for (const match of _matches) {
+          for (const match of myMatches.value) {
             lobbies.value.set(match.id, { players: [], match });
           }
         }
@@ -157,29 +183,17 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
   return {
     lobbies,
     lobbyChat,
-    managingMatches,
+    myMatches,
+    managingMatchesCount,
     currentMatch: computed(() => {
-      const matches = managingMatches.value.filter((match) => {
-        if (match.status != e_match_status_enum.PickingPlayers) {
-          return false;
-        }
-
-        if (!match.lineup_1.is_on_lineup && !match.lineup_2.is_on_lineup) {
-          return false;
-        }
-
-        return true;
-      });
-
-      if (matches.length === 1) {
-        return matches.at(0);
-      }
+      return myMatches.value.at(0);
     }),
     viewMatchLobby,
     add,
     set,
     remove,
     subscribeToMyMatches,
+    subscribeToManagingMatches,
   };
 });
 

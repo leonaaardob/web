@@ -55,6 +55,13 @@ export const useAuthStore = defineStore("auth", () => {
       subscription.subscribe({
         next: ({ data }) => {
           me.value = data?.players_by_pk;
+
+          useMatchLobbyStore().subscribeToMyMatches();
+
+          if (useAuthStore().isRoleAbove(e_player_roles_enum.match_organizer)) {
+            useMatchLobbyStore().subscribeToManagingMatches();
+          }
+
           callback();
         },
       });
@@ -65,6 +72,7 @@ export const useAuthStore = defineStore("auth", () => {
         const response = await getGraphqlClient().query({
           query: generateQuery({
             me: {
+              role: true,
               steam_id: true,
               discord_id: true,
             },
@@ -82,7 +90,6 @@ export const useAuthStore = defineStore("auth", () => {
         hasDiscordLinked.value = !!response.data.me.discord_id;
 
         subscribeToMe(response.data.me.steam_id, () => {
-          useMatchLobbyStore().subscribeToMyMatches();
           resolve(true);
         });
       } catch (error) {

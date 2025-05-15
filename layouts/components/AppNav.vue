@@ -17,6 +17,7 @@ import {
   Map,
   Settings,
   User,
+  CalendarCog,
 } from "lucide-vue-next";
 import TournamentBracket from "~/components/icons/tournament-bracket.vue";
 import SystemUpdate from "./SystemUpdate.vue";
@@ -66,6 +67,10 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
                 >
                   <Play />
                   {{ $t("layouts.app_nav.navigation.play") }}
+
+                  <Badge size="sm" v-if="myMatches.length > 0">
+                    {{ myMatches.length }}
+                  </Badge>
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -152,6 +157,28 @@ import ChatLobby from "~/components/chat/ChatLobby.vue";
           }}</SidebarGroupLabel>
 
           <SidebarMenu>
+            <SidebarMenuItem
+              :tooltip="$t('layouts.app_nav.tooltips.manage_matches')"
+            >
+              <SidebarMenuButton
+                as-child
+                :tooltip="$t('layouts.app_nav.tooltips.manage_matches')"
+              >
+                <NuxtLink
+                  :to="{ name: 'manage-matches' }"
+                  :class="{
+                    'router-link-active': isRouteActive('manage-matches'),
+                  }"
+                >
+                  <CalendarCog />
+                  {{ $t("layouts.app_nav.administration.manage_matches") }}
+                  <Badge size="sm" v-if="managingMatchesCount > 0">
+                    {{ managingMatchesCount }}
+                  </Badge>
+                </NuxtLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
             <SidebarMenuItem
               :tooltip="$t('layouts.app_nav.tooltips.map_pools')"
             >
@@ -775,6 +802,12 @@ export default {
     },
   },
   computed: {
+    myMatches() {
+      return useMatchLobbyStore().myMatches;
+    },
+    managingMatchesCount() {
+      return useMatchLobbyStore().managingMatchesCount;
+    },
     inlobby() {
       return useAuthStore().me.current_lobby_id !== null;
     },

@@ -7,6 +7,7 @@ export const simpleMatchFields = Selector("matches")({
   status: true,
   ended_at: true,
   organizer_steam_id: true,
+  is_in_lineup: true,
   e_match_status: {
     description: true,
   },

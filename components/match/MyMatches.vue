@@ -27,7 +27,7 @@ import MatchesTable from "~/components/MatchesTable.vue";
 <script lang="ts">
 import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { simpleMatchFields } from "~/graphql/simpleMatchFields";
-import { $, e_match_status_enum } from "~/generated/zeus";
+import { $, e_match_status_enum, order_by } from "~/generated/zeus/index";
 
 export default {
   data() {
@@ -76,6 +76,7 @@ export default {
             limit: this.perPage,
             offset: (this.page - 1) * this.perPage,
             statuses: this.statuses,
+            order_by: order_by.desc,
           };
         },
         result: function ({ data }) {
@@ -87,11 +88,11 @@ export default {
           matches_aggregate: [
             {
               where: {
-                status: {
-                  _in: $("statuses", "[e_match_status_enum]"),
-                },
                 is_in_lineup: {
                   _eq: true,
+                },
+                status: {
+                  _in: $("statuses", "[e_match_status_enum]"),
                 },
               },
             },
