@@ -168,6 +168,12 @@ export const useApplicationSettingsStore = defineStore(
       return JSON.parse(version);
     });
 
+    const currentPluginVersion = computed(() => {
+      return settings.value.find(({ name }) => {
+        return name === "plugin_version";
+      })?.value;
+    });
+
     const canCreateMatch = computed(() => {
       const me = useAuthStore().me;
       if (!me) {
@@ -195,6 +201,7 @@ export const useApplicationSettingsStore = defineStore(
       playerNameRegistration,
       csBuildInfo,
       canCreateMatch,
+      currentPluginVersion,
     };
   },
 );

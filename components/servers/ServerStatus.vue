@@ -9,17 +9,23 @@ import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
         class="h-2 w-2 rounded-full relative"
         :class="{
           'bg-red-600': !server.connected,
-          'bg-yellow-600': server.connected && !server.rcon_status,
-          'bg-green-600': server.connected && server.rcon_status,
+          'bg-yellow-600':
+            server.connected && (!server.rcon_status || pluginVersionMismatch),
+          'bg-green-600':
+            server.connected && server.rcon_status && !pluginVersionMismatch,
         }"
       >
         <span
           class="animate-ping absolute left-0 h-2 w-2 rounded-full opacity-75"
           :class="{
             'bg-red-600': !server.connected,
-            'bg-yellow-600': server.connected && !server.rcon_status,
+            'bg-yellow-600':
+              server.connected &&
+              (!server.rcon_status || pluginVersionMismatch),
           }"
-          v-if="!server.connected || !server.rcon_status"
+          v-if="
+            !server.connected || !server.rcon_status || !pluginVersionMismatch
+          "
         ></span>
       </div>
     </template>
@@ -30,8 +36,19 @@ import FiveStackToolTip from "~/components/FiveStackToolTip.vue";
     <template v-else-if="!server.rcon_status">
       {{ $t("pages.dedicated_servers.detail.status.no_rcon") }}
     </template>
+    <template v-else-if="pluginVersionMismatch">
+      {{ $t("pages.dedicated_servers.detail.status.plugin_version_mismatch") }}
+      <small>
+        <a
+          class="text-blue-500"
+          :href="`https://github.com/5stackgg/game-server/releases/tag/v${currentPluginVersion}`"
+          target="_blank"
+        >
+          (v{{ currentPluginVersion }})
+        </a>
+      </small>
+    </template>
     <template v-else>
-      connected
       {{ $t("pages.dedicated_servers.detail.status.connected") }}
     </template>
   </FiveStackToolTip>
@@ -43,6 +60,14 @@ export default {
     server: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    currentPluginVersion() {
+      return useApplicationSettingsStore().currentPluginVersion;
+    },
+    pluginVersionMismatch() {
+      return this.server.plugin_version != this.currentPluginVersion;
     },
   },
 };

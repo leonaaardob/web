@@ -260,6 +260,7 @@
                 "label": "Label",
                 "region": "Region",
                 "tv_port": "TV Port",
+                "plugin_version": "Plugin Version", 
                 "enabled": "Enabled",
                 "yes": "Yes",
                 "no": "No"
@@ -276,7 +277,8 @@
                 "status": {
                     "disconnected": "Server is disconnected",
                     "no_rcon": "Server is connected but RCON is not available",
-                    "connected": "Server is connected and RCON is available"
+                    "connected": "Server is connected and RCON is available",
+                    "plugin_version_mismatch": "plugin version is not up to date"
                 },
                 "delete_confirm": {
                     "title": "Are you absolutely sure?",

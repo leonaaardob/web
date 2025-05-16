@@ -208,6 +208,7 @@ export default {
               enabled: true,
               connected: true,
               api_password: true,
+              plugin_version: true,
               rcon_status: true,
             },
           ],

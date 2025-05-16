@@ -51,6 +51,9 @@ import ServerStatus from "~/components/servers/ServerStatus.vue";
               $t("pages.dedicated_servers.table.region")
             }}</TableHead>
             <TableHead>{{
+              $t("pages.dedicated_servers.table.plugin_version")
+            }}</TableHead>
+            <TableHead>{{
               $t("pages.dedicated_servers.table.tv_port")
             }}</TableHead>
             <TableHead>{{
@@ -78,6 +81,7 @@ import ServerStatus from "~/components/servers/ServerStatus.vue";
               </TableCell>
               <TableCell>{{ server.label }}</TableCell>
               <TableCell>{{ server.region }}</TableCell>
+              <TableCell>v{{ server.plugin_version }}</TableCell>
               <TableCell>{{ server.tv_port }}</TableCell>
               <TableCell>{{
                 server.enabled
@@ -135,6 +139,7 @@ export default {
               enabled: true,
               connected: true,
               rcon_status: true,
+              plugin_version: true,
               current_match: {
                 id: true,
               },
