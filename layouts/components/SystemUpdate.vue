@@ -25,29 +25,54 @@ import { AlertCircle } from "lucide-vue-next";
             {{ $t("layouts.system_update.title") }}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            <p class="text-gray-600 mb-2">
-              {{ $t("layouts.system_update.description") }}
-            </p>
-            <ul class="list-disc list-inside mt-2 space-y-1">
-              <li
-                v-for="update in updates"
-                :key="update.pod"
-                class="flex items-center"
-              >
-                <span class="mr-2">•</span>{{ update.service }}
-              </li>
-            </ul>
-            <p class="my-4 text-sm text-gray-500 italic">
-              {{ $t("layouts.system_update.note") }}
+            <div class="flex flex-col space-y-4">
+              <template v-if="hasServiceUpdate">
+                <p class="text-gray-600 mb-2">
+                  {{ $t("layouts.system_update.description") }}
+                </p>
 
-              <a
-                href="https://docs.5stack.gg/common-issues/system-not-updating"
-                target="_blank"
-                class="text-blue-500"
+                <div>
+                  <ul class="list-disc list-inside mt-2 space-y-1">
+                    <template
+                      v-for="update in updates"
+                      :key="`${update.service}-${update.pod}`"
+                    >
+                      <li
+                        class="flex items-center"
+                        v-if="update.service !== 'panel'"
+                      >
+                        <span class="mr-2">•</span>{{ update.service }}
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </template>
+
+              <div
+                v-if="hasPanelUpdate"
+                class="flex flex-col space-y-4 text-sm text-gray-500 italic"
               >
-                {{ $t("layouts.system_update.fix_link") }}
-              </a>
-            </p>
+                {{ $t("layouts.system_update.panel_update") }}
+
+                <code
+                  class="block bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono text-sm"
+                >
+                  git pull && ./update.sh
+                </code>
+              </div>
+
+              <p>
+                {{ $t("layouts.system_update.note") }}
+
+                <a
+                  href="https://docs.5stack.gg/common-issues/system-not-updating"
+                  target="_blank"
+                  class="text-blue-500"
+                >
+                  {{ $t("layouts.system_update.fix_link") }}
+                </a>
+              </p>
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter class="space-x-2">
@@ -96,6 +121,12 @@ export default {
       }
 
       return JSON.parse(updates);
+    },
+    hasServiceUpdate() {
+      return this.updates.some((update) => update.service !== "panel");
+    },
+    hasPanelUpdate() {
+      return this.updates.some((update) => update.service === "panel");
     },
   },
 };

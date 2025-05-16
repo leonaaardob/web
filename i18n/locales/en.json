@@ -368,7 +368,8 @@
             "note": "Please note: It will take a few minutes to process and verify the new updates.",
             "fix_link": "If a system upgrade persists, you may need to fix your versions",
             "cancel": "Cancel",
-            "update": "Update"
+            "update": "Update",
+            "panel_update": "Your panel is out of date, pull and run the update script"
         },
         "match_lobby": {
             "versus": "VS"
