@@ -1,67 +1,16 @@
 <script lang="ts" setup>
-import { ArrowLeftRight } from "lucide-vue-next";
-import PlayerStatusDisplay from "~/components/match/PlayerStatusDisplay.vue";
+import MatchLobbyLineup from "./MatchLobbyLineup.vue";
 </script>
 
 <template>
-  <div @click="goToMatch" class="flex gap-2 items-center cursor-pointer">
-    <TooltipProvider v-for="member of myLineup">
-      <Tooltip>
-        <TooltipTrigger as-child>
-          <PlayerStatusDisplay
-            :member="member"
-            :match="match"
-            :show-details="false"
-            :linkable="false"
-            v-if="member.player"
-          />
-          <template v-else>
-            <Avatar shape="square">
-              <AvatarFallback>
-                {{ member.placeholder_name.slice(0, 2) }}
-              </AvatarFallback>
-            </Avatar>
-          </template>
-        </TooltipTrigger>
-        <TooltipContent>
-          {{ member.placeholder_name || member.player.name }}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+  <div class="flex gap-2 items-center justify-center pr-3">
+    <MatchLobbyLineup :match="match" :lineup="myLineup" :flip="true" />
 
-    <span class="text-xl font-bold text-gray-600 dark:text-gray-400">{{
+    <span class="text-xs font-bold text-red-400/90 dark:text-red-400/90 ml-5">{{
       $t("layouts.match_lobby.versus")
     }}</span>
 
-    <TooltipProvider v-for="member of otherLineUp">
-      <Tooltip>
-        <TooltipTrigger as-child>
-          <PlayerStatusDisplay
-            :member="member"
-            :match="match"
-            :show-details="false"
-            v-if="member.player"
-          />
-          <template v-else>
-            <Avatar shape="square">
-              <AvatarFallback>
-                {{ member.placeholder_name.slice(0, 2) }}
-              </AvatarFallback>
-            </Avatar>
-          </template>
-        </TooltipTrigger>
-        <TooltipContent>
-          {{ member.placeholder_name || member.player.name }}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-    <Button
-      class="flex gap-2 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white animate-pulse"
-      v-if="showSwitch"
-      @click="goToMatch"
-    >
-      <ArrowLeftRight />
-    </Button>
+    <MatchLobbyLineup :match="match" :lineup="otherLineUp" />
   </div>
 </template>
 
@@ -73,14 +22,6 @@ export default {
       required: true,
       type: Object,
     },
-    showSwitch: {
-      default: false,
-      type: Boolean,
-    },
-    canSwitch: {
-      default: false,
-      type: Boolean,
-    },
   },
   data() {
     return {
@@ -89,16 +30,6 @@ export default {
   },
   created() {
     this.lobby = socket.joinLobby(`match-lobby`, "match", this.match.id);
-  },
-  methods: {
-    goToMatch() {
-      if (!this.canSwitch) {
-        this.$router.push({
-          name: "matches-id",
-          params: { id: this.match.id },
-        });
-      }
-    },
   },
   computed: {
     me() {

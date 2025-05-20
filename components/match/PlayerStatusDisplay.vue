@@ -21,64 +21,88 @@ import { e_match_status_enum } from "~/generated/zeus";
     </template>
 
     <template v-slot:status v-if="showStatus">
-      <FiveStackToolTip>
+      <FiveStackToolTip side="bottom" :delay-duration="300">
         <template #trigger>
-          <span
-            class="absolute -top-1 left-0 h-2 w-2 rounded-full animate-ping"
-            :class="{
-              ['bg-red-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? !isOnline && !isReady
-                  : !isOnline && !inGame,
-              ['bg-yellow-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? isOnline && !isReady
-                  : isOnline && !inGame,
-              ['bg-green-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? isReady
-                  : inGame,
-            }"
-          ></span>
-          <span
-            class="absolute -top-1 left-0 h-2 w-2 rounded-full"
-            :class="{
-              ['bg-red-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? !isOnline && !isReady
-                  : !isOnline && !inGame,
-              ['bg-yellow-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? isOnline && !isReady
-                  : isOnline && !inGame,
-              ['bg-green-500']:
-                match && match.status === e_match_status_enum.WaitingForCheckIn
-                  ? isReady
-                  : inGame,
-            }"
-          ></span>
+          <div class="h-full w-full absolute top-0 left-0 right-0 bottom-0">
+            <span
+              class="absolute -top-1 h-2 w-2 rounded-full animate-ping"
+              :class="{
+                'left-0': !flip,
+                '-right-1': flip,
+                ['bg-red-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? !isOnline && !isReady
+                    : !isOnline && !inGame,
+                ['bg-yellow-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? isOnline && !isReady
+                    : isOnline && !inGame,
+                ['bg-green-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? isReady
+                    : inGame,
+              }"
+            ></span>
+            <span
+              class="absolute -top-1 h-2 w-2 rounded-full"
+              :class="{
+                'left-0': !flip,
+                '-right-1': flip,
+                ['bg-red-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? !isOnline && !isReady
+                    : !isOnline && !inGame,
+                ['bg-yellow-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? isOnline && !isReady
+                    : isOnline && !inGame,
+                ['bg-green-500']:
+                  match &&
+                  match.status === e_match_status_enum.WaitingForCheckIn
+                    ? isReady
+                    : inGame,
+              }"
+            ></span>
+          </div>
         </template>
 
-        <template
-          v-if="match && match.status === e_match_status_enum.WaitingForCheckIn"
-        >
-          <template v-if="!isOnline && !isReady">
-            {{ $t("match.player.status.offline_not_ready") }}
-          </template>
-          <template v-else-if="isOnline && !isReady">
-            {{ $t("match.player.status.online_not_ready") }}
-          </template>
-          <template v-else> {{ $t("match.player.status.ready") }} </template>
-        </template>
-        <template v-else>
-          <template v-if="!isOnline && !inGame">
-            {{ $t("match.player.status.offline") }}
-          </template>
-          <template v-else-if="isOnline && !inGame">
-            {{ $t("match.player.status.online_not_in_game") }}
-          </template>
-          <template v-else> {{ $t("match.player.status.in_game") }} </template>
-        </template>
+        <div class="flex flex-col gap-1">
+          <div class="text-center" v-if="showName">
+            {{ member.player.name }}
+          </div>
+
+          <div v-if="match">
+            <template
+              v-if="match.status === e_match_status_enum.WaitingForCheckIn"
+            >
+              <template v-if="!isOnline && !isReady">
+                {{ $t("match.player.status.offline_not_ready") }}
+              </template>
+              <template v-else-if="isOnline && !isReady">
+                {{ $t("match.player.status.online_not_ready") }}
+              </template>
+              <template v-else>
+                {{ $t("match.player.status.ready") }}
+              </template>
+            </template>
+            <template v-else>
+              <template v-if="!isOnline && !inGame">
+                {{ $t("match.player.status.offline") }}
+              </template>
+              <template v-else-if="isOnline && !inGame">
+                {{ $t("match.player.status.online_not_in_game") }}
+              </template>
+              <template v-else>
+                {{ $t("match.player.status.in_game") }}
+              </template>
+            </template>
+          </div>
+        </div>
       </FiveStackToolTip>
     </template>
   </PlayerDisplay>
@@ -101,6 +125,14 @@ export default {
     },
     linkable: {
       default: true,
+      type: Boolean,
+    },
+    flip: {
+      default: false,
+      type: Boolean,
+    },
+    showName: {
+      default: false,
       type: Boolean,
     },
   },
