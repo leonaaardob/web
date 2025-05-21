@@ -21,7 +21,7 @@ import { Separator } from "~/components/ui/separator";
         <div
           class="flex items-center space-x-2 cursor-pointer"
           @click="override = !override"
-          v-if="match.is_organizer"
+          v-if="canOverride"
         >
           <Label>{{ $t("match.region_veto.organizer_override") }}</Label>
           <Switch :model-value="override" />
@@ -200,11 +200,16 @@ export default {
     };
   },
   computed: {
-    isUser() {
-      return useAuthStore().isUser;
+    canOverride() {
+      return (
+        this.match.is_organizer &&
+        (useAuthStore().isMatchOrganizer ||
+          useAuthStore().isTournamentOrganizer ||
+          useAuthStore().isAdmin)
+      );
     },
     isPicking() {
-      if (this.override && this.match.is_organizer && !this.isUser) {
+      if (this.canOverride && this.override) {
         return true;
       }
 

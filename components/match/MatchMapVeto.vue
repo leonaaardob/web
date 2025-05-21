@@ -39,7 +39,7 @@ import MatchPicksDisplay from "~/components/match/MatchPicksDisplay.vue";
       <div
         class="flex items-center space-x-2 cursor-pointer"
         @click="override = !override"
-        v-if="match.is_organizer && !isUser"
+        v-if="canOverride"
       >
         <Label>{{ $t("match.map_veto.organizer_override") }}</Label>
         <Switch :model-value="override" />
@@ -293,11 +293,16 @@ export default {
     bestOf() {
       return this.match.options.best_of;
     },
-    isUser() {
-      return useAuthStore().isUser;
+    canOverride() {
+      return (
+        this.match.is_organizer &&
+        (useAuthStore().isMatchOrganizer ||
+          useAuthStore().isTournamentOrganizer ||
+          useAuthStore().isAdmin)
+      );
     },
     isPicking() {
-      if (this.override && this.match.is_organizer && !this.isUser) {
+      if (this.canOverride && this.override) {
         return true;
       }
 

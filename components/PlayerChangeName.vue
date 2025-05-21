@@ -14,14 +14,14 @@
       <AlertDialogHeader>
         <AlertDialogTitle>
           {{
-            canUpdate
+            isAdmin
               ? $t("player.change_name.title")
               : $t("player.change_name.request_title")
           }}
         </AlertDialogTitle>
         <AlertDialogDescription>
           {{
-            canUpdate
+            isAdmin
               ? $t("player.change_name.description")
               : $t("player.change_name.request_description")
           }}
@@ -42,7 +42,7 @@
           {{ $t("common.cancel") }}
         </AlertDialogCancel>
         <AlertDialogAction
-          @click="canUpdate ? changeName() : requestNameChange()"
+          @click="isAdmin ? changeName() : requestNameChange()"
         >
           {{ $t("common.confirm") }}
         </AlertDialogAction>
@@ -142,9 +142,6 @@ export default {
     },
     isAdmin() {
       return useAuthStore().isAdmin;
-    },
-    canUpdate() {
-      return !useAuthStore().isUser;
     },
     canChangeName() {
       if (!this.me) {

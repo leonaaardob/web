@@ -46,7 +46,7 @@ import SteamIcon from "~/components/icons/SteamIcon.vue";
 
       <template #actions>
         <div class="flex gap-2">
-          <template v-if="player.steam_id !== me.steam_id && !isUser">
+          <template v-if="canSanction">
             <SanctionPlayer :player="player" />
           </template>
 
@@ -363,11 +363,20 @@ export default {
     me() {
       return useAuthStore().me;
     },
+    canSanction() {
+      return (
+        this.player.steam_id !== this.me.steam_id &&
+        (this.isAdmin || this.isMatchOrganizer || this.isTournamentOrganizer)
+      );
+    },
+    isMatchOrganizer() {
+      return useAuthStore().isMatchOrganizer;
+    },
+    isTournamentOrganizer() {
+      return useAuthStore().isTournamentOrganizer;
+    },
     isAdmin() {
       return useAuthStore().isAdmin;
-    },
-    isUser() {
-      return useAuthStore().isUser;
     },
     kd() {
       if (this.player?.deaths_aggregate.aggregate.count === 0) {
