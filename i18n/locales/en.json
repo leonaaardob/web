@@ -92,8 +92,7 @@
                 "game_type_configs": {
                     "title": "Game Type Configs",
                     "description": "Manage game type configs.",
-                    "type": "Game Type",
-                    "base_config": "Base Config (5stack.base.cfg)"
+                    "type": "Game Type"
                 },
                 "streaming": {
                     "title": "Streaming",

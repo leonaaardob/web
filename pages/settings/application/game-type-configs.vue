@@ -37,23 +37,12 @@ definePageMeta({
       </TableBody>
     </Table>
   </Card>
-
-  <Card>
-    <CardHeader>
-      <CardTitle>
-        {{ $t("pages.settings.application.game_type_configs.base_config") }}
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <pre>{{ baseConfig }}{{ liveConfig }}</pre>
-    </CardContent>
-  </Card>
 </template>
 
 <script lang="ts">
 import { generateSubscription } from "~/graphql/graphqlGen";
 import { defineComponent } from "vue";
-import { e_match_types_enum } from "~/generated/zeus";
+import { e_game_cfg_types_enum } from "~/generated/zeus";
 interface GameTypeConfig {
   type: string;
   cfg: string;
@@ -83,11 +72,16 @@ export default defineComponent<ComponentData>({
         }: {
           data: { match_type_cfgs: GameTypeConfig[] };
         }) {
-          for (const type of [
-            e_match_types_enum.Competitive,
-            e_match_types_enum.Wingman,
-            e_match_types_enum.Duel,
-          ]) {
+          const gameConfigTypes = [
+            e_game_cfg_types_enum.Base,
+            e_game_cfg_types_enum.Lan,
+            e_game_cfg_types_enum.Live,
+            e_game_cfg_types_enum.Competitive,
+            e_game_cfg_types_enum.Wingman,
+            e_game_cfg_types_enum.Duel,
+          ];
+
+          for (const type of gameConfigTypes) {
             if (!data.match_type_cfgs.find((config) => config.type === type)) {
               data.match_type_cfgs.push({
                 type,
@@ -96,29 +90,23 @@ export default defineComponent<ComponentData>({
             }
           }
 
-          this.gameTypeConfigs = data.match_type_cfgs;
+          this.gameTypeConfigs = data.match_type_cfgs.sort((a, b) => {
+            return (
+              gameConfigTypes.indexOf(a.type) - gameConfigTypes.indexOf(b.type)
+            );
+          });
         },
       },
     },
   },
-  created() {
-    void this.getBaseConfig();
-  },
   data(): ComponentData {
     return {
-      baseConfig: "",
-      liveConfig: "",
       gameTypeConfigs: [],
     };
   },
   methods: {
     async getDefaultConfigs(type: e_match_types_enum) {
       return await $fetch(`/api/get-default-config?type=${type}`);
-    },
-    async getBaseConfig() {
-      this.baseConfig = await $fetch(`/api/get-default-config?type=base`);
-      this.liveConfig = await $fetch(`/api/get-default-config?type=live`);
-      this.liveConfig = this.liveConfig.replace("exec 5stack.base.cfg", "");
     },
   },
 });

@@ -254,6 +254,57 @@ export const AllTypesProps: Record<string,any> = {
 		_set:"e_friend_status_set_input",
 		where:"e_friend_status_bool_exp"
 	},
+	e_game_cfg_types_aggregate_fields:{
+		count:{
+			columns:"e_game_cfg_types_select_column"
+		}
+	},
+	e_game_cfg_types_bool_exp:{
+		_and:"e_game_cfg_types_bool_exp",
+		_not:"e_game_cfg_types_bool_exp",
+		_or:"e_game_cfg_types_bool_exp",
+		description:"String_comparison_exp",
+		value:"String_comparison_exp"
+	},
+	e_game_cfg_types_constraint: "enum" as const,
+	e_game_cfg_types_enum: "enum" as const,
+	e_game_cfg_types_enum_comparison_exp:{
+		_eq:"e_game_cfg_types_enum",
+		_in:"e_game_cfg_types_enum",
+		_neq:"e_game_cfg_types_enum",
+		_nin:"e_game_cfg_types_enum"
+	},
+	e_game_cfg_types_insert_input:{
+
+	},
+	e_game_cfg_types_on_conflict:{
+		constraint:"e_game_cfg_types_constraint",
+		update_columns:"e_game_cfg_types_update_column",
+		where:"e_game_cfg_types_bool_exp"
+	},
+	e_game_cfg_types_order_by:{
+		description:"order_by",
+		value:"order_by"
+	},
+	e_game_cfg_types_pk_columns_input:{
+
+	},
+	e_game_cfg_types_select_column: "enum" as const,
+	e_game_cfg_types_set_input:{
+
+	},
+	e_game_cfg_types_stream_cursor_input:{
+		initial_value:"e_game_cfg_types_stream_cursor_value_input",
+		ordering:"cursor_ordering"
+	},
+	e_game_cfg_types_stream_cursor_value_input:{
+
+	},
+	e_game_cfg_types_update_column: "enum" as const,
+	e_game_cfg_types_updates:{
+		_set:"e_game_cfg_types_set_input",
+		where:"e_game_cfg_types_bool_exp"
+	},
 	e_game_server_node_statuses_aggregate_fields:{
 		count:{
 			columns:"e_game_server_node_statuses_select_column"
@@ -611,16 +662,6 @@ export const AllTypesProps: Record<string,any> = {
 		where:"e_match_status_bool_exp"
 	},
 	e_match_types:{
-		config:{
-			distinct_on:"match_type_cfgs_select_column",
-			order_by:"match_type_cfgs_order_by",
-			where:"match_type_cfgs_bool_exp"
-		},
-		config_aggregate:{
-			distinct_on:"match_type_cfgs_select_column",
-			order_by:"match_type_cfgs_order_by",
-			where:"match_type_cfgs_bool_exp"
-		},
 		maps:{
 			distinct_on:"maps_select_column",
 			order_by:"maps_order_by",
@@ -641,8 +682,6 @@ export const AllTypesProps: Record<string,any> = {
 		_and:"e_match_types_bool_exp",
 		_not:"e_match_types_bool_exp",
 		_or:"e_match_types_bool_exp",
-		config:"match_type_cfgs_bool_exp",
-		config_aggregate:"match_type_cfgs_aggregate_bool_exp",
 		description:"String_comparison_exp",
 		maps:"maps_bool_exp",
 		maps_aggregate:"maps_aggregate_bool_exp",
@@ -657,7 +696,6 @@ export const AllTypesProps: Record<string,any> = {
 		_nin:"e_match_types_enum"
 	},
 	e_match_types_insert_input:{
-		config:"match_type_cfgs_arr_rel_insert_input",
 		maps:"maps_arr_rel_insert_input"
 	},
 	e_match_types_obj_rel_insert_input:{
@@ -670,7 +708,6 @@ export const AllTypesProps: Record<string,any> = {
 		where:"e_match_types_bool_exp"
 	},
 	e_match_types_order_by:{
-		config_aggregate:"match_type_cfgs_aggregate_order_by",
 		description:"order_by",
 		maps_aggregate:"maps_aggregate_order_by",
 		value:"order_by"
@@ -3745,46 +3782,21 @@ export const AllTypesProps: Record<string,any> = {
 		_set:"match_region_veto_picks_set_input",
 		where:"match_region_veto_picks_bool_exp"
 	},
-	match_type_cfgs_aggregate_bool_exp:{
-		count:"match_type_cfgs_aggregate_bool_exp_count"
-	},
-	match_type_cfgs_aggregate_bool_exp_count:{
-		arguments:"match_type_cfgs_select_column",
-		filter:"match_type_cfgs_bool_exp",
-		predicate:"Int_comparison_exp"
-	},
 	match_type_cfgs_aggregate_fields:{
 		count:{
 			columns:"match_type_cfgs_select_column"
 		}
-	},
-	match_type_cfgs_aggregate_order_by:{
-		count:"order_by",
-		max:"match_type_cfgs_max_order_by",
-		min:"match_type_cfgs_min_order_by"
-	},
-	match_type_cfgs_arr_rel_insert_input:{
-		data:"match_type_cfgs_insert_input",
-		on_conflict:"match_type_cfgs_on_conflict"
 	},
 	match_type_cfgs_bool_exp:{
 		_and:"match_type_cfgs_bool_exp",
 		_not:"match_type_cfgs_bool_exp",
 		_or:"match_type_cfgs_bool_exp",
 		cfg:"String_comparison_exp",
-		e_match_type:"e_match_types_bool_exp",
-		type:"e_match_types_enum_comparison_exp"
+		type:"e_game_cfg_types_enum_comparison_exp"
 	},
 	match_type_cfgs_constraint: "enum" as const,
 	match_type_cfgs_insert_input:{
-		e_match_type:"e_match_types_obj_rel_insert_input",
-		type:"e_match_types_enum"
-	},
-	match_type_cfgs_max_order_by:{
-		cfg:"order_by"
-	},
-	match_type_cfgs_min_order_by:{
-		cfg:"order_by"
+		type:"e_game_cfg_types_enum"
 	},
 	match_type_cfgs_on_conflict:{
 		constraint:"match_type_cfgs_constraint",
@@ -3793,22 +3805,21 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	match_type_cfgs_order_by:{
 		cfg:"order_by",
-		e_match_type:"e_match_types_order_by",
 		type:"order_by"
 	},
 	match_type_cfgs_pk_columns_input:{
-		type:"e_match_types_enum"
+		type:"e_game_cfg_types_enum"
 	},
 	match_type_cfgs_select_column: "enum" as const,
 	match_type_cfgs_set_input:{
-		type:"e_match_types_enum"
+		type:"e_game_cfg_types_enum"
 	},
 	match_type_cfgs_stream_cursor_input:{
 		initial_value:"match_type_cfgs_stream_cursor_value_input",
 		ordering:"cursor_ordering"
 	},
 	match_type_cfgs_stream_cursor_value_input:{
-		type:"e_match_types_enum"
+		type:"e_game_cfg_types_enum"
 	},
 	match_type_cfgs_update_column: "enum" as const,
 	match_type_cfgs_updates:{
@@ -4363,6 +4374,12 @@ export const AllTypesProps: Record<string,any> = {
 		delete_e_friend_status_by_pk:{
 
 		},
+		delete_e_game_cfg_types:{
+			where:"e_game_cfg_types_bool_exp"
+		},
+		delete_e_game_cfg_types_by_pk:{
+
+		},
 		delete_e_game_server_node_statuses:{
 			where:"e_game_server_node_statuses_bool_exp"
 		},
@@ -4573,7 +4590,7 @@ export const AllTypesProps: Record<string,any> = {
 			where:"match_type_cfgs_bool_exp"
 		},
 		delete_match_type_cfgs_by_pk:{
-			type:"e_match_types_enum"
+			type:"e_game_cfg_types_enum"
 		},
 		delete_matches:{
 			where:"matches_bool_exp"
@@ -4759,6 +4776,14 @@ export const AllTypesProps: Record<string,any> = {
 		insert_e_friend_status_one:{
 			object:"e_friend_status_insert_input",
 			on_conflict:"e_friend_status_on_conflict"
+		},
+		insert_e_game_cfg_types:{
+			objects:"e_game_cfg_types_insert_input",
+			on_conflict:"e_game_cfg_types_on_conflict"
+		},
+		insert_e_game_cfg_types_one:{
+			object:"e_game_cfg_types_insert_input",
+			on_conflict:"e_game_cfg_types_on_conflict"
 		},
 		insert_e_game_server_node_statuses:{
 			objects:"e_game_server_node_statuses_insert_input",
@@ -5321,6 +5346,17 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		update_e_friend_status_many:{
 			updates:"e_friend_status_updates"
+		},
+		update_e_game_cfg_types:{
+			_set:"e_game_cfg_types_set_input",
+			where:"e_game_cfg_types_bool_exp"
+		},
+		update_e_game_cfg_types_by_pk:{
+			_set:"e_game_cfg_types_set_input",
+			pk_columns:"e_game_cfg_types_pk_columns_input"
+		},
+		update_e_game_cfg_types_many:{
+			updates:"e_game_cfg_types_updates"
 		},
 		update_e_game_server_node_statuses:{
 			_set:"e_game_server_node_statuses_set_input",
@@ -8509,6 +8545,19 @@ export const AllTypesProps: Record<string,any> = {
 		e_friend_status_by_pk:{
 
 		},
+		e_game_cfg_types:{
+			distinct_on:"e_game_cfg_types_select_column",
+			order_by:"e_game_cfg_types_order_by",
+			where:"e_game_cfg_types_bool_exp"
+		},
+		e_game_cfg_types_aggregate:{
+			distinct_on:"e_game_cfg_types_select_column",
+			order_by:"e_game_cfg_types_order_by",
+			where:"e_game_cfg_types_bool_exp"
+		},
+		e_game_cfg_types_by_pk:{
+
+		},
 		e_game_server_node_statuses:{
 			distinct_on:"e_game_server_node_statuses_select_column",
 			order_by:"e_game_server_node_statuses_order_by",
@@ -8964,7 +9013,7 @@ export const AllTypesProps: Record<string,any> = {
 			where:"match_type_cfgs_bool_exp"
 		},
 		match_type_cfgs_by_pk:{
-			type:"e_match_types_enum"
+			type:"e_game_cfg_types_enum"
 		},
 		matches:{
 			distinct_on:"matches_select_column",
@@ -9775,6 +9824,23 @@ export const AllTypesProps: Record<string,any> = {
 			cursor:"e_friend_status_stream_cursor_input",
 			where:"e_friend_status_bool_exp"
 		},
+		e_game_cfg_types:{
+			distinct_on:"e_game_cfg_types_select_column",
+			order_by:"e_game_cfg_types_order_by",
+			where:"e_game_cfg_types_bool_exp"
+		},
+		e_game_cfg_types_aggregate:{
+			distinct_on:"e_game_cfg_types_select_column",
+			order_by:"e_game_cfg_types_order_by",
+			where:"e_game_cfg_types_bool_exp"
+		},
+		e_game_cfg_types_by_pk:{
+
+		},
+		e_game_cfg_types_stream:{
+			cursor:"e_game_cfg_types_stream_cursor_input",
+			where:"e_game_cfg_types_bool_exp"
+		},
 		e_game_server_node_statuses:{
 			distinct_on:"e_game_server_node_statuses_select_column",
 			order_by:"e_game_server_node_statuses_order_by",
@@ -10366,7 +10432,7 @@ export const AllTypesProps: Record<string,any> = {
 			where:"match_type_cfgs_bool_exp"
 		},
 		match_type_cfgs_by_pk:{
-			type:"e_match_types_enum"
+			type:"e_game_cfg_types_enum"
 		},
 		match_type_cfgs_stream:{
 			cursor:"match_type_cfgs_stream_cursor_input",
@@ -13292,6 +13358,31 @@ export const ReturnTypes: Record<string,any> = {
 		affected_rows:"Int",
 		returning:"e_friend_status"
 	},
+	e_game_cfg_types:{
+		description:"String",
+		value:"String"
+	},
+	e_game_cfg_types_aggregate:{
+		aggregate:"e_game_cfg_types_aggregate_fields",
+		nodes:"e_game_cfg_types"
+	},
+	e_game_cfg_types_aggregate_fields:{
+		count:"Int",
+		max:"e_game_cfg_types_max_fields",
+		min:"e_game_cfg_types_min_fields"
+	},
+	e_game_cfg_types_max_fields:{
+		description:"String",
+		value:"String"
+	},
+	e_game_cfg_types_min_fields:{
+		description:"String",
+		value:"String"
+	},
+	e_game_cfg_types_mutation_response:{
+		affected_rows:"Int",
+		returning:"e_game_cfg_types"
+	},
 	e_game_server_node_statuses:{
 		description:"String",
 		value:"String"
@@ -13447,8 +13538,6 @@ export const ReturnTypes: Record<string,any> = {
 		returning:"e_match_status"
 	},
 	e_match_types:{
-		config:"match_type_cfgs",
-		config_aggregate:"match_type_cfgs_aggregate",
 		description:"String",
 		maps:"maps",
 		maps_aggregate:"maps_aggregate",
@@ -14953,8 +15042,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	match_type_cfgs:{
 		cfg:"String",
-		e_match_type:"e_match_types",
-		type:"e_match_types_enum"
+		type:"e_game_cfg_types_enum"
 	},
 	match_type_cfgs_aggregate:{
 		aggregate:"match_type_cfgs_aggregate_fields",
@@ -15210,6 +15298,8 @@ export const ReturnTypes: Record<string,any> = {
 		delete_abandoned_matches_by_pk:"abandoned_matches",
 		delete_e_friend_status:"e_friend_status_mutation_response",
 		delete_e_friend_status_by_pk:"e_friend_status",
+		delete_e_game_cfg_types:"e_game_cfg_types_mutation_response",
+		delete_e_game_cfg_types_by_pk:"e_game_cfg_types",
 		delete_e_game_server_node_statuses:"e_game_server_node_statuses_mutation_response",
 		delete_e_game_server_node_statuses_by_pk:"e_game_server_node_statuses",
 		delete_e_lobby_access:"e_lobby_access_mutation_response",
@@ -15337,6 +15427,8 @@ export const ReturnTypes: Record<string,any> = {
 		insert_abandoned_matches_one:"abandoned_matches",
 		insert_e_friend_status:"e_friend_status_mutation_response",
 		insert_e_friend_status_one:"e_friend_status",
+		insert_e_game_cfg_types:"e_game_cfg_types_mutation_response",
+		insert_e_game_cfg_types_one:"e_game_cfg_types",
 		insert_e_game_server_node_statuses:"e_game_server_node_statuses_mutation_response",
 		insert_e_game_server_node_statuses_one:"e_game_server_node_statuses",
 		insert_e_lobby_access:"e_lobby_access_mutation_response",
@@ -15489,6 +15581,9 @@ export const ReturnTypes: Record<string,any> = {
 		update_e_friend_status:"e_friend_status_mutation_response",
 		update_e_friend_status_by_pk:"e_friend_status",
 		update_e_friend_status_many:"e_friend_status_mutation_response",
+		update_e_game_cfg_types:"e_game_cfg_types_mutation_response",
+		update_e_game_cfg_types_by_pk:"e_game_cfg_types",
+		update_e_game_cfg_types_many:"e_game_cfg_types_mutation_response",
 		update_e_game_server_node_statuses:"e_game_server_node_statuses_mutation_response",
 		update_e_game_server_node_statuses_by_pk:"e_game_server_node_statuses",
 		update_e_game_server_node_statuses_many:"e_game_server_node_statuses_mutation_response",
@@ -16945,6 +17040,9 @@ export const ReturnTypes: Record<string,any> = {
 		e_friend_status:"e_friend_status",
 		e_friend_status_aggregate:"e_friend_status_aggregate",
 		e_friend_status_by_pk:"e_friend_status",
+		e_game_cfg_types:"e_game_cfg_types",
+		e_game_cfg_types_aggregate:"e_game_cfg_types_aggregate",
+		e_game_cfg_types_by_pk:"e_game_cfg_types",
 		e_game_server_node_statuses:"e_game_server_node_statuses",
 		e_game_server_node_statuses_aggregate:"e_game_server_node_statuses_aggregate",
 		e_game_server_node_statuses_by_pk:"e_game_server_node_statuses",
@@ -17365,6 +17463,10 @@ export const ReturnTypes: Record<string,any> = {
 		e_friend_status_aggregate:"e_friend_status_aggregate",
 		e_friend_status_by_pk:"e_friend_status",
 		e_friend_status_stream:"e_friend_status",
+		e_game_cfg_types:"e_game_cfg_types",
+		e_game_cfg_types_aggregate:"e_game_cfg_types_aggregate",
+		e_game_cfg_types_by_pk:"e_game_cfg_types",
+		e_game_cfg_types_stream:"e_game_cfg_types",
 		e_game_server_node_statuses:"e_game_server_node_statuses",
 		e_game_server_node_statuses_aggregate:"e_game_server_node_statuses_aggregate",
 		e_game_server_node_statuses_by_pk:"e_game_server_node_statuses",
