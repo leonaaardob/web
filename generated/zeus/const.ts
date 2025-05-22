@@ -9421,6 +9421,7 @@ export const AllTypesProps: Record<string,any> = {
 		game_server_nodes_aggregate:"game_server_nodes_aggregate_bool_exp",
 		is_lan:"Boolean_comparison_exp",
 		status:"String_comparison_exp",
+		steam_relay:"Boolean_comparison_exp",
 		total_server_count:"Int_comparison_exp",
 		value:"String_comparison_exp"
 	},
@@ -9443,6 +9444,7 @@ export const AllTypesProps: Record<string,any> = {
 		game_server_nodes_aggregate:"game_server_nodes_aggregate_order_by",
 		is_lan:"order_by",
 		status:"order_by",
+		steam_relay:"order_by",
 		total_server_count:"order_by",
 		value:"order_by"
 	},
@@ -9545,6 +9547,8 @@ export const AllTypesProps: Record<string,any> = {
 		rcon_status:"Boolean_comparison_exp",
 		region:"String_comparison_exp",
 		reserved_by_match_id:"uuid_comparison_exp",
+		server_region:"server_regions_bool_exp",
+		steam_relay:"String_comparison_exp",
 		tv_port:"Int_comparison_exp"
 	},
 	servers_constraint: "enum" as const,
@@ -9558,7 +9562,8 @@ export const AllTypesProps: Record<string,any> = {
 		id:"uuid",
 		matches:"matches_arr_rel_insert_input",
 		rcon_password:"bytea",
-		reserved_by_match_id:"uuid"
+		reserved_by_match_id:"uuid",
+		server_region:"server_regions_obj_rel_insert_input"
 	},
 	servers_max_order_by:{
 		api_password:"order_by",
@@ -9570,6 +9575,7 @@ export const AllTypesProps: Record<string,any> = {
 		port:"order_by",
 		region:"order_by",
 		reserved_by_match_id:"order_by",
+		steam_relay:"order_by",
 		tv_port:"order_by"
 	},
 	servers_min_order_by:{
@@ -9582,6 +9588,7 @@ export const AllTypesProps: Record<string,any> = {
 		port:"order_by",
 		region:"order_by",
 		reserved_by_match_id:"order_by",
+		steam_relay:"order_by",
 		tv_port:"order_by"
 	},
 	servers_obj_rel_insert_input:{
@@ -9611,6 +9618,8 @@ export const AllTypesProps: Record<string,any> = {
 		rcon_status:"order_by",
 		region:"order_by",
 		reserved_by_match_id:"order_by",
+		server_region:"server_regions_order_by",
+		steam_relay:"order_by",
 		tv_port:"order_by"
 	},
 	servers_pk_columns_input:{
@@ -17145,6 +17154,7 @@ export const ReturnTypes: Record<string,any> = {
 		game_server_nodes_aggregate:"game_server_nodes_aggregate",
 		is_lan:"Boolean",
 		status:"String",
+		steam_relay:"Boolean",
 		total_server_count:"Int",
 		value:"String"
 	},
@@ -17234,6 +17244,8 @@ export const ReturnTypes: Record<string,any> = {
 		rcon_status:"Boolean",
 		region:"String",
 		reserved_by_match_id:"uuid",
+		server_region:"server_regions",
+		steam_relay:"String",
 		tv_port:"Int"
 	},
 	servers_aggregate:{
@@ -17267,6 +17279,7 @@ export const ReturnTypes: Record<string,any> = {
 		port:"Int",
 		region:"String",
 		reserved_by_match_id:"uuid",
+		steam_relay:"String",
 		tv_port:"Int"
 	},
 	servers_min_fields:{
@@ -17279,6 +17292,7 @@ export const ReturnTypes: Record<string,any> = {
 		port:"Int",
 		region:"String",
 		reserved_by_match_id:"uuid",
+		steam_relay:"String",
 		tv_port:"Int"
 	},
 	servers_mutation_response:{

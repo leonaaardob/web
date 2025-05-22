@@ -9,24 +9,6 @@ definePageMeta({
   <form @submit.prevent="updateSettings" class="grid gap-4">
     <div
       class="flex flex-row items-center justify-between rounded-lg border p-4 cursor-pointer"
-      @click="toggleSteamRelay"
-    >
-      <div class="space-y-0.5">
-        <h4 class="text-base font-medium">
-          {{ $t("pages.settings.application.servers.steam_relay") }}
-        </h4>
-        <p class="text-sm text-muted-foreground">
-          {{ $t("pages.settings.application.servers.steam_relay_description") }}
-        </p>
-      </div>
-      <Switch
-        :model-value="steamRelayEnabled"
-        @update:model-value="toggleSteamRelay"
-      />
-    </div>
-
-    <div
-      class="flex flex-row items-center justify-between rounded-lg border p-4 cursor-pointer"
       @click="toggleCpuPinning"
     >
       <div class="space-y-0.5">
@@ -161,33 +143,6 @@ export default {
         title: this.$t("pages.settings.application.servers.update_cpu_pinning"),
       });
     },
-    async toggleSteamRelay() {
-      await this.$apollo.mutate({
-        mutation: generateMutation({
-          insert_settings: [
-            {
-              objects: [
-                {
-                  name: "enable_steam_relay",
-                  value: this.steamRelayEnabled ? "false" : "true",
-                },
-              ],
-              on_conflict: {
-                constraint: settings_constraint.settings_pkey,
-                update_columns: [settings_update_column.value],
-              },
-            },
-            {
-              __typename: true,
-            },
-          ],
-        }),
-      });
-
-      toast({
-        title: this.$t("pages.settings.application.servers.update_steam_relay"),
-      });
-    },
   },
   computed: {
     settings() {
@@ -197,13 +152,6 @@ export default {
       return (
         this.settings.find((setting) => {
           return setting.name === "enable_cpu_pinning";
-        })?.value === "true"
-      );
-    },
-    steamRelayEnabled() {
-      return (
-        this.settings.find((setting) => {
-          return setting.name === "enable_steam_relay";
         })?.value === "true"
       );
     },

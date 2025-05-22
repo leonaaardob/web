@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Pagination from "@/components/Pagination.vue";
 import PageHeading from "~/components/PageHeading.vue";
-import { Pencil, Trash, PlusCircle } from "lucide-vue-next";
+import { Pencil, Trash, PlusCircle, Info } from "lucide-vue-next";
 import RegionForm from "~/components/regions/RegionForm.vue";
+import FivestackTooltip from "~/components/FiveStackToolTip.vue";
 </script>
 
 <template>
@@ -34,6 +35,17 @@ import RegionForm from "~/components/regions/RegionForm.vue";
               $t("pages.regions.table.available_servers")
             }}</TableHead>
             <TableHead>{{ $t("pages.regions.table.description") }}</TableHead>
+            <TableHead>
+              <FivestackTooltip>
+                <template #trigger>
+                  <div class="flex items-center gap-2">
+                    <Info class="w-4 h-4" />
+                    {{ $t("pages.regions.table.use_steam_relay") }}
+                  </div>
+                </template>
+                {{ $t("pages.regions.table.use_steam_relay_description") }}
+              </FivestackTooltip>
+            </TableHead>
             <TableHead>{{ $t("pages.regions.table.use_lan_ip") }}</TableHead>
             <TableHead class="w-[100px]">{{
               $t("pages.regions.table.actions")
@@ -56,6 +68,12 @@ import RegionForm from "~/components/regions/RegionForm.vue";
             </TableCell>
             <TableCell>
               <span>{{ region.description }}</span>
+            </TableCell>
+            <TableCell>
+              <Switch
+                :model-value="region.steam_relay"
+                @click="toggleSteamRelay(region)"
+              />
             </TableCell>
             <TableCell>
               <Switch
@@ -178,6 +196,7 @@ export default {
               description: true,
               is_lan: true,
               status: true,
+              steam_relay: true,
               total_server_count: true,
               available_server_count: true,
             },
@@ -231,6 +250,25 @@ export default {
 
       toast({
         title: "Deleted Region",
+      });
+    },
+    async toggleSteamRelay(region) {
+      await this.$apollo.mutate({
+        mutation: generateMutation({
+          update_server_regions_by_pk: [
+            {
+              pk_columns: {
+                value: region.value,
+              },
+              _set: {
+                steam_relay: !region.steam_relay,
+              },
+            },
+            {
+              value: true,
+            },
+          ],
+        }),
       });
     },
     async toggleIsLan(region) {
