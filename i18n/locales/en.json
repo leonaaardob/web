@@ -634,7 +634,10 @@
             "create": "Create Team"
         },
         "search": {
-            "no_teams": "No teams found"
+            "found_teams": "{count} teams found",
+            "placeholder": "Search for a team...",
+            "my_teams_only": "My Teams Only",
+            "no_teams_found": "No teams found"
         },
         "member": {
             "remove": "Remove Member",

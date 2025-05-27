@@ -1,47 +1,69 @@
 <script setup lang="ts">
 import { CaretSortIcon } from "@radix-icons/vue";
-
+import { Switch } from "~/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import debounce from "~/utilities/debounce";
 </script>
 
 <template>
-  <div>
-    <Popover v-model:open="open">
-      <PopoverTrigger as-child>
-        <Button
-          @click="searchTeams()"
-          variant="outline"
-          :aria-expanded="open"
-          class="w-full justify-between"
-        >
-          {{ teams?.find((team) => team.id === modelValue)?.name || label }}
-          <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <Command @update:searchTerm="searchTeams">
-          <CommandInput class="h-9" @keydown.enter="select(teams?.[0])" />
-          <CommandEmpty>{{ $t("team.search.no_teams") }}</CommandEmpty>
-          <CommandList>
-            <CommandGroup>
-              <CommandItem
+  <Popover v-model:open="open">
+    <PopoverTrigger as-child>
+      <Button
+        @click="searchTeams()"
+        variant="outline"
+        :aria-expanded="open"
+        class="justify-between"
+      >
+        {{ teams?.find((team) => team.id === modelValue)?.name || label }}
+        <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent class="p-0 w-[400px]">
+      <div class="flex flex-col">
+        <div class="flex items-center justify-between px-3 py-2 border-b">
+          <input
+            v-model="query"
+            :placeholder="$t('team.search.placeholder')"
+            class="flex-1 bg-transparent outline-none"
+            @input="
+              (e: Event) =>
+                debouncedSearch((e.target as HTMLInputElement).value)
+            "
+          />
+          <div class="flex items-center gap-2 ml-4">
+            <Switch
+              class="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
+              :model-value="myTeamsOnly"
+              @click="toggleMyTeamsOnly"
+            />
+            {{ $t("team.search.my_teams_only") }}
+          </div>
+        </div>
+
+        <div class="max-h-[300px] overflow-y-auto">
+          <div
+            v-if="!teams?.length"
+            class="p-4 text-center text-muted-foreground"
+          >
+            {{ $t("team.search.no_teams_found") }}
+          </div>
+
+          <div v-else>
+            <div class="px-3 py-2 text-sm text-muted-foreground">
+              {{ teams.length }} {{ $t("team.search.found_teams") }}
+            </div>
+
+            <div class="divide-y">
+              <div
                 v-for="team in teams"
                 :key="team.id"
-                :value="team"
-                @select="select(team)"
+                class="px-3 py-2 hover:bg-accent cursor-pointer"
+                @click="select(team)"
               >
                 <div class="flex items-center">
                   <span class="text-xs text-muted-foreground mr-2">
@@ -49,17 +71,23 @@ import {
                   </span>
                   <span>{{ team.name }}</span>
                 </div>
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PopoverContent>
+  </Popover>
 </template>
 
 <script lang="ts">
 import { generateQuery } from "~/graphql/graphqlGen";
+
+interface Team {
+  id: string;
+  name: string;
+  short_name: string;
+}
 
 export default {
   emits: ["selected", "update:modelValue"],
@@ -82,12 +110,25 @@ export default {
   data() {
     return {
       open: false,
-      query: undefined,
-      teams: undefined,
+      query: "",
+      teams: undefined as Team[] | undefined,
+      myTeamsOnly: false,
+      debouncedSearch: debounce((query: string) => {
+        this.searchTeams(query);
+      }, 300),
     };
   },
+  computed: {
+    me() {
+      return useAuthStore().me;
+    },
+  },
   methods: {
-    select(team) {
+    toggleMyTeamsOnly() {
+      this.myTeamsOnly = !this.myTeamsOnly;
+      this.searchTeams();
+    },
+    select(team: Team) {
       if (!team) {
         return;
       }
@@ -96,54 +137,52 @@ export default {
       this.$emit("update:modelValue", team);
     },
     async searchTeams(query?: string) {
-      let teams = [];
-      if (!query || query.trim().length === 0) {
-        teams = this.me.teams.filter((team) => {
+      this.query = query || "";
+
+      if (this.myTeamsOnly) {
+        this.teams = this.me.teams.filter((team: Team) => {
           return !this.exclude.includes(team.id);
         });
+        return;
       }
 
-      if (teams.length === 0) {
-        const { data } = await this.$apollo.query({
-          query: generateQuery({
-            teams: [
-              {
-                where: {
-                  _and: [
-                    {
-                      id: {
-                        _nin: this.exclude,
-                      },
+      const { data } = await this.$apollo.query({
+        query: generateQuery({
+          teams: [
+            {
+              where: {
+                _and: [
+                  {
+                    id: {
+                      _nin: this.exclude,
                     },
-                    ...[
-                      query
-                        ? {
-                            name: {
-                              _ilike: `%${query}%`,
-                            },
-                          }
-                        : {},
-                    ],
+                  },
+                  ...[
+                    query
+                      ? {
+                          name: {
+                            _ilike: `%${query}%`,
+                          },
+                        }
+                      : {},
                   ],
-                },
+                ],
               },
-              {
-                id: true,
-                name: true,
-                short_name: true,
-              },
-            ],
-          }),
-        });
-        teams = data.teams;
-      }
-
-      this.teams = teams;
+            },
+            {
+              id: true,
+              name: true,
+              short_name: true,
+            },
+          ],
+        }),
+      });
+      this.teams = data.teams;
     },
   },
-  computed: {
-    me() {
-      return useAuthStore().me;
+  watch: {
+    query(newQuery: string) {
+      this.debouncedSearch(newQuery);
     },
   },
 };
