@@ -133,6 +133,7 @@ export default {
   },
   apollo: {
     e_tournament_stage_types: {
+      fetchPolicy: "cache-first",
       query: generateQuery({
         e_tournament_stage_types: [
           {},

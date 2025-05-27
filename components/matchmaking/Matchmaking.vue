@@ -239,6 +239,7 @@ interface Match {
 export default {
   apollo: {
     e_match_types: {
+      fetchPolicy: "cache-first",
       query: generateQuery({
         e_match_types: [
           {

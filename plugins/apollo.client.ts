@@ -58,10 +58,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   $apollo.defaultClient.setLink(from([errorLink, retryLink, splitLink]));
   $apollo.defaultClient.defaultOptions = {
     watchQuery: {
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: "cache-and-network",
     },
     query: {
-      fetchPolicy: 'network-only',
+      fetchPolicy: "network-only",
     },
   };
 

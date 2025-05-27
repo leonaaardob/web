@@ -136,6 +136,7 @@ export default {
   },
   apollo: {
     e_team_roles: {
+      fetchPolicy: "cache-first",
       query: typedGql("query")({
         e_team_roles: [
           {

@@ -880,9 +880,6 @@ export default {
     isTournamentOrganizer() {
       return useAuthStore().isTournamentOrganizer;
     },
-    isAdmin() {
-      return useAuthStore().isAdmin;
-    },
   },
 };
 </script>

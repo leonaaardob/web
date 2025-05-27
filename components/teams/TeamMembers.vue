@@ -115,25 +115,25 @@ export default {
           this.team = data.teams_by_pk;
         },
       },
-      e_team_roles: {
-        query: typedGql("subscription")({
-          e_team_roles: [
-            {
-              where: {
-                value: {
-                  _neq: e_team_roles_enum.Admin,
-                },
+    },
+    e_team_roles: {
+      query: typedGql("query")({
+        e_team_roles: [
+          {
+            where: {
+              value: {
+                _neq: e_team_roles_enum.Admin,
               },
             },
-            {
-              value: true,
-              description: true,
-            },
-          ],
-        }),
-        result: function ({ data }) {
-          this.roles = data.e_team_roles;
-        },
+          },
+          {
+            value: true,
+            description: true,
+          },
+        ],
+      }),
+      result: function ({ data }) {
+        this.roles = data.e_team_roles;
       },
     },
   },
