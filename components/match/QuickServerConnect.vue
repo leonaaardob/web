@@ -1,6 +1,48 @@
-<script setup lang="ts">
+<script lang="ts">
 import { Loader, ExternalLink, Copy } from "lucide-vue-next";
 import ClipBoard from "~/components/ClipBoard.vue";
+
+export default {
+  components: {
+    Loader,
+    ExternalLink,
+    Copy,
+    ClipBoard,
+  },
+  props: {
+    match: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  methods: {
+    handleClick() {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 10000);
+    },
+  },
+  computed: {
+    me() {
+      return useAuthStore().me;
+    },
+    lobby() {
+      return useMatchLobbyStore().lobbyChat[`match:${this.match?.id}`];
+    },
+    isInLineup() {
+      return this.match.is_in_lineup;
+    },
+    inGame() {
+      return this.lobby?.get(this.me?.steam_id)?.inGame || false;
+    },
+  },
+};
 </script>
 
 <template>
@@ -40,47 +82,26 @@ import ClipBoard from "~/components/ClipBoard.vue";
           <a
             :href="match.connection_link"
             class="flex items-center justify-center gap-2 rounded-md p-3 w-full transition-colors bg-background hover:bg-background/50"
+            @click="handleClick"
           >
-            <div class="relative flex items-center" v-if="isInLineup">
-              <span
-                class="absolute w-2 h-2 rounded-full animate-ping"
-                :class="inGame ? 'bg-green-500' : 'bg-red-500'"
-              ></span>
-              <span
-                class="relative w-2 h-2 rounded-full"
-                :class="inGame ? 'bg-green-500' : 'bg-red-500'"
-              ></span>
-            </div>
-            <span>Join Server</span>
-            <ExternalLink class="w-4 h-4" />
+            <template v-if="!isLoading">
+              <div class="relative flex items-center" v-if="isInLineup">
+                <span
+                  class="absolute w-2 h-2 rounded-full animate-ping"
+                  :class="inGame ? 'bg-green-500' : 'bg-red-500'"
+                ></span>
+                <span
+                  class="relative w-2 h-2 rounded-full"
+                  :class="inGame ? 'bg-green-500' : 'bg-red-500'"
+                ></span>
+              </div>
+              <span>Join Server</span>
+              <ExternalLink class="w-4 h-4" />
+            </template>
+            <Loader v-else class="w-6 h-6 animate-spin" />
           </a>
         </template>
       </div>
     </template>
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  props: {
-    match: {
-      type: Object,
-      required: true,
-    },
-  },
-  computed: {
-    me() {
-      return useAuthStore().me;
-    },
-    lobby() {
-      return useMatchLobbyStore().lobbyChat[`match:${this.match?.id}`];
-    },
-    isInLineup() {
-      return this.match.is_in_lineup;
-    },
-    inGame() {
-      return this.lobby?.get(this.me?.steam_id)?.inGame || false;
-    },
-  },
-};
-</script>
