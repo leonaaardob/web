@@ -3,19 +3,16 @@ import MatchLineupScoreDisplay from "~/components/match/MatchLineupScoreDisplay.
 </script>
 
 <template>
-  <div>
-    {{ lineup.name }}
+  <div class="flex gap-2">
     <template v-if="bracket.match">
-      <Badge>
-        <NuxtLink :to="{ name: 'matches', params: { id: bracket.match.id } }">{{
-          bracket.match.status
-        }}</NuxtLink>
-      </Badge>
       <MatchLineupScoreDisplay
         :match="bracket.match"
         :lineup="lineup"
       ></MatchLineupScoreDisplay>
     </template>
+    <span>
+      {{ lineup.name }}
+    </span>
   </div>
 </template>
 
