@@ -3,14 +3,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TournamentStageBuilder from "~/components/tournament/TournamentStageBuilder.vue";
 import TournamentJoinForm from "~/components/tournament/TournamentJoinForm.vue";
 import TournamentTeam from "~/components/tournament/TournamentTeam.vue";
-import TournamentOrganizers from "~/components/tournament/TournamentOrganizers.vue";
-import TournamentForm from "~/components/tournament/TournamentForm.vue";
 import TournamentAddTeam from "~/components/tournament/TournamentAddTeam.vue";
 import TournamentActions from "~/components/tournament/TournamentActions.vue";
 import Separator from "~/components/ui/separator/Separator.vue";
 import PlayerDisplay from "~/components/PlayerDisplay.vue";
 import MatchOptionsDisplay from "~/components/match/MatchOptionsDisplay.vue";
 import TimeAgo from "~/components/TimeAgo.vue";
+import { Settings, Users } from "lucide-vue-next";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { NuxtLink } from "#components";
 </script>
 
 <template>
@@ -21,9 +26,6 @@ import TimeAgo from "~/components/TimeAgo.vue";
           <TabsTrigger value="overview">{{
             $t("tournament.overview")
           }}</TabsTrigger>
-          <TabsTrigger value="bracket">{{
-            $t("tournament.bracket")
-          }}</TabsTrigger>
           <TabsTrigger value="teams">
             {{
               $t("tournament.teams", {
@@ -31,64 +33,135 @@ import TimeAgo from "~/components/TimeAgo.vue";
               })
             }}
           </TabsTrigger>
-          <TabsTrigger value="manage" v-if="tournament.is_organizer">{{
-            $t("tournament.settings")
-          }}</TabsTrigger>
         </TabsList>
+      </div>
+
+      <div
+        class="bg-muted/40 rounded-xl px-6 py-4 mt-2 mb-6 shadow-sm border border-border"
+      >
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        >
+          <div class="flex flex-col min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2 min-w-0">
+              <h1 class="truncate text-2xl sm:text-3xl font-bold">
+                {{ tournament.name }}
+              </h1>
+              <Badge
+                variant="secondary"
+                class="text-xs font-semibold h-6 flex items-center"
+              >
+                {{ tournament.options.type }}
+              </Badge>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <TimeAgo
+                :date="tournament.start"
+                class="text-xs text-muted-foreground"
+              />
+            </div>
+            <div
+              v-if="tournament.description"
+              class="mt-2 text-sm text-muted-foreground line-clamp-3"
+            >
+              {{ tournament.description }}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <Badge v-if="tournament" class="text-xs h-6 flex items-center">
+              {{ tournament.e_tournament_status.description }}
+            </Badge>
+            <Popover>
+              <PopoverTrigger as-child>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  v-if="tournament.is_organizer"
+                  :title="$t('tournament.settings')"
+                  class="hover:bg-accent"
+                >
+                  <Settings class="h-5 w-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent class="w-80">
+                <div class="grid gap-4">
+                  <div class="space-y-2">
+                    <h4 class="font-medium">Tournament Settings</h4>
+                    <p class="text-sm text-muted-foreground">
+                      Manage tournament settings and options
+                    </p>
+                  </div>
+                  <Separator />
+                  <div class="grid gap-2">
+                    <NuxtLink
+                      :to="{
+                        name: 'tournaments-tournamentId-match-options',
+                        params: { tournamentId: tournament.id },
+                      }"
+                      class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                    >
+                      <Settings class="mr-2 h-4 w-4" />
+                      Match Options
+                    </NuxtLink>
+                    <NuxtLink
+                      :to="{
+                        name: 'tournaments-tournamentId-organizers',
+                        params: { tournamentId: tournament.id },
+                      }"
+                      class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                    >
+                      <Users class="mr-2 h-4 w-4" />
+                      Organizers
+                    </NuxtLink>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <TournamentActions
+              :tournament="tournament"
+              class="ml-2"
+            ></TournamentActions>
+          </div>
+        </div>
       </div>
 
       <TabsContent value="overview">
         <div class="flex flex-col md:flex-row gap-6">
-          <Card class="flex-grow p-6 md:w-2/3">
-            <CardHeader>
-              <div
-                class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4"
-              >
-                <div>
-                  <Badge v-if="tournament">{{
-                    tournament.e_tournament_status.description
-                  }}</Badge>
-
-                  <CardTitle class="text-2xl font-bold mb-2 sm:mb-0">
-                    {{ tournament.name }}
-                    <Badge variant="secondary" class="text-sm ml-2">
-                      {{ tournament.options.type }}
-                    </Badge>
-                  </CardTitle>
-
-                  <TimeAgo
-                    :date="tournament.start"
-                    class="text-sm text-muted-foreground"
-                  />
-                </div>
-
-                <div class="flex flex-col items-start gap-2 mt-2">
-                  <TournamentActions
-                    :tournament="tournament"
-                  ></TournamentActions>
-                </div>
-              </div>
-            </CardHeader>
+          <Card class="h-fit p-6 md:w-1/3">
             <CardContent>
-              <Card class="py-4">
-                <CardContent>
-                  <div class="prose">{{ tournament.description }}</div>
-                </CardContent>
-              </Card>
+              <MatchOptionsDisplay
+                :show-details-by-default="false"
+                :options="tournament.options"
+              ></MatchOptionsDisplay>
 
               <div class="mt-4 space-y-4">
-                <h3 class="text-lg font-semibold mb-2">
-                  {{ $t("tournament.admin") }}
-                </h3>
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold">
+                    {{ $t("tournament.admin") }}
+                  </h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    @click="showOrganizers = !showOrganizers"
+                    v-if="tournament.organizers.length > 0"
+                  >
+                    {{
+                      showOrganizers
+                        ? $t("tournament.hide_organizers")
+                        : $t("tournament.show_organizers")
+                    }}
+                  </Button>
+                </div>
                 <PlayerDisplay :player="tournament.admin" />
 
-                <template v-if="tournament.organizers.length > 0">
-                  <Separator class="my-8" />
-
-                  <h3 class="text-lg font-semibold mb-2">
-                    {{ $t("tournament.organizers") }}
-                  </h3>
-                  <div class="grid grid-cols-4 gap-4">
+                <template
+                  v-if="tournament.organizers.length > 0 && showOrganizers"
+                >
+                  <Separator class="my-4" />
+                  <div
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+                  >
                     <div
                       v-for="{ organizer } of tournament.organizers"
                       :key="organizer.steam_id"
@@ -99,46 +172,42 @@ import TimeAgo from "~/components/TimeAgo.vue";
                   </div>
                 </template>
               </div>
-
-              <Separator class="my-8" />
-
-              <MatchOptionsDisplay
-                :options="tournament.options"
-              ></MatchOptionsDisplay>
             </CardContent>
           </Card>
 
-          <div
-            class="w-full md:w-1/3 space-y-4"
-            v-if="
-              tournament.status === e_tournament_status_enum.RegistrationOpen
-            "
-          >
-            <Card class="p-4">
-              <CardHeader>
-                <CardTitle class="text-xl">{{
-                  $t("tournament.join.title")
-                }}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <template v-if="tournament.can_join">
-                  <TournamentJoinForm
-                    :tournament="tournament"
-                    @close="tournamentDialog = false"
-                  />
-                </template>
-                <template v-else-if="myTeam">
-                  {{ $t("tournament.join.joined_with", { name: myTeam.name }) }}
-                </template>
-              </CardContent>
-            </Card>
+          <div class="w-full md:w-2/3 space-y-4">
+            <div
+              v-if="
+                tournament.status === e_tournament_status_enum.RegistrationOpen
+              "
+            >
+              <Card class="p-4">
+                <CardHeader>
+                  <CardTitle class="text-xl">{{
+                    $t("tournament.join.title")
+                  }}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <template v-if="tournament.can_join">
+                    <TournamentJoinForm
+                      :tournament="tournament"
+                      @close="tournamentDialog = false"
+                    />
+                  </template>
+                  <template v-else-if="myTeam">
+                    {{
+                      $t("tournament.join.joined_with", { name: myTeam.name })
+                    }}
+                  </template>
+                </CardContent>
+              </Card>
+            </div>
+            <TournamentStageBuilder
+              class="border-2 border-dashed p-6"
+              :tournament="tournament"
+            ></TournamentStageBuilder>
           </div>
         </div>
-      </TabsContent>
-      <TabsContent value="bracket">
-        <TournamentStageBuilder
-          :tournament="tournament"
-        ></TournamentStageBuilder>
       </TabsContent>
       <TabsContent value="teams">
         <div class="flex flex-col md:flex-row gap-6">
@@ -204,25 +273,6 @@ import TimeAgo from "~/components/TimeAgo.vue";
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="manage">
-        <Tabs default-value="match-options">
-          <TabsList>
-            <TabsTrigger value="match-options">{{
-              $t("tournament.form.match_options")
-            }}</TabsTrigger>
-            <TabsTrigger value="organizers">{{
-              $t("tournament.organizer.title")
-            }}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="match-options">
-            <TournamentForm :tournament="tournament"></TournamentForm>
-          </TabsContent>
-          <TabsContent value="organizers">
-            <TournamentOrganizers :tournament="tournament">
-            </TournamentOrganizers>
-          </TabsContent>
-        </Tabs>
-      </TabsContent>
     </Tabs>
   </div>
 </template>
@@ -236,9 +286,6 @@ import { mapFields } from "~/graphql/mapGraphql";
 import { generateMutation } from "~/graphql/graphqlGen";
 import { playerFields } from "~/graphql/playerFields";
 
-/**
- * https://codepen.io/eth0lo/pen/dyyrGww
- */
 export default {
   data() {
     return {
@@ -246,6 +293,9 @@ export default {
       tournament: undefined,
       tournamentDialog: false,
       teamSearchQuery: undefined,
+      settingsDialogOpen: false,
+      organizersDialogOpen: false,
+      showOrganizers: false,
     };
   },
   apollo: {
@@ -485,6 +535,12 @@ export default {
           ],
         }),
       });
+    },
+    openSettingsDialog() {
+      this.settingsDialogOpen = true;
+    },
+    openOrganizersDialog() {
+      this.organizersDialogOpen = true;
     },
   },
 };

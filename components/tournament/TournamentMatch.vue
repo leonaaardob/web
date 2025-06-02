@@ -3,10 +3,11 @@ import TournamentRoundLineup from "~/components/tournament/TournamentRoundLineup
 </script>
 
 <template>
-  <NuxtLink
+  <component
+    :is="bracket.match ? 'NuxtLink' : 'div'"
     :key="bracket.id"
     v-for="bracket in brackets"
-    :to="{ name: 'matches-id', params: { id: bracket.match.id } }"
+    :to="{ name: 'matches-id', params: { id: bracket?.match?.id } }"
     class="tournament-match cursor-pointer my-4 border-2 border-gray-700 rounded-lg m-4 p-4 transition-all duration-200 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 bg-gray-800/50 backdrop-blur-sm"
   >
     <div class="text-center">
@@ -41,7 +42,7 @@ import TournamentRoundLineup from "~/components/tournament/TournamentRoundLineup
         <template v-else>{{ $t("tournament.match.team_2") }}</template>
       </div>
     </div>
-  </NuxtLink>
+  </component>
 </template>
 
 <script lang="ts">

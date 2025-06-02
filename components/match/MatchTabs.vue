@@ -48,7 +48,7 @@ provide("commander", commander);
       <TabsTrigger
         value="veto"
         :disabled="match.match_maps.length === 0"
-        v-if="match.options.map_veto"
+        v-if="match.options.map_veto || match.options.region_veto"
       >
         {{ $t("match.tabs.map_veto_tab") }}
       </TabsTrigger>
@@ -257,7 +257,10 @@ provide("commander", commander);
     <TabsContent value="settings">
       <Card class="p-3 w-full sm:max-w-[500px]">
         <CardContent>
-          <MatchOptionsDisplay :options="match.options"></MatchOptionsDisplay>
+          <MatchOptionsDisplay
+            :options="match.options"
+            :show-details-by-default="true"
+          ></MatchOptionsDisplay>
 
           <template v-if="displayServerInformation">
             <Separator class="my-8" />

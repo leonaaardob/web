@@ -474,6 +474,8 @@
         "settings": "Settings",
         "admin": "Admin",
         "organizers": "Organizers",
+        "show_organizers": "View Organizers",
+        "hide_organizers": "Hide Organizers",
         "join": {
             "title": "Join Tournament",
             "joined_with": "Joined with {name}",
@@ -762,7 +764,8 @@
             "timeout_setting": "Timeout Setting",
             "tech_timeout_setting": "Tech Timeout Setting",
             "ready_setting": "Ready Setting",
-            "map_pool": "Map Pool"
+            "map_pool": "Map Pool",
+            "advanced_settings": "Show Advanced Settings"
         },
         "schedule": {
             "pick_date": "Pick a date",
