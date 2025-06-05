@@ -61,16 +61,10 @@ export default {
       return useMatchmakingStore().joinedMatchmakingQueues?.confirmation;
     },
     shouldShow() {
-      if (!this.confirmation || this.confirmation.matchId || this.isExpired) {
+      if (!this.confirmation || this.confirmation.matchId) {
         return false;
       }
       return true;
-    },
-    isExpired() {
-      if (!this.confirmation) {
-        return true;
-      }
-      return new Date(this.confirmation.expiresAt) <= new Date();
     },
   },
   watch: {
