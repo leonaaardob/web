@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TournamentStageBuilder from "~/components/tournament/TournamentStageBuilder.vue";
 import TournamentJoinForm from "~/components/tournament/TournamentJoinForm.vue";
 import TournamentTeam from "~/components/tournament/TournamentTeam.vue";
-import TournamentAddTeam from "~/components/tournament/TournamentAddTeam.vue";
 import TournamentActions from "~/components/tournament/TournamentActions.vue";
 import Separator from "~/components/ui/separator/Separator.vue";
 import PlayerDisplay from "~/components/PlayerDisplay.vue";
@@ -224,37 +223,10 @@ import { NuxtLink } from "#components";
 
             <div class="grid gap-4">
               <Card class="p-4" v-for="team of tournament.teams" :key="team.id">
-                <div class="flex justify-between items-center mb-4">
-                  {{ team.name }}
-                  <span class="text-sm text-gray-600">
-                    {{
-                      $t("tournament.tournament_team.players_registered", {
-                        count: team.roster_aggregate.aggregate.count,
-                      })
-                    }}
-                  </span>
-                </div>
-
-                <div
-                  class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-4"
-                >
-                  <PlayerDisplay
-                    v-for="{ player } of team.roster"
-                    :key="player.steam_id"
-                    :player="player"
-                    class="text-sm"
-                  ></PlayerDisplay>
-                </div>
-
-                <Button
-                  v-if="tournament.is_organizer"
-                  @click="removeTeam(team.id)"
-                  variant="destructive"
-                  size="sm"
-                  class="w-full sm:w-auto"
-                >
-                  {{ $t("tournament.tournament_team.remove") }}
-                </Button>
+                <TournamentTeam
+                  :tournament="tournament"
+                  :team="team"
+                ></TournamentTeam>
               </Card>
             </div>
           </div>
@@ -267,7 +239,9 @@ import { NuxtLink } from "#components";
                 }}</CardTitle>
               </CardHeader>
               <CardContent>
-                <TournamentAddTeam :tournament="tournament"></TournamentAddTeam>
+                <TournamentJoinForm
+                  :tournament="tournament"
+                ></TournamentJoinForm>
               </CardContent>
             </Card>
           </div>
@@ -283,7 +257,6 @@ import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { useAuthStore } from "~/stores/AuthStore";
 import tournamentTeamFields from "~/graphql/tournamentTeamFields";
 import { mapFields } from "~/graphql/mapGraphql";
-import { generateMutation } from "~/graphql/graphqlGen";
 import { playerFields } from "~/graphql/playerFields";
 
 export default {
@@ -493,7 +466,6 @@ export default {
               },
             },
             Object.assign({}, tournamentTeamFields, {
-              can_manage: true,
               invites: [
                 {},
                 {
@@ -522,20 +494,6 @@ export default {
     },
   },
   methods: {
-    async removeTeam(teamId) {
-      await this.$apollo.mutate({
-        mutation: generateMutation({
-          delete_tournament_teams_by_pk: [
-            {
-              id: teamId,
-            },
-            {
-              id: true,
-            },
-          ],
-        }),
-      });
-    },
     openSettingsDialog() {
       this.settingsDialogOpen = true;
     },

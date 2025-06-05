@@ -12,9 +12,17 @@ import debounce from "~/utilities/debounce";
         @click="searchPlayers()"
         variant="outline"
         :aria-expanded="open"
-        class="justify-between"
+        :class="{
+          'justify-between w-full py-8': selected,
+          'justify-between': !selected,
+        }"
       >
-        {{ label }}
+        <template v-if="selected">
+          <PlayerDisplay :player="selected" />
+        </template>
+        <template v-else>
+          {{ label }}
+        </template>
         <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
@@ -107,6 +115,11 @@ export default {
     self: {
       type: Boolean,
       default: false,
+    },
+    selected: {
+      type: Object,
+      required: false,
+      default: null,
     },
   },
   data() {

@@ -479,6 +479,8 @@
         "join": {
             "title": "Join Tournament",
             "joined_with": "Joined with {name}",
+            "add_self_to_lineup": "Add Self to Lineup",
+            "team_owner": "Team Owner",
             "requirements": "You need at least {count} players to join this tournament"
         },
         "tournament_team": {

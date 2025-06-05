@@ -7,20 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
 import { MessageCircleWarning } from "lucide-vue-next";
+import PlayerSearch from "~/components/PlayerSearch.vue";
+import TeamSearch from "~/components/teams/TeamSearch.vue";
 </script>
 
 <template>
   <form @submit.prevent="joinTournament" class="grid gap-4">
-    <h1 class="flex gap-2">
+    <h1 class="flex gap-2" v-if="!tournament.is_organizer">
       <MessageCircleWarning />
       {{
         $t("tournament.join.requirements", {
@@ -29,7 +23,7 @@ import { MessageCircleWarning } from "lucide-vue-next";
       }}
     </h1>
 
-    <FormField v-slot="{ value, handleChange }" name="newTeam">
+    <FormField v-slot="{ value, handleChange }" name="new_team">
       <FormItem
         class="flex flex-row items-center justify-between rounded-lg border p-4 cursor-pointer"
         @click="handleChange(!value)"
@@ -49,28 +43,47 @@ import { MessageCircleWarning } from "lucide-vue-next";
       </FormItem>
     </FormField>
 
-    <template v-if="!form.values.newTeam">
-      <FormField v-slot="{ componentField }" name="team_id">
+    <template v-if="tournament.is_organizer && form.values.new_team">
+      <FormField v-slot="{ value, handleChange }" name="add_self_to_lineup">
+        <FormItem
+          class="flex flex-row items-center justify-between rounded-lg border p-4 cursor-pointer"
+          @click="handleChange(!value)"
+        >
+          <div class="space-y-0.5">
+            <FormLabel class="text-base">{{
+              $t("tournament.join.add_self_to_lineup")
+            }}</FormLabel>
+          </div>
+          <FormControl>
+            <Switch
+              class="pointer-events-none"
+              :model-value="value"
+              @update:model-value="handleChange"
+            />
+          </FormControl>
+        </FormItem>
+      </FormField>
+
+      <PlayerSearch
+        :label="$t('tournament.join.team_owner')"
+        @selected="setOwnerTeamOwner"
+        :selected="teamOwner"
+        v-if="!form.values.add_self_to_lineup && form.values.new_team"
+      ></PlayerSearch>
+    </template>
+
+    <template v-if="!form.values.new_team">
+      <FormField v-slot="{ handleChange, componentField }" name="team_id">
         <FormItem>
-          <FormLabel>{{ $t("tournament.team.select") }}</FormLabel>
-          <Select v-bind="componentField">
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem
-                  v-for="team in teams"
-                  :key="team.id"
-                  :value="team.id"
-                >
-                  {{ team.name }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <TeamSearch
+            :label="$t('tournament.team.select')"
+            @selected="
+              (team) => {
+                handleChange(team.id);
+              }
+            "
+            v-model="componentField.modelValue"
+          ></TeamSearch>
           <FormMessage />
         </FormItem>
       </FormField>
@@ -109,15 +122,19 @@ export default {
   },
   data() {
     return {
+      teamOwner: null,
       form: useForm({
         validationSchema: toTypedSchema(
           z.object({
+            new_team: z.boolean().default(false),
+            add_self_to_lineup: z.boolean().default(false),
+            owner_steam_id: z.string().optional(),
             team_name: z
               .string()
               .optional()
               .refine(
                 (value) => {
-                  if (!this.form.values.newTeam) {
+                  if (!this.form.values.new_team) {
                     return true;
                   }
                   return value !== undefined;
@@ -129,7 +146,7 @@ export default {
               .optional()
               .refine(
                 (value) => {
-                  if (this.form.values.newTeam) {
+                  if (this.form.values.new_team) {
                     return true;
                   }
                   return value !== undefined;
@@ -148,47 +165,41 @@ export default {
     teams() {
       return this.me.teams;
     },
-    requiresOwnerSteamId() {
-      const { isAdmin, isTournamentOrganizer } = useAuthStore();
-      return isAdmin || isTournamentOrganizer;
-    },
   },
   watch: {
-    tournament: {
-      deep: true,
-      immediate: true,
-      handler() {
-        const type = this.tournament.options.type;
-        this.form.setFieldValue(
-          "newTeam",
-          type !== e_match_types_enum.Competitive,
-        );
+    "form.values.new_team": {
+      handler(newVal) {
+        if (!newVal) {
+          this.teamOwner = null;
+          this.form.setFieldValue("owner_steam_id", null);
+          this.form.setFieldValue("add_self_to_lineup", false);
+        }
       },
     },
   },
   methods: {
+    async setOwnerTeamOwner(player) {
+      this.teamOwner = player;
+      this.form.setFieldValue("owner_steam_id", player.steam_id);
+    },
     async joinTournament() {
-      if (!this.me) {
-        return;
-      }
-
       const { valid } = await this.form.validate();
 
       if (!valid) {
         return;
       }
 
-      const newTeam = this.form.values.newTeam;
       let teamName = this.form.values.team_name;
-      if (!newTeam) {
-        const team = this.teams.find(({ id }) => {
-          return id === this.form.values.team_id;
-        });
 
-        if (!team) {
-          return;
-        }
-        teamName = team.name;
+      let addPlayerSteamId = null;
+      if (
+        !this.form.values.team_id &&
+        this.form.values.add_self_to_lineup &&
+        !this.form.values.owner_steam_id
+      ) {
+        addPlayerSteamId = this.me.steam_id;
+      } else if (this.form.values.owner_steam_id) {
+        addPlayerSteamId = this.form.values.owner_steam_id;
       }
 
       await this.$apollo.mutate({
@@ -196,21 +207,23 @@ export default {
           insert_tournament_teams_one: [
             {
               object: {
-                ...(this.requiresOwnerSteamId
-                  ? { owner_steam_id: this.me.steam_id }
-                  : {}),
                 tournament_id: this.$route.params.tournamentId,
                 name: teamName,
-                team_id: this.form.values.newTeam
+                ...(addPlayerSteamId
+                  ? { owner_steam_id: addPlayerSteamId }
+                  : {}),
+                team_id: this.form.values.new_team
                   ? null
                   : this.form.values.team_id,
                 roster: {
-                  data: [
-                    {
-                      player_steam_id: this.me.steam_id,
-                      tournament_id: this.$route.params.tournamentId,
-                    },
-                  ],
+                  data: addPlayerSteamId
+                    ? [
+                        {
+                          player_steam_id: addPlayerSteamId,
+                          tournament_id: this.$route.params.tournamentId,
+                        },
+                      ]
+                    : [],
                 },
               },
             },

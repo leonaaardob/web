@@ -20,10 +20,8 @@ import Badge from "../ui/badge/Badge.vue";
     >
       <div>
         <h2 class="text-2xl font-bold mb-2">
-          {{ $t("tournament.team.manage_roster") }}
-          <small>
-            ({{ team.roster.length }} / {{ tournament.max_players_per_lineup }})
-          </small>
+          {{ team.team?.name || team.name }}
+          <small> ({{ team.roster.length }} / {{ requiredPlayers }}) </small>
         </h2>
         <template v-if="team.eligible_at">
           <Badge>{{ $t("tournament.team.eligible") }}</Badge>
@@ -32,7 +30,7 @@ import Badge from "../ui/badge/Badge.vue";
           <div class="text-sm text-red-600">
             {{
               $t("tournament.team.not_eligible", {
-                count: tournament.min_players_per_lineup - team.roster.length,
+                count: requiredPlayers - team.roster.length,
               })
             }}
           </div>
@@ -43,12 +41,26 @@ import Badge from "../ui/badge/Badge.vue";
           @click="leaveTournament"
           variant="destructive"
           class="mt-4 md:mt-0"
-          v-if="canLeaveTournament"
+          v-if="!tournament.is_organizer && canLeaveTournament"
         >
           {{ $t("tournament.team.leave_tournament") }}
         </Button>
-        <Button @click="leaveTeam" variant="destructive" class="mt-4 md:mt-0">
+        <Button
+          @click="leaveTeam"
+          variant="destructive"
+          class="mt-4 md:mt-0"
+          v-if="canLeaveTeam"
+        >
           {{ $t("tournament.team.leave_team") }}
+        </Button>
+
+        <Button
+          v-if="tournament.is_organizer"
+          @click="removeTeam()"
+          variant="destructive"
+          class="w-full sm:w-auto"
+        >
+          {{ $t("tournament.tournament_team.remove") }}
         </Button>
       </div>
     </div>
@@ -70,10 +82,7 @@ import Badge from "../ui/badge/Badge.vue";
             :roles="e_team_roles"
           />
           <TableRow
-            v-for="slot of Math.max(
-              0,
-              tournament.max_players_per_lineup - team.roster.length,
-            )"
+            v-for="slot of Math.max(0, requiredPlayers - team.roster.length)"
           >
             <TableCell colspan="100%">
               <div class="flex space-x-3">
@@ -158,6 +167,16 @@ export default {
     canLeaveTournament() {
       return this.team.can_manage;
     },
+    requiredPlayers() {
+      return this.tournament.max_players_per_lineup;
+    },
+    canLeaveTeam() {
+      return (
+        this.team.roster.find((member) => {
+          return member.player.steam_id === useAuthStore().me.steam_id;
+        }) !== undefined
+      );
+    },
   },
   methods: {
     async cancelInvite() {},
@@ -207,6 +226,20 @@ export default {
             },
             {
               player_steam_id: true,
+            },
+          ],
+        }),
+      });
+    },
+    async removeTeam() {
+      await this.$apollo.mutate({
+        mutation: generateMutation({
+          delete_tournament_teams_by_pk: [
+            {
+              id: this.team.id,
+            },
+            {
+              id: true,
             },
           ],
         }),

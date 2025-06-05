@@ -17,7 +17,7 @@ import debounce from "~/utilities/debounce";
         @click="searchTeams()"
         variant="outline"
         :aria-expanded="open"
-        class="justify-between"
+        class="justify-between w-full"
       >
         {{ teams?.find((team) => team.id === modelValue)?.name || label }}
         <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />

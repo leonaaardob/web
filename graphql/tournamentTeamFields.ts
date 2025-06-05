@@ -6,6 +6,7 @@ export default {
   team_id: true,
   seed: true,
   eligible_at: true,
+  can_manage: true,
   team: {
     name: true,
   },
