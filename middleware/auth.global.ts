@@ -6,11 +6,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.server) return;
 
   if (to.query.error) {
-    const errorMessage = Array.isArray(to.query.error) 
-      ? to.query.error[0] 
+    console.info(to.query.error);
+    const errorMessage = Array.isArray(to.query.error)
+      ? to.query.error[0]
       : to.query.error;
-    
-    if (typeof errorMessage === 'string') {
+
+    if (typeof errorMessage === "string") {
       alertStore().add({
         duration: 5000,
         severity: AlertStatuses.Error,
@@ -22,6 +23,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     // Remove error from URL to prevent showing toast again on refresh
     const query = { ...to.query };
     delete query.error;
+    return navigateTo({
+      path: to.path,
+      query,
+    });
   }
 
   let hasMe: boolean = useAuthStore().me?.steam_id ? true : false;
@@ -31,9 +36,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (!hasMe && to.path !== "/login") {
-    return navigateTo(
-      `/login${to.path === "/" ? "" : `?redirect=${to.path}`}`,
-    );
+    return navigateTo(`/login${to.path === "/" ? "" : `?redirect=${to.path}`}`);
   }
 
   if (hasMe && to.path === "/login") {
