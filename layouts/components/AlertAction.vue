@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 </script>
 
 <template>
-  <Alert class="mt--10">
+  <Alert class="mt--10" :class="{ 'bg-red-500': alert.severity === 'error' }">
     <AlertTitle>
       {{ alert.title }}
     </AlertTitle>

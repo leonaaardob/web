@@ -71,9 +71,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (error.graphQLErrors) {
       for (const graphqlError of error.graphQLErrors) {
         if (
-          graphqlError.message.includes(
+          [
+            "webhook authentication request",
             "Invalid response from authorization hook",
-          )
+          ].includes(graphqlError.message)
         ) {
           return;
         }
