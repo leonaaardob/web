@@ -86,19 +86,19 @@ export default defineNuxtConfig({
     },
     locales: [
       { code: "en", name: "English", file: "en.json", flag: "🇬🇧" },
-      { code: "ar", name: "العربية", file: "ar.json", flag: "🇸🇦" }, // Arabic
-      { code: "da", name: "Dansk", file: "da.json", flag: "🇩🇰" }, // Danish
-      { code: "de", name: "Deutsch", file: "de.json", flag: "🇩🇪" }, // German
-      { code: "es", name: "Español", file: "es.json", flag: "🇪🇸" }, // Spanish
-      { code: "fr", name: "Français", file: "fr.json", flag: "🇫🇷" }, // French
-      { code: "it", name: "Italiano", file: "it.json", flag: "🇮🇹" }, // Italian
-      { code: "ja", name: "日本語", file: "ja.json", flag: "🇯🇵" }, // Japanese
-      { code: "ko", name: "한국어", file: "ko.json", flag: "🇰🇷" }, // Korean
-      { code: "pl", name: "Polski", file: "pl.json", flag: "🇵🇱" }, // Polish
-      { code: "pt", name: "Português", file: "pt.json", flag: "🇵🇹" }, // Portuguese
-      { code: "ru", name: "Русский", file: "ru.json", flag: "🇷🇺" }, // Russian
-      { code: "tr", name: "Türkçe", file: "tr.json", flag: "🇹🇷" }, // Turkish
-      { code: "uk", name: "Українська", file: "uk.json", flag: "🇺🇦" }, // Ukrainian
+      { code: "ar", name: "العربية", file: "ar_SA.json", flag: "🇸🇦" }, // Arabic
+      { code: "da", name: "Dansk", file: "da_DK.json", flag: "🇩🇰" }, // Danish
+      { code: "de", name: "Deutsch", file: "de_DE.json", flag: "🇩🇪" }, // German
+      { code: "es", name: "Español", file: "es_ES.json", flag: "🇪🇸" }, // Spanish
+      { code: "fr", name: "Français", file: "fr_FR.json", flag: "🇫🇷" }, // French
+      { code: "it", name: "Italiano", file: "it_IT.json", flag: "🇮🇹" }, // Italian
+      { code: "ja", name: "日本語", file: "ja_JP.json", flag: "🇯🇵" }, // Japanese
+      { code: "ko", name: "한국어", file: "ko_KR.json", flag: "🇰🇷" }, // Korean
+      { code: "pl", name: "Polski", file: "pl_PL.json", flag: "🇵🇱" }, // Polish
+      { code: "pt", name: "Português (Brasil)", file: "pt_BR.json", flag: "🇧🇷" }, // Brazilian Portuguese
+      { code: "ru", name: "Русский", file: "ru_RU.json", flag: "🇷🇺" }, // Russian
+      { code: "tr", name: "Türkçe", file: "tr_TR.json", flag: "🇹🇷" }, // Turkish
+      { code: "uk", name: "Українська", file: "uk_UA.json", flag: "🇺🇦" }, // Ukrainian
       { code: "zh-CN", name: "中文 (简体)", file: "zh_CN.json", flag: "🇨🇳" }, // Simplified Chinese
       { code: "zh-TW", name: "中文 (繁體)", file: "zh_TW.json", flag: "🇹🇼" }, // Traditional Chinese
     ],
