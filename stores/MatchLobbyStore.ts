@@ -25,9 +25,6 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
         matches_aggregate: [
           {
             where: {
-              organizer_steam_id: {
-                _eq: $("steam_id", "bigint!"),
-              },
               status: {
                 _in: [
                   e_match_status_enum.Live,
@@ -47,9 +44,6 @@ export const useMatchLobbyStore = defineStore("matchLobby", () => {
           },
         ],
       }),
-      variables: {
-        steam_id: useAuthStore().me?.steam_id,
-      },
     });
 
     subscription.subscribe({

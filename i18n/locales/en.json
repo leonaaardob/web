@@ -345,6 +345,7 @@
         },
         "manage_matches": {
             "title": "Manage Matches",
+            "only_my_matches": "Only My Organized Matches",
             "description": "View and manage all matches across the platform."
         }
     },

@@ -95,7 +95,12 @@ export default defineNuxtConfig({
       { code: "ja", name: "日本語", file: "ja_JP.json", flag: "🇯🇵" }, // Japanese
       { code: "ko", name: "한국어", file: "ko_KR.json", flag: "🇰🇷" }, // Korean
       { code: "pl", name: "Polski", file: "pl_PL.json", flag: "🇵🇱" }, // Polish
-      { code: "pt", name: "Português (Brasil)", file: "pt_BR.json", flag: "🇧🇷" }, // Brazilian Portuguese
+      {
+        code: "pt",
+        name: "Português (Brasil)",
+        file: "pt_BR.json",
+        flag: "🇧🇷",
+      }, // Brazilian Portuguese
       { code: "ru", name: "Русский", file: "ru_RU.json", flag: "🇷🇺" }, // Russian
       { code: "tr", name: "Türkçe", file: "tr_TR.json", flag: "🇹🇷" }, // Turkish
       { code: "uk", name: "Українська", file: "uk_UA.json", flag: "🇺🇦" }, // Ukrainian

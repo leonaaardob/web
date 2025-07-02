@@ -18,7 +18,21 @@ definePageMeta({
   </PageHeading>
 
   <Card class="p-4">
-    <Table>
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="space-y-4">
+      <Skeleton class="h-12 w-full" />
+      <div class="space-y-3">
+        <Skeleton class="h-16 w-full" />
+        <Skeleton class="h-16 w-full" />
+        <Skeleton class="h-16 w-full" />
+        <Skeleton class="h-16 w-full" />
+        <Skeleton class="h-16 w-full" />
+        <Skeleton class="h-16 w-full" />
+      </div>
+    </div>
+
+    <!-- Actual content -->
+    <Table v-else>
       <TableHeader>
         <TableRow>
           <TableHead class="flex items-center justify-between m-4">
@@ -52,6 +66,7 @@ interface ComponentData {
   baseConfig: string;
   liveConfig: string;
   gameTypeConfigs: GameTypeConfig[];
+  loading: boolean;
 }
 
 export default defineComponent<ComponentData>({
@@ -95,6 +110,8 @@ export default defineComponent<ComponentData>({
               gameConfigTypes.indexOf(a.type) - gameConfigTypes.indexOf(b.type)
             );
           });
+
+          this.loading = false;
         },
       },
     },
@@ -102,6 +119,7 @@ export default defineComponent<ComponentData>({
   data(): ComponentData {
     return {
       gameTypeConfigs: [],
+      loading: true,
     };
   },
   methods: {

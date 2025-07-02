@@ -12,18 +12,26 @@ import Pagination from "~/components/Pagination.vue";
       $t("pages.manage_matches.description")
     }}</template>
     <template #actions>
-      <div class="flex gap-4 items-center">
-        <Button size="lg" @click="navigateTo('/matches/create')">
-          <PlusCircle class="w-4 h-4" />
-          <span class="hidden md:inline ml-2">{{
-            $t("pages.matches.create")
-          }}</span>
-        </Button>
-      </div>
+      <Button size="lg" @click="navigateTo('/matches/create')">
+        <PlusCircle class="w-4 h-4" />
+        <span class="hidden md:inline ml-2">{{
+          $t("pages.matches.create")
+        }}</span>
+      </Button>
     </template>
   </PageHeading>
 
   <Separator class="my-4" />
+
+  <div
+    class="flex items-center space-x-2 mb-4 justify-end cursor-pointer"
+    @click="showOnlyMyMatches = !showOnlyMyMatches"
+  >
+    <Switch :model-value="showOnlyMyMatches" />
+    <Label class="text-sm">
+      {{ $t("pages.manage_matches.only_my_matches") }}
+    </Label>
+  </div>
 
   <Card class="p-4">
     <matches-table
@@ -51,12 +59,24 @@ import { typedGql } from "~/generated/zeus/typedDocumentNode";
 import { simpleMatchFields } from "~/graphql/simpleMatchFields";
 import { $, e_match_status_enum, order_by } from "~/generated/zeus";
 
+interface MatchesData {
+  matches: any[];
+}
+
+interface ComponentData {
+  page: number;
+  perPage: number;
+  matches: any[];
+  showOnlyMyMatches: boolean;
+}
+
 export default {
-  data() {
+  data(): ComponentData {
     return {
       page: 1,
       perPage: 10,
-      matches: [],
+      matches: [] as any[],
+      showOnlyMyMatches: false,
     };
   },
   apollo: {
@@ -73,35 +93,46 @@ export default {
                   created_at: $("order_by", "order_by"),
                 },
               ],
-              where: {
-                organizer_steam_id: {
-                  _eq: $("steam_id", "bigint!"),
-                },
-                status: {
-                  _in: [
-                    e_match_status_enum.Live,
-                    e_match_status_enum.Veto,
-                    e_match_status_enum.WaitingForCheckIn,
-                    e_match_status_enum.WaitingForServer,
-                    e_match_status_enum.Scheduled,
-                    e_match_status_enum.PickingPlayers,
-                  ],
-                },
-              },
+              where: $("where_clause", "matches_bool_exp!"),
             },
             simpleMatchFields,
           ],
         }),
-        variables: function () {
+        variables(this: any): {
+          limit: number;
+          order_by: order_by;
+          offset: number;
+          where_clause: any;
+        } {
+          const baseWhere = {
+            status: {
+              _in: [
+                e_match_status_enum.Live,
+                e_match_status_enum.Veto,
+                e_match_status_enum.WaitingForCheckIn,
+                e_match_status_enum.WaitingForServer,
+                e_match_status_enum.Scheduled,
+                e_match_status_enum.PickingPlayers,
+              ],
+            },
+          };
+
           return {
             limit: this.perPage,
             order_by: order_by.desc,
             offset: (this.page - 1) * this.perPage,
-            steam_id: useAuthStore().me?.steam_id,
+            where_clause: this.showOnlyMyMatches
+              ? {
+                  ...baseWhere,
+                  organizer_steam_id: {
+                    _eq: useAuthStore().me?.steam_id,
+                  },
+                }
+              : baseWhere,
           };
         },
-        result: function ({ data }) {
-          this.matches = data.matches;
+        result({ data }: { data: MatchesData }) {
+          (this as any).matches = data.matches;
         },
       },
     },
