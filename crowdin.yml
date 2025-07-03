@@ -5,3 +5,5 @@ preserve_hierarchy: 1
 files:
   - source: /i18n/locales/en.json
     translation: /i18n/locales/%locale_with_underscore%.json
+    skip_untranslated_files: true
+pull_request_title: 'chore: update translations'
