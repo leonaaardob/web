@@ -11,8 +11,20 @@
             "timestamps": "Timestamps"
         },
         "login": {
-            "sign_in": "Sign in with Steam",
-            "powered_by": "Powered by"
+            "title": "Gaming, olması gerektiği gibi.",
+            "subtitle": "Her şey raydan çıkmadan önce: adil maçlar, gerçek rekabet ve oyuncuyu merkeze alan bir platform.",
+            "button": "Steam ile giriş yap",
+            "disclaimer": "Bu site Valve Corp. ile bağlantılı değildir.",
+            "secure_ssl": "Güvenli bağlantı",
+            "privacy_first": "Gizlilik ön planda",
+            "more_info": "Daha fazla bilgi",
+            "hide_info": "Kapat",
+            "info_title": "ŞİMDİLİK SADECE STEAM GİRİŞİ",
+            "info_text_1": "Sohbetlerini, arkadaşlarını veya envanterini okumuyoruz. Sadece SteamID ve kullanıcı adını alıyoruz — seni doğru şekilde tanımlayabilmek için.",
+            "info_text_2": "Yakında TENsoul hesabın her şeyi değiştirecek — kopyalanamaz, tek ve sahteye karşı dayanıklı. Bir kişi, bir hesap. Smurf yok, yedek hesap yok, sahte profiller hiç yok.",
+            "beta_note": "Erken Erişim • Beta yakında",
+            "powered_by": "Hazırlayan",
+            "copyright": "© 2025 • Bol ☕ ve ❤️ ile hazırlandı"
         },
         "coming_soon": "Coming Soon!",
         "tournaments": {

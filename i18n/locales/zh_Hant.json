@@ -11,8 +11,20 @@
             "timestamps": "時間戳記"
         },
         "login": {
-            "sign_in": "使用 Steam 登入",
-            "powered_by": "技術支援"
+            "title": "遊戲本該如此。",
+            "subtitle": "在一切失控之前：公平對戰、真實競爭，以及以玩家為核心的平台。",
+            "button": "透過 Steam 登入",
+            "disclaimer": "本網站與 Valve 公司無關。",
+            "secure_ssl": "安全連線",
+            "privacy_first": "隱私至上",
+            "more_info": "了解更多",
+            "hide_info": "收起",
+            "info_title": "目前僅支援 Steam 登入",
+            "info_text_1": "我們不會查看你的聊天、好友或庫存。只使用你的 SteamID 與暱稱 — 確保你在我們的伺服器中正確識別。",
+            "info_text_2": "很快，TENsoul 帳戶將改變一切：不可偽造、獨一無二、無法複製。一人一帳號。沒有小號、沒有多開帳、沒有假帳號影響遊戲體驗。",
+            "beta_note": "搶先體驗 • Beta 即將推出",
+            "powered_by": "由以下團隊打造：",
+            "copyright": "© 2025 • 由 ☕ 與 ❤️ 傾心組裝"
         },
         "coming_soon": "即將推出！",
         "tournaments": {

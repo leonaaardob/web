@@ -11,8 +11,20 @@
             "timestamps": "Tidsstempler"
         },
         "login": {
-            "sign_in": "Log ind med Steam",
-            "powered_by": "Drevet af"
+            "title": "Gaming, som det altid burde have været.",
+            "subtitle": "Før det hele gik galt: fair kampe, ægte konkurrence og en platform, der sætter spillerne først.",
+            "button": "Log ind med Steam",
+            "disclaimer": "Denne side er ikke tilknyttet Valve Corp.",
+            "secure_ssl": "Sikker forbindelse",
+            "privacy_first": "Privatliv respekteres",
+            "more_info": "Mere info",
+            "hide_info": "Skjul",
+            "info_title": "KUN STEAM-LOGIN (INDTIL VIDERE)",
+            "info_text_1": "Vi ser ikke dine chats, venner eller dit inventory. Kun dit SteamID og brugernavn — så vi kan identificere dig korrekt på vores servere.",
+            "info_text_2": "Snart ændrer din TENsoul-konto alt — umulig at forfalske, unik og ikke til at kopiere. Én person, én konto. Ingen smurfs, ingen ekstra konti, ingen falske profiler der ødelægger spillet.",
+            "beta_note": "Tidlig adgang • Beta kommer snart",
+            "powered_by": "Drevet af",
+            "copyright": "© 2025 • Samlet med masser af ☕ og ❤️ af"
         },
         "coming_soon": "Kommer snart!",
         "tournaments": {

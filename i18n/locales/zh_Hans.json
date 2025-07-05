@@ -11,8 +11,20 @@
             "timestamps": "時間戳記"
         },
         "login": {
-            "sign_in": "使用 Steam 登入",
-            "powered_by": "技術支援"
+            "title": "游戏该有的样子。",
+            "subtitle": "在一切失控之前：公平对局、真实竞技，以及一个以玩家为核心的平台。",
+            "button": "通过 Steam 登录",
+            "disclaimer": "本站与 Valve 公司无关联。",
+            "secure_ssl": "安全连接",
+            "privacy_first": "隐私优先",
+            "more_info": "了解更多",
+            "hide_info": "收起",
+            "info_title": "仅支持 Steam 登录（目前）",
+            "info_text_1": "我们不会查看你的聊天、好友或库存。只获取你的 SteamID 和昵称，用于准确识别你。",
+            "info_text_2": "很快，你的 TENsoul 账户将彻底改变一切：不可伪造，独一无二，无法复制。一个人，一个账号。没有小号，没有多号，没有虚假账号干扰体验。",
+            "beta_note": "抢先体验 • Beta 即将上线",
+            "powered_by": "由以下团队驱动：",
+            "copyright": "© 2025 • 由 ☕ 与 ❤️ 精心打造"
         },
         "coming_soon": "即將推出！",
         "tournaments": {

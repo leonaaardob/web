@@ -11,8 +11,20 @@
             "timestamps": "타임스탬프"
         },
         "login": {
-            "sign_in": "Steam으로 로그인",
-            "powered_by": "제공"
+            "title": "게이밍, 원래 그래야 했던 방식으로.",
+            "subtitle": "모든 게 꼬이기 전: 공정한 매치, 진짜 경쟁, 그리고 플레이어를 중심에 둔 플랫폼.",
+            "button": "Steam으로 로그인",
+            "disclaimer": "이 사이트는 Valve Corp.와 관련이 없습니다.",
+            "secure_ssl": "보안 연결",
+            "privacy_first": "개인정보 보호 우선",
+            "more_info": "자세히 보기",
+            "hide_info": "숨기기",
+            "info_title": "현재는 Steam 로그인만 지원됩니다",
+            "info_text_1": "채팅, 친구, 인벤토리는 보지 않습니다. SteamID와 닉네임만 사용 — 서버에서 정확히 식별하기 위해서예요.",
+            "info_text_2": "곧 TENsoul 계정이 모든 걸 바꿉니다. 위조 불가, 고유함, 복제 불가. 한 사람, 하나의 계정. 스머프, 부계정, 가짜 프로필 없이.",
+            "beta_note": "얼리 액세스 • 베타 곧 시작",
+            "powered_by": "제공:",
+            "copyright": "© 2025 • ☕와 ❤️ 가득 담아 만들었습니다"
         },
         "coming_soon": "곧 출시 예정!",
         "tournaments": {

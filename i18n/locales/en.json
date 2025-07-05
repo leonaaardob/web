@@ -11,8 +11,20 @@
             "timestamps": "Timestamps"
         },
         "login": {
-            "sign_in": "Sign in with Steam",
-            "powered_by": "Powered by"
+            "title": "The Way Gaming Should Be.",
+            "subtitle": "Before gaming lost its way — fair matches, real competition, and a platform that remembers players come first.",
+            "button": "Sign in through Steam",
+            "disclaimer": "This site not associated with Valve Corp.",
+            "secure_ssl": "SSL Protected",
+            "privacy_first": "Privacy First",
+            "more_info": "More info",
+            "hide_info": "Hide",
+            "info_title": "STEAM LOGIN ONLY (FOR NOW)",
+            "info_text_1": "We don't read your chats, friends or inventory. Just your SteamID and nickname — to match you properly on our servers.",
+            "info_text_2": "Later, your TENsoul account will change everything — unhackable, truly unique, and impossible to duplicate. One person, one account, period. No smurfs, no alts, no fake profiles ruining fair play.",
+            "beta_note": "Early Access • Beta Coming Soon",
+            "powered_by": "Powered by",
+            "copyright": "© 2025 • Assembled with a lot of ☕ and ❤️ by"
         },
         "coming_soon": "Coming Soon!",
         "tournaments": {

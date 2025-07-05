@@ -11,8 +11,20 @@
             "timestamps": "Zeitstempel"
         },
         "login": {
-            "sign_in": "Mit Steam anmelden",
-            "powered_by": "Unterstützt von"
+            "title": "Gaming, wie es immer hätte sein sollen.",
+            "subtitle": "Bevor alles aus dem Ruder lief: faire Matches, echter Wettbewerb und eine Plattform, die wieder die Spieler in den Mittelpunkt stellt.",
+            "button": "Mit Steam anmelden",
+            "disclaimer": "Diese Seite ist nicht mit Valve Corp. verbunden.",
+            "secure_ssl": "Verbindung gesichert",
+            "privacy_first": "Privatsphäre respektiert",
+            "more_info": "Mehr erfahren",
+            "hide_info": "Weniger anzeigen",
+            "info_title": "NUR STEAM-LOGIN (VORERST)",
+            "info_text_1": "Wir sehen weder deine Chats, noch deine Freunde oder dein Inventar. Nur deine SteamID und deinen Nickname – damit du korrekt auf unseren Servern erkannt wirst.",
+            "info_text_2": "Schon bald wird dein TENsoul-Konto alles verändern – fälschungssicher, einzigartig, unmöglich zu kopieren. Eine Person, ein Account. Keine Smurfs, keine Multi-Accounts, keine Fake-Profile mehr, die dein Spiel ruinieren.",
+            "beta_note": "Früher Zugang • Beta startet bald",
+            "powered_by": "Bereitgestellt von",
+            "copyright": "© 2025 • Mit viel ☕ und ❤️ zusammengebaut von"
         },
         "coming_soon": "Demnächst verfügbar!",
         "tournaments": {
